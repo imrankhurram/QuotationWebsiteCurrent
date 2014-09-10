@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+template="MainTemplate.xhtml">
+
+
+<ui:define name="contentPanel">
+<div id="Wrapper">
+
+	<ui:include src="./snippets/MenuBars/MenuBarAdminSnippet.xhtml"/>
+	<h:form id="frmmonitoringServicePage" prependId="false">
+	<div class="clear"></div>
+	<div id="addmodify" style="border-style:solid;	border-width:5px;float: left;width: 500px;margin: 0 100px 20px;">
+			<h3><b>Modify Monitoring Service</b></h3>	
+			<p:panelGrid id="panel" columns="3" columnClasses="basicStyle, rightStyle">
+			
+				<h:outputText for="description" value="Service Description:  " />
+				<p:inputText id="description" value="#{monitoringservices.selectedremotemonitoringService.description}"  style="width:200px" required="true" requiredMessage="Required"/>
+			    <p:message for="description" display="icon"/>
+			    
+			    <h:outputLabel for="threeyeardisc" value="Three Year Disc: " />  
+			   	<p:spinner id="threeyeardisc" value="#{monitoringservices.selectedremotemonitoringService.threeyeardisc}" suffix="%" min="0" size="26" converterMessage="Enter a valid value."/>
+            	<p:message for="threeyeardisc" display="icon"/>
+            
+				<h:outputText for="fiveyeardisc" value="Five Year Disc:  " />
+				<p:spinner id="fiveyeardisc" value="#{monitoringservices.selectedremotemonitoringService.fiveyeardisc}" suffix="%" min="0" size="26" converterMessage="Enter a valid value."/>
+			    <p:message for="fiveyeardisc" display="icon"/>
+			    
+			    <h:outputText for="factor2" value="Recording Only Factor:  " />
+				<p:inputText id="factor2" value="#{monitoringservices.selectedremotemonitoringService.factor2}"  style="width:200px" required="true" requiredMessage="Required"/>
+			    <p:message for="factor2" display="icon"/>
+			    
+			    <h:outputText for="stepvalue1" value="Step Factor 1 - 7:  " />
+				<p:inputText id="stepvalue1" value="#{monitoringservices.selectedremotemonitoringService.stepvalue1}"  style="width:200px" required="true" requiredMessage="Required"/>
+			    <p:message for="stepvalue1" display="icon"/>
+			    
+			    <h:outputText for="stepvalue2" value="Step Factor 8 - 64:  " />
+				<p:inputText id="stepvalue2" value="#{monitoringservices.selectedremotemonitoringService.stepvalue2}"  style="width:200px" required="true" requiredMessage="Required"/>
+			    <p:message for="stepvalue2" display="icon"/>
+			    
+			    <h:outputText for="stepvalue3" value="Step Factor 65 - 128:  " />
+				<p:inputText id="stepvalue3" value="#{monitoringservices.selectedremotemonitoringService.stepvalue3}"  style="width:200px" required="true" requiredMessage="Required"/>
+			    <p:message for="stepvalue3" display="icon"/>
+			    
+			    <h:outputText for="stepvalue4" value="Step Factor 129 - 192:  " />
+				<p:inputText id="stepvalue4" value="#{monitoringservices.selectedremotemonitoringService.stepvalue4}"  style="width:200px" required="true" requiredMessage="Required"/>
+			    <p:message for="stepvalue4" display="icon"/>
+			    
+			    <h:outputText for="stepvalue5" value="Step Factor 193 - 246:  " />
+				<p:inputText id="stepvalue5" value="#{monitoringservices.selectedremotemonitoringService.stepvalue5}"  style="width:200px" required="true" requiredMessage="Required"/>
+			    <p:message for="stepvalue5" display="icon"/>
+			    
+			     <h:outputLabel for="currency" value="Currency: " />  
+				<p:selectOneMenu id="currency" value="#{monitoringservices.selectedremotemonitoringService.currency}"  style="width:208px; text-align: left;" required="true" requiredMessage="Select a currency.">  
+                	<f:selectItems value="#{monitoringservices.currencies}" />  
+            	</p:selectOneMenu>            	
+            	<p:message for="currency" display="icon"/>	  
+            	
+			    <h:outputLabel for="country" value="Country: " />  
+				<p:selectOneMenu id="country" value="#{monitoringservices.selectedremotemonitoringService.country}"  editable="true" style="width:208px; text-align: left;" required="true" requiredMessage="Select a country.">  
+                	<f:selectItems value="#{monitoringservices.countries}" />  
+            	</p:selectOneMenu>            	
+            	<p:message for="country" display="icon"/>
+        	</p:panelGrid>
+	</div>
+	
+	<div id="SideContent">
+		<div class="quarter nobottommargin">
+			<ul id="verticalnavnoaction">
+				<li><p:commandLink action="#" value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.company.companyName}" /></li>			
+			</ul>	
+			<ul id="secondnav">
+				<li><p:commandLink action="#{monitoringservices.modifyMonitoringService}" update="panel" value="Save" /></li>
+				<li><p:commandLink action="MonitoringServicesPage.xhtml?faces-redirect=true" immediate="true" value="Cancel" /></li>
+			</ul>
+		</div>
+	</div>
+</h:form>
+</div>
+
+
+</ui:define>
+</ui:composition>

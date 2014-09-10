@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+template="MainTemplate.xhtml">
+
+
+<ui:define name="contentPanel">
+
+
+<div id="Wrapper">
+
+	<ui:include src="./snippets/MenuBars/MenuBarMainSnippet.xhtml"/>
+	<h:form id="frmmodifyuserPage" prependId="false">
+	<div class="clear"></div>
+	<!--  <div class="quarternhalf">-->
+	<div id="addmodify" style="border-style:solid;	border-width:5px;float: left;width: 500px;margin: 0 100px 20px;">
+			<h3><b>Modify User Details</b></h3>	
+			<p:panelGrid id="panel" columns="3" columnClasses="basicStyle, rightStyle">
+			
+				<h:outputText value="User Name(Email)*: " />  
+            	<p:inputText id="username" value="#{mainusers.selectedUser.username}" style="width:200px; text-align: left;"  disabled="true" readOnly="true" required="true" requiredMessage="User Name is required"/> 
+                <p:message for="username" display="icon"/>  
+                       
+				<h:outputText value="Password: " />
+				<p:password id="password" value="#{mainusers.selectedUser.password}" feedback="true" redisplay="true" style="width:200px" />
+    	        <p:message for="password" display="icon"/>
+    	
+    	
+				<h:outputText value="First Name*: "/>
+		    	<p:inputText id="firstname" value="#{mainusers.selectedUser.firstName}" style="width:200px" required="true" requiredMessage="First Name is required"/>
+        	    <p:message for="firstname" display="icon"/>
+        	
+				<h:outputText value="Last Name*: "/>
+			    <p:inputText id="lastname" value="#{mainusers.selectedUser.lastName}" style="width:200px" required="true" requiredMessage="Last Name is required"/>
+        		<p:message for="lastname" display="icon"/>
+        	
+				<h:outputText value="User Type*: "/>
+			    <p:selectOneMenu id="usertype" value="#{mainusers.selectedUser.usertype}" style="width:208px;text-align: left;" required="true" requiredMessage="Select a usertype.">  
+            		<f:selectItem itemLabel="Select One" itemValue="" />  
+            		<f:selectItem itemLabel="Supervisor" itemValue="Supervisor" /> 
+            		<f:selectItem itemLabel="User" itemValue="User" /> 
+        		</p:selectOneMenu>
+        		<p:message for="usertype" display="icon"/>
+        		
+				<h:outputText value="Max Allowed Discount   : "/>
+			    <p:spinner id="maxalloweddiscount" value="#{mainusers.selectedUser.maxalloweddiscount}" suffix="%" min="0" max="12" stepFactor="0.25" size="26"/>
+        		<p:message for="maxalloweddiscount" display="icon"/>
+        		
+				<h:outputText value="Enabled   : "/>
+			    <p:selectBooleanCheckbox  id="enabled" value="#{mainusers.selectedUser.boolEnabled}" />
+			</p:panelGrid>
+	</div>
+	
+	<div id="SideContent">
+		<div class="quarter nobottommargin">	
+			<ul id="verticalnavnoaction">	
+				<li><p:commandLink action="#" value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.company.companyName}" /></li>
+			</ul>	
+			<ul id="secondnav">
+				<li><p:commandLink action="#{mainusers.modifyUser}" update="panel" value="Update" /></li>
+				<li><p:commandLink action="MainUsersPage.xhtml?faces-redirect=true" immediate="true" value="Cancel" /></li>
+			</ul>
+		</div>
+	</div>
+	</h:form>
+	
+</div>
+
+
+
+</ui:define>
+</ui:composition>

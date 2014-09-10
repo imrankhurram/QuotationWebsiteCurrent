@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+template="MainTemplate.xhtml">
+
+
+<ui:define name="contentPanel">
+
+<div id="Wrapper">
+
+	<ui:include src="./snippets/MenuBars/MenuBarAdminSnippet.xhtml"/>
+<h:form id="frmcountriesPage" >
+<script type="text/javascript">  
+		document.ready = function() {
+        Tb.clearFilters()
+ 	 }
+	</script>
+	<div class="clear"></div>
+	<div class="threequarters">
+			<h3><b>List of Countries</b></h3>
+			<p:dataTable id="tbCountriesList" var="row" value="#{countries.countryList}" rowKey="#{row.country}" scrollable="true" scrollHeight="525" widgetVar="Tb"
+			    rowStyleClass="standard" selection="#{countries.selectedCountry}" selectionMode="single"  filteredValue="#{countries.filteredCountryList}">
+			   			   
+				<p:column  width="101" filterBy="#{row.country}">
+    				<f:facet name="header">
+      					<h:outputText value="Country"/>
+    				</f:facet>
+    				<h:outputText value="#{row.country}" />
+  				</p:column>
+  				<p:column width="205">
+    				<f:facet name="header">
+      					<h:outputText value="Full Name"/>
+    				</f:facet>
+    				<h:outputText value="#{row.fullName}" />
+  				</p:column>
+  				<p:column width="80" >
+    				<f:facet name="header">
+      					<h:outputText value="Freight"/>
+    				</f:facet>
+    				<h:outputText value="#{row.freight}%" />
+  				</p:column>
+  				<p:column width="80" >
+    				<f:facet name="header">
+      					<h:outputText value="Duty"/>
+    				</f:facet>
+    				<h:outputText value="#{row.duty}%" />
+  				</p:column>
+  				<p:column width="44" >
+    				<f:facet name="header">
+      					<h:outputText value="Currency"/>
+    				</f:facet>
+    				<h:outputText value="#{row.currency}" />
+  				</p:column>
+  				
+  				<p:column width="65" >
+    				<f:facet name="header">
+     		 			<h:outputText value="Conversion"/>
+    				</f:facet>
+    				<h:outputText value="#{row.conversionratefrompounds}" />
+  				</p:column>
+  				<f:facet name="footer"></f:facet>
+		</p:dataTable>	  
+		
+		  
+	</div>
+	
+	             
+	<div id="SideContent">
+		<div class="quarter nobottommargin">
+			<ul id="verticalnavnoaction">
+				<li><p:commandLink action="#" value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.company.companyName}" /></li>
+				
+			</ul>
+			<ul id="secondnav">
+				<li><p:commandLink action="#{adminmenubar.actionAddCountryPage}" value="Add Country" /></li>
+				<li><p:commandLink action="#{adminmenubar.actionModifyCountryPage}" value="Modify Country" /></li>
+				<li><p:commandLink onclick="confirmation.show()" value="Delete Country"/></li>
+			</ul>
+		</div>
+	</div>
+	 </h:form>  
+	 
+	 <p:confirmDialog id="confirmDialog" message="Are you sure want to delete the selected row?"  
+                header="Initiating delete process" severity="alert" widgetVar="confirmation" appendToBody="true">  
+            <h:form>
+            <p:commandButton   id="confirm" value="Yes Sure" oncomplete="confirmation.hide()"  
+                    action="#{countries.deleteCountry}" />  
+        	<p:commandButton   id="decline" value="Not Yet" onclick="confirmation.hide()" type="button" />   
+        	</h:form>
+       </p:confirmDialog>
+	 
+</div>
+</ui:define>
+</ui:composition>

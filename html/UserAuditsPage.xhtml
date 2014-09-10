@@ -1,0 +1,96 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="MainTemplate.xhtml">
+
+
+	<ui:define name="contentPanel">
+
+		<div id="Wrapper">
+
+			<ui:include src="./snippets/MenuBars/MenuBarMainSnippet.xhtml" />
+			<ui:include src="./snippets/DlgViewPDFDownloadSnippet.xhtml" />
+			<h:form id="frmusersPage">
+				<script type="text/javascript">
+					document.ready = function() {
+						Tb.clearFilters()
+					}
+				</script>
+				<div class="clear"></div>
+				<div class="threequarters">
+
+					<h3>
+						<b>List of Audits</b>
+					</h3>
+
+
+					<p:dataTable widgetVar="Tb" id="tbUserAuditsList" var="row"
+						value="#{useraudit.userauditsList}" rowKey="#{row.id}"
+						scrollable="true" scrollHeight="525" rowStyleClass="standard"
+						selectionMode="single"
+						filteredValue="#{useraudit.filteredUserAuditsList}">
+
+						<p:column width="130" filterBy="#{row.actionType}">
+							<f:facet name="header">
+								<h:outputText value="Action" />
+							</f:facet>
+							<h:outputText value="#{row.actionType}" />
+						</p:column>
+						<p:column width="120">
+							<f:facet name="header">
+								<h:outputText value="Time" />
+							</f:facet>
+							<h:outputText value="#{row.creatTime}" />
+						</p:column>
+						<p:column width="250" filterBy="#{row.actionDescription}">
+							<f:facet name="header">
+								<h:outputText value="Description" />
+							</f:facet>
+							<h:outputText value="#{row.actionDescription}" />
+						</p:column>
+						<p:column width="130" filterBy="#{row.user.username}">
+							<f:facet name="header">
+								<h:outputText value="User" />
+							</f:facet>
+							<h:outputText id="pUsername" value="#{row.user.username}">
+								<p:tooltip for="pUsername" value="#{row.user.username}" />
+							</h:outputText>
+						</p:column>
+						<f:facet name="footer"></f:facet>
+					</p:dataTable>
+				</div>
+
+				<div id="SideContent">
+					<div class="quarter nobottommargin">
+						<ul id="verticalnavnoaction">
+							<li><p:commandLink action="#"
+									value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+							<li><p:commandLink action="#"
+									value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+							<li><p:commandLink action="#"
+									value="#{userInfo.user.company.companyName}" /></li>
+							<h:panelGrid columns="2"
+									style="background-color: #C0D4CF; text-align: center;width:100%;margin-top:20px">
+									<h:outputText value="From  : " />
+									<p:calendar id="dateFromHist" value="#{useraudit.dateFrom}"
+										effect="slideDown" pattern="dd/MM/yyyy" styleClass="calendarWidget"  />
+									<h:outputText value="To  : " />
+									<p:calendar id="dateToHist" value="#{useraudit.dateTo}"
+										effect="slideDown" pattern="dd/MM/yyyy" styleClass="calendarWidget"  />
+
+									<h:outputText value="" />
+									<p:commandButton value="Update"
+										action="#{useraudit.updateDataTable}"
+										style="width:100px !important;line-height:1.6 !important;height: 30px !important;-webkit-border-radius:5px !important;border-radius:5px !important;-moz-border-radius:5px !important" />
+								</h:panelGrid>
+						</ul>
+					</div>
+				</div>
+			</h:form>
+
+		</div>
+	</ui:define>
+</ui:composition>

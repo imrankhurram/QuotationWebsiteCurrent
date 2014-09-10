@@ -1,0 +1,169 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+template="MainTemplate.xhtml">
+
+
+<ui:define name="contentPanel">
+
+
+<div id="Wrapper">
+
+	<ui:include src="./snippets/MenuBars/MenuBarAdminSnippet.xhtml"/>
+	<ui:include src="./snippets/DlgXLSDownloadSnippet.xhtml"/>
+	<p:dialog header="Configure Subparts" widgetVar="subpartsDialog" resizable="false" id="subpartsDlg"  
+                height="600" modal="true" appendToBody="true" >  
+                 
+               <h:form id ="tempt">
+            	<p:dataTable id="parts" var="subprow" value="#{parts.subpartsList}" rowKey="#{subprow.id}"
+			    	rowStyleClass="standard" ajax="true" scrollabe="true"  scrollHeight="525">  
+			    	<f:facet name="header">
+			    	<p:panelGrid id="paneluserloginoptions"  columns="3" styleClass="ui-custompanelgrid" columnClasses="basicStyle, rightStyle" style="width:700px;">
+			    	<h:outputText id="pselectedDescription" value="#{parts.selectedStandardPart.partNumber}  :  #{parts.selectedStandardPart.truncatedpartDescriptionsubparts}"/>
+			    	<p:tooltip for="pselectedDescription" value = "#{parts.selectedStandardPart.partDescription}"/>
+			    	<p:commandButton id="updateButton" value="Update" icon="ui-icon-disk" action="#{parts.saveSubparts}" update=":frmpartsPage" oncomplete="subpartsDialog.hide();" />  
+			    	</p:panelGrid>
+			    				    	</f:facet>
+					<p:column id="modelHeader" >  
+            			<f:facet name="header">  
+                    		<h:outputText value="Part no."/>  
+            			</f:facet>  
+            			<h:outputText id="pPriceCat" value="#{subprow.partNumber}" />  
+            			<p:tooltip for="pPriceCat" value = "#{subprow.partType}"/>    
+        			</p:column>  
+          			<p:column width="300">  
+            			<f:facet name="header">  
+                    		<h:outputText value="Part Description"/>
+            			</f:facet>  
+            		 	<h:outputText id="pDescription" value="#{subprow.truncatedpartDescriptionsubparts}"/>  
+            		 	<p:tooltip for="pDescription" value = "#{subprow.partDescription}"/>    
+            		 	
+          			</p:column>
+          			<p:column>  
+            			<f:facet name="header">  
+                    		<h:outputText value="Price Category"/>
+            			</f:facet>  
+            		 	<h:outputText value="#{subprow.pricecategory}"/>  
+          			</p:column>
+          			<p:column>  
+            			<f:facet name="header">  
+                    		<h:outputText value="Quantity"/>
+            			</f:facet>  
+            			<p:inputText value="#{subprow.quantity}"/>  
+          			</p:column>
+				</p:dataTable>
+				<p:commandButton id="updateButton2" value="Update" icon="ui-icon-disk" action="#{parts.saveSubparts}" update=":frmpartsPage" oncomplete="subpartsDialog.hide();" />
+				
+				 
+				
+	   	</h:form>
+    </p:dialog>  
+      		
+	<h:form id="frmpartsPage" >
+	<script type="text/javascript">  
+		document.ready = function() {
+        Tb.clearFilters()
+ 	 }
+ 	 </script>
+	<div class="clear"></div>
+	<div class="threequarters">
+			<h3><b>Available Parts</b></h3>
+			<p:dataTable id="basic" var="row" value="#{parts.standarpartsList}" rowKey="#{row.id}" scrollable="true" scrollHeight="425" widgetVar="Tb"
+			    rowStyleClass="#{row.quantity gt 0 ? 'expired' : 'standard'}"  selection="#{parts.selectedStandardPart}" selectionMode="single" filteredValue="#{parts.filteredStandarpartsList}">  
+				
+				<p:column id="modelHeader" width="127" filterBy="#{row.partNumber}">  
+            		<f:facet name="header">  
+                    	<h:outputText value="Part no."/>  
+            		</f:facet>  
+            		<h:outputText id="pMainPriceCat"   value="#{row.partNumber}" >  
+            			<p:tooltip for="pMainPriceCat" value = "#{row.pricecategory}"/>    
+            		</h:outputText>
+        		</p:column>  
+  
+        		<p:column width="164" filterBy="#{row.partDescription}">  
+            		<f:facet name="header">  
+                    	<h:outputText value="Part Description"/>
+            		</f:facet>  
+               		 <h:outputText id="pDescription" value="#{row.partDescription}">  
+	            		 <p:tooltip for="pDescription" value = "#{row.partDescription}"/>    
+            		 </h:outputText>
+          		</p:column>
+          		
+          		<p:column width="88" filterBy="#{row.partType}" filterMatchMode="exact" filterOptions="#{parts.typeFilter}">  
+            		<f:facet name="header">  
+                    	<h:outputText value="Part Type"/>
+            		</f:facet>  
+            		 <h:outputText value="#{row.partType}"/>  
+          		</p:column>
+          		
+          		<p:column width="75">  
+            		<f:facet name="header">  
+                    	<h:outputText value="Base Cost"/>
+            		</f:facet>  
+            		<h:outputText value="#{row.cost}">
+            		<f:convertNumber currencySymbol="£" groupingUsed="true" maxFractionDigits="0" type="currency" />
+            		</h:outputText>  
+          		</p:column>
+          		
+          		<p:column filterBy="#{row.country}" width="78">  
+            		<f:facet name="header">  
+                    	<h:outputText value="Country"/>
+            		</f:facet>  
+            		<h:outputText id="pCountry" value="#{row.country}">  
+	            		<p:tooltip for="pCountry" value = "#{row.country}"/>    
+            		</h:outputText>
+          		</p:column>  
+          		
+          		<p:column width="25"  exportable="false">  
+             		<h:panelGrid columns="1" styleClass="actions" >  
+                 		<p:commandButton id="selectButton" update=":tempt" action="#{parts.loadSubParts}"
+                 						 oncomplete="subpartsDialog.show()" icon="ui-icon-search" title="View" rendered="#{row.partType == 'ASSEMBLY'}">  
+                     		  <f:setPropertyActionListener value="#{row}" target="#{parts.selectedStandardPart}" /> 
+                 		</p:commandButton>  
+             		</h:panelGrid>  
+        		</p:column>  
+			</p:dataTable>
+	</div>
+	
+	             
+	<div id="SideContent">
+		<div class="quarter nobottommargin">
+			<ul id="verticalnavnoaction">
+				<li><p:commandLink action="#" value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.company.companyName}" /></li>			
+			</ul>
+			<ul id="secondnav">
+				<li><p:commandLink action="#{adminmenubar.actionSystemAnalysisPage}" value="Configurations" /></li>
+				<li><p:commandLink action="#{adminmenubar.actionViewCompanyPartsPage}" value="Company Parts Lists" /></li>
+				<li><p:commandLink action="#{adminmenubar.actionEditAllPartsPage}" value="Edit All Parts" /></li>
+				<li><p:commandLink action="#{adminmenubar.actionAddPartsPage}" value="Add Part" /></li>
+				<li><p:commandLink action="#{adminmenubar.actionModifyPartsPage}" value="Modify Part" /></li>
+				<li><p:commandLink onclick="confirmation.show()" value="Delete Part" /></li>
+				<li><p:commandLink value="Download Subparts List" oncomplete= "xlsDownloadDialog.show();" ajax="true" /></li>
+				<li><h:commandLink value="Download Parts List">  
+            			<p:dataExporter type="xls" target="basic" fileName="Parts"  />  
+       				</h:commandLink>
+       			</li>
+			</ul>
+		</div>
+		
+	</div>
+	</h:form>  
+	
+	
+
+		<p:confirmDialog id="confirmDialog" message="Are you sure want to delete the selected row?"  
+                header="Initiating delete process" severity="alert" widgetVar="confirmation" appendToBody="true">  
+            <h:form>
+            <p:commandButton   id="confirm" value="Yes Sure" oncomplete="confirmation.hide()"  
+                    action="#{parts.deletePart}" />  
+        	<p:commandButton   id="decline" value="Not Yet" onclick="confirmation.hide()" type="button" />   
+        	</h:form>
+       </p:confirmDialog>
+</div>
+ </ui:define>
+</ui:composition>

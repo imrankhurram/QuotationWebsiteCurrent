@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:form>
+	<div class="quarter">
+		<img src="./images/logo.jpg" class="logo" width="250" height="120"/>
+	</div>
+	<div class="threequarters-menu">
+		 <ul id="nav">
+		    <li class="#{mainmenubar.linkClicked eq 1 ? 'active' : null}"><p:commandLink action="#{mainmenubar.actionHomePage}"  value="Home" /></li> 
+	        <li class="#{mainmenubar.linkClicked eq 2 ? 'active' : null}"><p:commandLink action="#{mainmenubar.actionNewQuotationPage}" value="New Quotation"  disabled="${(userInfo.user.usertype eq 'ProjectAdmin')}"/></li> 
+	        <li class="#{mainmenubar.linkClicked eq 3 ? 'active' : null}"><p:commandLink action="#{mainmenubar.actionQuotationsPage}" value="Existing Quotation" /></li> 
+	        <li class="#{mainmenubar.linkClicked eq 4 ? 'active' : null}"><p:commandLink action="#{mainmenubar.actionUserAuditsPage}" value="User Audits"  disabled="${(userInfo.user.usertype eq 'ProjectAdmin')}"/></li> 
+	        <li class="#{mainmenubar.linkClicked eq 7 ? 'active' : null}"><p:commandLink action="#{mainmenubar.actionTemplatesPage}" value="Cover Letters"  disabled="${(userInfo.user.usertype eq 'ProjectAdmin')}"/></li>
+	        <c:if test="${(userInfo.user.usertype eq 'Supervisor') || (userInfo.user.usertype eq 'User')}" >
+				<li class="#{mainmenubar.linkClicked eq 5 ? 'active' : null}"><p:commandLink action="#{mainmenubar.actionMainUsersPage}" value="Users"  disabled="${(userInfo.user.usertype eq 'ProjectAdmin')}"/></li>
+			</c:if>
+			<c:if test="${(userInfo.user.usertype eq 'Master') || (userInfo.user.usertype eq 'Admin')|| (userInfo.user.usertype eq 'ProjectAdmin')}" >
+				<li class="#{mainmenubar.linkClicked eq 5 ? 'active' : null}"><p:commandLink action="#{mainmenubar.actionUsersPage}" value="Admin"  disabled="${(userInfo.user.usertype eq 'ProjectAdmin')}"/></li>
+			</c:if>
+	        <li class="#{mainmenubar.linkClicked eq 6 ? 'active' : null}"><p:commandLink action="#{mainmenubar.actionLogOutPage}" value="Logout" /></li>  
+	    </ul> 
+	</div>
+</h:form>
+	
+</ui:composition>

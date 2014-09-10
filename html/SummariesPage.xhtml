@@ -1,0 +1,353 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="MainTemplate.xhtml">
+
+
+	<ui:define name="contentPanel">
+
+
+		<div id="Wrapper">
+
+
+			<h:form id="frmsummaryPage" prependId="false">
+				<ui:include src="./snippets/MenuBars/MenuBarSummariesSnippet.xhtml" />
+				<div class="clear"></div>
+				<div id="addmodify"
+					style="border-style: solid; border-width: 2px; float: left; width: 665px;">
+					<!--width: 490px;  -->
+					<div
+						style="background: url('#{newquote.summariesFirstImage}'); background-size: 100% 100%; background-repeat: no-repeat; min-height: 880px">
+						<h:outputText escape="false"
+							value="#{newquote.summariesFirstPage}"></h:outputText>
+						<!-- <hr /> -->
+					</div>
+					<div
+						style="background: url('#{newquote.summariesSecondImage}'); border-top: 1px solid; background-size: 100% 100%; background-repeat: no-repeat; min-height: 880px">
+						<h:outputText escape="false"
+							value="#{newquote.summariesSecondPage}"></h:outputText>
+					</div>
+					<!-- 	<div>
+	        <p:dataTable id="tbquantitycatList" var="row" value="#{newquote.quantityCategoriesList}" style="width:490px;" >
+  				<p:column  style="text-align: right;">
+	  				<f:facet name="header">
+      					<h:outputText value="YOUR SYSTEM CONFIGURATION"/>
+    				</f:facet>
+    				<h:outputText value="#{row.description}"/>
+  				</p:column>
+  				<p:column  width="32">
+    				<h:outputText value="#{row.tempquantity}" />
+  				</p:column>
+  			</p:dataTable>
+  	</div>
+  	<p:separator id ="sepTotalCount" style="background-color: #C4C4C4;height:4px" />
+  			<p:panelGrid id="panel" columns="2" columnClasses="basicStyle, rightStyle" >
+				<h:outputText value="Total Sensor Count:" style="font-weight:bold;"/>
+				<h:outputText value="#{newquote.totalSensorCount}" style="font-weight:bold;width:83px"/>
+			</p:panelGrid>
+			<p:panelGrid id="panelserviceoptions" columns="2" columnClasses="basicStyle, rightStyle" style="width: 490px;">
+				<f:facet name="header">  
+                    YOUR CHOSEN SERVICE OPTIONS  
+            	</f:facet>  			
+            	<h:outputText value="Remote Ethernet Communications Link:" />
+				<h:outputText value="#{(newquote.quotation.recordingonly or newquote.quotation.combinedrnamonitoring) ? 'Yes' : 'No'}" />
+				<h:outputText value="On-site system installation:" />
+				<h:outputText value="#{newquote.quotation.onsitesensorcalibration ? 'Yes' : 'No'}" />
+				<h:outputText value="On-Site NIST/NPL Sensor Calibration:" />
+				<h:outputText value="#{newquote.quotation.onsitesensorcalibration ? 'Yes' : 'No'}" />
+				<h:outputText value="Factory NIST/NPL Sensor Calibration:" />
+				<h:outputText value="#{newquote.quotation.factorysensorcalibration ? 'Yes' : 'No'}" />
+				<h:outputText value="Remote Alarm Monitoring Service:" />
+				<h:outputText value="#{newquote.quotation.combinedrnamonitoring ? 'Yes' : 'No'}" />
+				<h:outputText value="Remote Electronic Recording Service:" />
+				<h:outputText value="#{newquote.quotation.recordingonly ? 'Yes' : 'No'}" />
+				<h:outputText value="Web Hosted Sensor Display Graphics (Web GUI):" />
+				<h:outputText value="#{newquote.quotation.webhostedgui ? 'Yes' : 'No'}" />
+				<h:outputText value="DQ, IQ and OQ, QC Record Documentation:" />
+				<h:outputText value="#{newquote.quotation.dqiqoqprotocoldocs ? 'Yes' : 'No'}" />
+				<h:outputText value="Refrigerator Temperature Mapping service:" />
+				<h:outputText value="#{newquote.quotation.temperatureMapping ? 'Yes' : 'No'}" />
+			</p:panelGrid>
+			
+			<p:panelGrid id="panelHEADING" columns="2" columnClasses="basicStyle, rightStyle">
+				<f:facet name="header">  
+                    SYSTEM COST BREAKDOWN  
+            	</f:facet> 
+            </p:panelGrid>
+  			<p:dataTable id="tbPriceList" var="row" value="#{newquote.priceCategoriesList}" style="width:490px;" >
+  				<p:column  style="text-align: right;" >
+	  				<f:facet name="header">
+      					<h:outputText value="HARDWARE"/>
+    				</f:facet>
+    				<h:outputText value="#{row.description}" />
+  				</p:column>
+  				<p:column   >
+    				<h:outputText value="#{row.tempquantity}" >
+    					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+            		</h:outputText> 
+  				</p:column>
+  			</p:dataTable>
+  			<p:separator id ="SystemCostBD" style="background-color: #C4C4C4;height:4px"/>	
+  			
+  		    <p:panelGrid id="panelsystemcostbreakdow" columns="2" columnClasses="basicStyle, rightStyle">
+				<h:outputText value="SUB TOTAL" style="font-weight:bold;" rendered="#{(newquote.mHardwareDiscount ne 0 ? true : false)}"/>
+				<h:outputText value="#{newquote.totalsystembreakdown}" style="font-weight:bold;" rendered="#{(newquote.mHardwareDiscount ne 0 ? true : false)}">
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+            	</h:outputText> 
+				<h:outputText value="LESS AGREED DISCOUNT" style="font-weight:bold;color:blue;" rendered="#{(newquote.mHardwareDiscount ne 0 ? true : false)}"/>
+				<h:outputText value="#{newquote.totalsystembreakdown * (newquote.mHardwareDiscount/100)}" style="font-weight:bold;" rendered="#{(newquote.mHardwareDiscount ne 0 ? true : false)}">
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+            	</h:outputText> 
+				<h:outputText value="TOTAL" style="font-weight:bold;"/>
+				<h:outputText value="#{newquote.totalsystembreakdown - (newquote.totalsystembreakdown * (newquote.mHardwareDiscount/100))}" style="font-weight:bold;">
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+            	</h:outputText> 
+			</p:panelGrid>	
+				
+			<p:dataTable id="tbService" var="row" value="#{newquote.onceservicesList}" style="width:490px;" >
+  				<p:column  style="text-align: right;" >
+	  				<f:facet name="header">
+      					<h:outputText value="SERVICES"/>
+    				</f:facet>
+    				<h:outputText value="#{row.serviceDescription}" rendered="#{(row.showCost eq true)}"/>
+  				</p:column>
+  				<p:column  width="50" >
+    				<h:outputText value="#{((row.unitCost * newquote.totalSensorCount) le row.minimumCharge) ? (newquote.totalSensorCount eq 0 ? 0 : row.minimumCharge) : (row.unitCost * newquote.totalSensorCount)}" rendered="#{(row.showCost eq true)}">
+    					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+            		</h:outputText>
+            		<h:outputText value="#{0}" rendered="#{(row.showCost eq false )}">
+    					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+            		</h:outputText> 
+  				</p:column>
+  			</p:dataTable>
+  		    <p:separator id ="Servicessep" style="background-color: #C4C4C4;height:4px"/>	
+			<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
+  				<h:outputText value="SUB TOTAL" style="font-weight:bold;" rendered="#{(newquote.mServiceOptionsDiscount ne 0 ? true : false)}"/>
+				<h:outputText value="#{newquote.onceServicestotal}" style="font-weight:bold;" rendered="#{(newquote.mServiceOptionsDiscount ne 0 ? true : false)}">
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+				</h:outputText>
+				<h:outputText value="LESS AGREED DISCOUNT" style="font-weight:bold;color:blue;" rendered="#{(newquote.mServiceOptionsDiscount ne 0 ? true : false)}"/>
+				<h:outputText value="#{newquote.onceServicestotal * (newquote.mServiceOptionsDiscount/100)}" style="font-weight:bold;" rendered="#{(newquote.mServiceOptionsDiscount ne 0 ? true : false)}">
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+				</h:outputText>
+				<h:outputText value="TOTAL" style="font-weight:bold;"/>
+				<h:outputText value="#{newquote.onceServicestotal - (newquote.onceServicestotal * (newquote.mServiceOptionsDiscount/100))}" style="font-weight:bold;">
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+				</h:outputText>
+	  		</p:panelGrid>
+			<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">	
+				<f:facet name="header">  
+                    INSTALLATION  
+            	</f:facet> 
+				<h:outputText value="On Site System Installation" />
+				<h:outputText value="#{newquote.onSiteInst}" >
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+				</h:outputText>
+				<h:outputText value="On Site System Comissioning:" rendered="#{newquote.quotation.onsitesensorcalibration}"/>
+				<h:outputText value="#{newquote.onSiteCalib}" style="width:70px" rendered="#{newquote.quotation.onsitesensorcalibration}">
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+				</h:outputText>
+				
+				<h:outputText value="SUB TOTAL" style="font-weight:bold;" rendered="#{(newquote.mSiteInstallationDiscount ne 0 ? true : false)}"/>
+				<h:outputText value="#{(newquote.onSiteInst + newquote.onSiteCalib)}" style="font-weight:bold;" rendered="#{(newquote.mSiteInstallationDiscount ne 0 ? true : false)}">
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+            	</h:outputText> 
+				<h:outputText value="LESS AGREED DISCOUNT" style="font-weight:bold;color:blue;" rendered="#{(newquote.mSiteInstallationDiscount ne 0 ? true : false)}"/>
+				<h:outputText value="#{(newquote.onSiteInst + newquote.onSiteCalib) * (newquote.mSiteInstallationDiscount/100)}" style="font-weight:bold;" rendered="#{(newquote.mSiteInstallationDiscount ne 0 ? true : false)}">
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+            	</h:outputText> 	
+				<h:outputText value="TOTAL" style="font-weight:bold;"/>
+				<h:outputText value="#{(newquote.onSiteInst + newquote.onSiteCalib) - ((newquote.onSiteInst + newquote.onSiteCalib) * (newquote.mSiteInstallationDiscount/100))}" style="font-weight:bold;">	
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+            	</h:outputText> 
+			</p:panelGrid>
+			
+			<p:panelGrid id="panelsystemremotemonitoring" columns="#{(newquote.mRemoteMonitoringDiscount ne 0 ? 3 : 2)}" >
+				<f:facet name="header">  
+					RECURRING SERVICE OPTIONS          	
+				</f:facet>  			
+				
+				<h:outputText value="ALARM MONITORING AND RECORDING SERVICE" style="font-weight:bold;text-align: left !important;" rendered="#{newquote.quotation.combinedrnamonitoring}"/>
+				<h:outputText value="Original" style="font-weight:bold;text-align: left !important;" rendered="#{newquote.quotation.combinedrnamonitoring}"/>
+				<h:outputText value="Discounted" style="font-weight:bold;text-align: left !important;color:blue;" rendered="#{newquote.quotation.combinedrnamonitoring and (newquote.mRemoteMonitoringDiscount ne 0 ? true : false)}"/>
+				<h:outputText value="1 Year Service Agreement:" rendered="#{newquote.quotation.combinedrnamonitoring}"/>
+				<h:outputText value="#{newquote.alarmingnmonitoring1y}" style="width:83px" rendered="#{newquote.quotation.combinedrnamonitoring}">
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+				</h:outputText>
+				<h:outputText value="#{newquote.alarmingnmonitoring1y - (newquote.alarmingnmonitoring1y * (newquote.mRemoteMonitoringDiscount/100))}" style="width:83px" rendered="#{newquote.quotation.combinedrnamonitoring and (newquote.mRemoteMonitoringDiscount ne 0 ? true : false)}">
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+				</h:outputText>
+				<c:if test="#{userInfo.user.company.multiyear_options}">
+					<h:outputText value="3 Year Service Agreement:" rendered="#{newquote.quotation.combinedrnamonitoring}"/>
+					<h:outputText value="#{newquote.alarmingnmonitoring3y}" style="width:83px" rendered="#{newquote.quotation.combinedrnamonitoring}">
+						<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+					<h:outputText value="#{newquote.alarmingnmonitoring3y - (newquote.alarmingnmonitoring3y * (newquote.mRemoteMonitoringDiscount/100))}" style="width:83px" rendered="#{newquote.quotation.combinedrnamonitoring and (newquote.mRemoteMonitoringDiscount ne 0 ? true : false)}">
+						<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+					<h:outputText value="5 Year Service Agreement:" rendered="#{newquote.quotation.combinedrnamonitoring}"/>
+					<h:outputText value="#{newquote.alarmingnmonitoring5y}" style="width:83px" rendered="#{newquote.quotation.combinedrnamonitoring}">
+						<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+					<h:outputText value="#{newquote.alarmingnmonitoring5y - (newquote.alarmingnmonitoring5y * (newquote.mRemoteMonitoringDiscount/100))}" style="width:83px" rendered="#{newquote.quotation.combinedrnamonitoring and (newquote.mRemoteMonitoringDiscount ne 0 ? true : false)}">
+						<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+				</c:if>
+				
+				<h:outputText value="RECORDING ONLY SERVICE" style="font-weight:bold;text-align: left;" rendered="#{newquote.quotation.recordingonly}"/>
+				<h:outputText value="Original" style="font-weight:bold;text-align: left !important;"  rendered="#{newquote.quotation.recordingonly}"/>
+				<h:outputText value="Discounted" style="font-weight:bold;text-align: left !important;color:blue;" rendered="#{newquote.quotation.recordingonly and (newquote.mRemoteMonitoringDiscount ne 0 ? true : false)}"/>
+				<h:outputText value="1 Year Service Agreement:"  rendered="#{newquote.quotation.recordingonly}"/>
+				<h:outputText value="#{newquote.recording1y}"  rendered="#{newquote.quotation.recordingonly}">
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+				</h:outputText>
+				<h:outputText value="#{newquote.recording1y - (newquote.recording1y * (newquote.mRemoteMonitoringDiscount/100))}" rendered="#{newquote.quotation.recordingonly and (newquote.mRemoteMonitoringDiscount ne 0 ? true : false)}">
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+				</h:outputText>
+				<c:if test="#{userInfo.user.company.multiyear_options}">
+					<h:outputText value="3 Year Service Agreement:"  rendered="#{newquote.quotation.recordingonly}"/>
+					<h:outputText value="#{newquote.recording3y}"  rendered="#{newquote.quotation.recordingonly}">
+						<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+					<h:outputText value="#{newquote.recording3y - (newquote.recording3y * (newquote.mRemoteMonitoringDiscount/100))}" rendered="#{newquote.quotation.recordingonly and (newquote.mRemoteMonitoringDiscount ne 0 ? true : false)}">
+						<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+					<h:outputText value="5 Year Service Agreement:"  rendered="#{newquote.quotation.recordingonly}"/>
+					<h:outputText value="#{newquote.recording5y}"  rendered="#{newquote.quotation.recordingonly}">
+						<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+					<h:outputText value="#{newquote.recording5y - (newquote.recording5y * (newquote.mRemoteMonitoringDiscount/100))}" rendered="#{newquote.quotation.recordingonly and (newquote.mRemoteMonitoringDiscount ne 0 ? true : false)}">
+						<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>	
+				</c:if>
+				
+				<h:outputText value="NIST/NPL ON SITE RE-CALIBRATION AND MAINTENANCE SERVICE" style="font-weight:bold;text-align: left;" rendered="#{newquote.quotation.yearlyrecalibrationservice}"/>
+				<h:outputText value="" style="font-weight:bold;text-align: left !important;" rendered="#{newquote.quotation.yearlyrecalibrationservice}"/>
+				<h:outputText value="" style="font-weight:bold;text-align: left !important;" rendered="#{newquote.quotation.yearlyrecalibrationservice and (newquote.mRemoteMonitoringDiscount ne 0 ? true : false)}"/>
+				<h:outputText value="1 Year Service Agreement:" rendered="#{newquote.quotation.yearlyrecalibrationservice}"/>
+				<h:outputText value="#{newquote.annualnistcalibration1y}" rendered="#{newquote.quotation.yearlyrecalibrationservice}">
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+				</h:outputText>
+				<h:outputText value="-" rendered="#{newquote.quotation.yearlyrecalibrationservice and (newquote.mRemoteMonitoringDiscount ne 0 ? true : false)}"/>
+				<c:if test="#{userInfo.user.company.multiyear_options}">
+					<h:outputText value="3 Year Service Agreement:" rendered="#{newquote.quotation.yearlyrecalibrationservice}"/>
+					<h:outputText value="#{newquote.annualnistcalibration3y}" rendered="#{newquote.quotation.yearlyrecalibrationservice}">
+						<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+					<h:outputText value="-" rendered="#{newquote.quotation.yearlyrecalibrationservice and (newquote.mRemoteMonitoringDiscount ne 0 ? true : false)}"/>
+					<h:outputText value="5 Year Service Agreement:" rendered="#{newquote.quotation.yearlyrecalibrationservice}"/>
+					<h:outputText value="#{newquote.annualnistcalibration5y}" rendered="#{newquote.quotation.yearlyrecalibrationservice}">
+						<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+					<h:outputText value="-" rendered="#{newquote.quotation.yearlyrecalibrationservice and (newquote.mRemoteMonitoringDiscount ne 0 ? true : false)}"/>
+				</c:if>	
+				
+				<h:outputText value="REFRIGERATOR TEMPERATURE MAPPING SERVICE" style="font-weight:bold;text-align: left;" rendered="#{newquote.quotation.temperatureMapping}"/>
+				<h:outputText value="" rendered="#{newquote.quotation.temperatureMapping}"/>
+				<h:outputText value="" rendered="#{newquote.quotation.temperatureMapping and (newquote.mRemoteMonitoringDiscount ne 0 ? true : false)}"/>
+				<h:outputText value="1 Year Service Agreement:" rendered="#{newquote.quotation.temperatureMapping}"/>
+				<h:outputText value="#{newquote.temperaturemapping1y}" rendered="#{newquote.quotation.temperatureMapping}">
+					<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+				</h:outputText>
+				<h:outputText value="-" rendered="#{newquote.quotation.temperatureMapping and (newquote.mRemoteMonitoringDiscount ne 0 ? true : false)}"/>
+				<c:if test="#{userInfo.user.company.multiyear_options}">
+					<h:outputText value="3 Year Service Agreement:" rendered="#{newquote.quotation.temperatureMapping}"/>
+					<h:outputText value="#{newquote.temperaturemapping3y}" rendered="#{newquote.quotation.temperatureMapping}">
+						<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+					<h:outputText value="-" rendered="#{newquote.quotation.temperatureMapping and (newquote.mRemoteMonitoringDiscount ne 0 ? true : false)}"/>
+					<h:outputText value="5 Year Service Agreement:" rendered="#{newquote.quotation.temperatureMapping}"/>
+					<h:outputText value="#{newquote.temperaturemapping5y}" rendered="#{newquote.quotation.temperatureMapping}">
+						<f:convertNumber currencySymbol="#{newquote.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+					<h:outputText value="-" rendered="#{newquote.quotation.temperatureMapping and (newquote.mRemoteMonitoringDiscount ne 0 ? true : false)}"/>
+				</c:if>
+			</p:panelGrid> -->
+
+				</div>
+				<div id="SideContent">
+					<div class="quarter nobottommargin">
+						<ul id="verticalnavnoaction">
+							<li><p:commandLink action="#"
+									value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+							<li><p:commandLink action="#"
+									value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+							<li><p:commandLink action="#"
+									value="#{userInfo.user.company.companyName}" /></li>
+							<li><p:commandLink action="#"
+									value="Quote Ref. #{newquote.quotation.quotationref}" /></li>
+						</ul>
+						<ul id="secondnav">
+							<c:if
+								test="${newquote.quotation.numberofsites!=newquote.currentPageCounter+1}">
+								<li><p:commandLink action="#{newquote.selectPartsPageNext}"
+										value="Save and Proceed"
+										rendered="#{newquote.quotation.numberofsites!=newquote.currentPageCounter+1}" />
+									<!--<p:commandLink value="Review PDF" onstart= "pdfDownloadDialog.show();" rendered="#{newquote.quotation.numberofsites==newquote.currentPageCounter+1}"/></li>-->
+									<!-- <p:commandLink action="#{newquote.summariesPageNext}"  value="Create Covering Letter" rendered="#{newquote.quotation.numberofsites==newquote.currentPageCounter+1}"/></li>
+										<li><p:commandLink action="#{newquote.summariesPageBack}" value="Go Back" /> -->
+								</li>
+							</c:if>
+						</ul>
+						<c:if test="${newquote.selectedStandardPartsSummary.size() >0}">
+							<ul id="partsSummaryTab">
+								<li>
+									<h2 style="text-align: center; font-style: bold">EQUIPMENT
+										SELECTION</h2>
+									<div style="border: 2px solid; width: 220px">
+										<!-- scrollHeight="400" -->
+										<p:dataTable id="selectedParts" var="row"
+											value="#{newquote.selectedStandardPartsSummary}"
+											scrollable="true" style="width:220px"
+											rowStyleClass="#{row.partType eq 'ASSEMBLY' ? 'expired' : 'standard'}"
+											emptyMessage="No parts found with given criteria">
+											<!-- <c:if test="${row.quoteQuantity>0}"> -->
+											<p:column headerText="PART NUMBER">
+												<h:outputText value="#{row.partNumber}" />
+											</p:column>
+											<p:column headerText="QTY">
+												<p:inputText value="#{row.quoteQuantity}" style="width:31px">
+													<p:ajax event="change" />
+												</p:inputText>
+											</p:column>
+											<!-- </c:if> -->
+										</p:dataTable>
+									</div>
+									<br/>
+									<h:panelGrid columns="1" style="width:224px;border-style:solid;	border-width:2px; float: center;"
+									 rendered="#{newquote.quotation.numberofsites==newquote.currentPageCounter+1}">
+										<h:panelGrid columns="2">
+										<f:facet name="header">  
+							                    Enter Discounts Percentage  
+							            </f:facet>  
+										<h:outputText value="Hardware:" />
+										<p:spinner value="#{newquote.mHardwareDiscount}" suffix="%" min="0" max="20" stepFactor="1" size="5" converterMessage="Enter a valid discount."/>
+										<h:outputText value="Remote Monitoring:" />
+										<p:spinner value="#{newquote.mRemoteMonitoringDiscount}" suffix="%" min="0" max="20" stepFactor="1" size="5" converterMessage="Enter a valid discount."/>
+										<h:outputText value="Site Installation:" />
+										<p:spinner value="#{newquote.mSiteInstallationDiscount}" suffix="%" min="0" max="20" stepFactor="1" size="5" converterMessage="Enter a valid discount."/>
+										<h:outputText value="Service Options:" />
+										<p:spinner value="#{newquote.mServiceOptionsDiscount}" suffix="%" min="0" max="20" stepFactor="1" size="5" converterMessage="Enter a valid discount."/>
+										</h:panelGrid>
+									</h:panelGrid>
+								
+								</li>
+
+								<li><p:commandButton value="Refresh"
+										 styleClass="refreshBtn" action="#{newquote.tosummariesPage}"  />
+								</li>
+							</ul>
+						</c:if>
+					
+					</div>
+				</div>
+			</h:form>
+			
+			
+		</div>
+
+	</ui:define>
+</ui:composition>

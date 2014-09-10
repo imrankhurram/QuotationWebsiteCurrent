@@ -1,0 +1,105 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="MainTemplate.xhtml">
+
+
+	<ui:define name="contentPanel">
+		<div id="Wrapper">
+			<ui:include src="./snippets/MenuBars/MenuBarTemplatesSnippet.xhtml" />
+
+			<h:form id="letterTemplateFrm">
+				<script type="text/javascript">
+					function handleComplete(xhr, status, args) {
+						if (args) {
+							var isValid = args.isValid;
+							if (isValid) {
+								confirmDlg.show();
+							}
+						}
+					}
+					document.ready = function() {
+						letterTemplatesVar.clearFilters()
+					}
+				</script>
+				<div class="clear"></div>
+				<div class="threequarters">
+					<p:messages id="valMsg" />
+					<h3>
+						<b>Quote Cover Letters</b>
+					</h3>
+					<p:dataTable id="letterTemplates" var="template" scrollable="true"
+						scrollHeight="525" value="#{letterTemp.letterTemplates}"
+						selectionMode="single" widgetVar="letterTemplatesVar"
+						rowKey="#{template.templateId}"
+						selection="#{letterTemp.selectedLetterTemplate}"
+						rowStyleClass="standard"
+						filteredValue="#{letterTemp.filteredLetterTemplates}">
+						<p:ajax event="rowSelect"
+							listener="#{letterTemp.selectLetterTemp}" />
+						<p:column width="321" headerText="Cover Letter Name"
+							filterBy="#{template.templateName}">
+							<h:outputText value="#{template.templateName}" />
+						</p:column>
+
+						<p:column width="321" headerText="User Name"
+							filterBy="#{template.userName}">
+							<h:outputText value="#{template.userName}" />
+						</p:column>
+
+						<!-- <p:column width="125" headerText="View" exportable="false">
+							<p:commandButton id="selectButton" ajax="true"
+								icon="ui-icon-search" title="View"/>
+							<p:overlayPanel appendToBody="true" for="selectButton" showEvent="click" styleClass="templateViewPanel"
+								hideEvent="click" >
+								<h:outputText escape="false" value="#{template.body}" />
+							</p:overlayPanel>
+							<p:tooltip for="selectButton" showEvent="click" styleClass="templateViewPanel">
+								<h:outputText escape="false" value="#{template.body}" />
+							</p:tooltip>
+
+
+						</p:column> -->
+					</p:dataTable>
+				</div>
+
+
+				<div id="SideContent">
+					<div class="quarter nobottommargin">
+						<ul id="verticalnavnoaction">
+							<li><p:commandLink action="#"
+									value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+							<li><p:commandLink action="#"
+									value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+							<li><p:commandLink action="#"
+									value="#{userInfo.user.company.companyName}" /></li>
+						</ul>
+						<ul id="secondnav">
+							<li><p:commandLink value="NEW COVER LETTER"
+									action="#{letterTemp.addNewLetterFormatPreProcess}" /></li>
+							<li><p:commandLink value="MODIFY COVER LETTER"
+									action="#{letterTemp.modLetterFormatPreProcess}" /></li>
+							<li><p:commandLink value="DELETE COVER LETTER"
+									actionListener="#{letterTemp.delLetterFormatPreProcess}"
+									oncomplete="handleComplete(xhr, status, args)" /></li>
+						</ul>
+					</div>
+				</div>
+			</h:form>
+		</div>
+	
+		<p:confirmDialog widgetVar="confirmDlg" appendToBody="true"
+			header="Initiating delete process" severity="alert"
+			message="Are you sure want to delete the selected template?">
+			<h:form>
+				<p:commandButton value="Yes Sure"
+					actionListener="#{letterTemp.deleteLetterTemplate}"
+					oncomplete="confirmDlg.hide()" update=":letterTemplateFrm" />
+				<p:commandButton value="Not Yet" onclick="confirmDlg.hide()" />
+			</h:form>
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition>

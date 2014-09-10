@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+template="MainTemplate.xhtml">
+
+
+<ui:define name="contentPanel">
+
+<div id="Wrapper">
+
+	<ui:include src="./snippets/MenuBars/MenuBarAdminSnippet.xhtml"/>
+<h:form id="frmusersPage" >
+<script type="text/javascript">  
+		document.ready = function() {
+        Tb.clearFilters()
+ 	 }
+	</script>
+	<div class="clear"></div>
+	<div class="threequarters">
+			<h3><b>List of Users</b></h3>
+			<p:dataTable id="tbUsersList" var="row" value="#{users.userList}" rowStyleClass="standard" scrollable="true" scrollHeight="525" widgetVar="Tb"
+			     selection="#{users.selectedUser}" rowKey="#{row.username}" selectionMode="single" filteredValue="#{users.filteredUserList}">
+			
+				   
+				<p:column  width="185" sortBy="#{row.username}" filterBy="#{row.username}">
+    				<f:facet name="header">
+      					<h:outputText value="Username"/>
+    				</f:facet>
+    				<h:outputText value="#{row.username}" />
+  				</p:column>
+  				<p:column width="95">
+    				<f:facet name="header">
+      					<h:outputText value="First Name"/>
+    				</f:facet>
+    				<h:outputText value="#{row.firstName}" />
+  				</p:column>
+  				<p:column width="91">
+    				<f:facet name="header">
+      					<h:outputText value="Surname"/>
+    				</f:facet>
+    				<h:outputText value="#{row.lastName}" />
+  				</p:column>
+  				<p:column width="70">
+    				<f:facet name="header">
+      					<h:outputText value="Company"/>
+    				</f:facet>
+    				<h:outputText value="#{row.company.companyName}" />
+  				</p:column>
+				<p:column width="53">
+    				<f:facet name="header">
+      					<h:outputText value="User Type"/>
+    				</f:facet>
+    				<h:outputText value="#{row.usertype}" />
+  				</p:column>
+  				<p:column width="38">
+    				<f:facet name="header">
+      					<h:outputText value="User Discount Limit"/>
+    				</f:facet>
+    				<h:outputText value="#{row.maxalloweddiscount}%" />
+  				</p:column>
+  				<p:column width="22">
+    				<f:facet name="header">
+      					<h:outputText value=""/>
+    				</f:facet>
+    				<h:selectBooleanCheckbox id="userStatus" value="#{row.boolEnabled}" disabled="true"/>
+  				</p:column>
+  				<f:facet name="footer"></f:facet>
+		</p:dataTable>	  
+	</div>
+	
+	             
+	<div id="SideContent">
+		<div class="quarter nobottommargin">			
+			<ul id="verticalnavnoaction">
+				<li><p:commandLink action="#" value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.company.companyName}" /></li>			
+			</ul>
+			<ul id="secondnav">
+				<li><p:commandLink action="#{adminmenubar.actionAddNewUserPage}"  value="Add User" /></li>
+				<li><p:commandLink action="#{adminmenubar.actionModifyUserPage}" value="Modify User" /></li>
+				<li><p:commandLink onclick="confirmation.show()" value="Delete User" /></li>
+			</ul>
+		</div>
+	</div>
+	 </h:form>  
+	
+	<p:confirmDialog id="confirmDialog" message="Are you sure want to delete the selected row?"  
+                header="Initiating delete process" severity="alert" widgetVar="confirmation" appendToBody="true">  
+            <h:form>
+            <p:commandButton   id="confirm" value="Yes Sure" oncomplete="confirmation.hide()"  
+                    action="#{users.deleteUser}" />  
+        	<p:commandButton   id="decline" value="Not Yet" onclick="confirmation.hide()" type="button" />   
+        	</h:form>
+       </p:confirmDialog>
+</div>
+</ui:define>
+</ui:composition>

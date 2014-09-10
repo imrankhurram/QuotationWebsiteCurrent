@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+template="MainTemplate.xhtml">
+
+
+<ui:define name="contentPanel">
+
+
+<div id="Wrapper">
+
+	<ui:include src="./snippets/MenuBars/MenuBarAdminSnippet.xhtml"/>
+	<h:form id="frmmodifyCompanyPage" prependId="false">
+	<div class="clear"></div>
+	<!--  <div class="quarternhalf">-->
+	<div id="addmodify" style="border-style:solid;	border-width:5px;float: left;width: 500px;margin: 0 100px 20px;">
+			<h3><b>Modify Company Details</b></h3>	
+			<p:panelGrid id="panel" columns="3" columnClasses="basicStyle, rightStyle">
+				<h:outputText value="Company Name*: " />  
+            	<p:inputText id="companyname" value="#{companies.selectedCompany.companyName}" style="width:200px" required="true" requiredMessage="Company Name is required"/> 
+                <p:message for="companyname" display="icon"/>  
+            
+            	<h:outputText value="Company Reference " />  
+            	<p:inputText id="companyref" value="#{companies.selectedCompany.companyRef}" style="width:200px" required="true" requiredMessage="Company Reference is required"/> 
+                <p:message for="companyref" display="icon"/>
+                
+				<h:outputText value="Country*: "/>
+			    <p:selectOneMenu id="country" value="#{companies.selectedCompany.country.country}"  editable="true" style="width:208px; text-align: left;" required="true" requiredMessage="Select a country.">  
+                	<f:selectItems value="#{companies.countries}" />  
+            	</p:selectOneMenu>
+			    <p:message for="country" display="icon"/>
+        		
+        		<h:outputText value="Markup*: "/>
+			    <p:spinner id="markup" value="#{companies.selectedCompany.markup}" min="3.3" max="50" stepFactor="0.25" size="26" converterMessage="Enter a valid Markup."/>
+			    <p:message for="markup" display="icon"/>
+			    
+			    <h:outputText value="Hardware Discount*: "/>
+			    <p:spinner id="hwdiscount" value="#{companies.selectedCompany.hwdiscount}" suffix="%" min="0" max="50" stepFactor="0.25" size="26" converterMessage="Enter a valid DiscountPercentage."/>
+			    <p:message for="hwdiscount" display="icon"/>
+				
+				<h:outputText value="Monitoring Discount*: "/>
+			    <p:spinner id="monitoringdiscount" value="#{companies.selectedCompany.monitoringdiscount}" suffix="%" min="0" max="50" stepFactor="0.25" size="26" converterMessage="Enter a valid DiscountPercentage."/>
+			    <p:message for="monitoringdiscount" display="icon"/>
+			    
+			    <h:outputText value="Show Multiyear Options: "/>   
+			    <h:selectBooleanCheckbox id="multiyearOptions" value="#{companies.selectedCompany.multiyear_options}"/>
+        	</p:panelGrid>
+	</div>
+	
+	<div id="SideContent">
+		<div class="quarter nobottommargin">
+			<ul id="verticalnavnoaction">
+				<li><p:commandLink action="#" value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.company.companyName}" /></li>
+			</ul>	
+			<ul id="secondnav">
+				<li><p:commandLink action="#{companies.modifyCompany}" update="panel" value="Update" /></li>
+				<li><p:commandLink action="CompaniesPage.xhtml?faces-redirect=true" immediate="true" value="Cancel" /></li>
+			</ul>
+		</div>
+	</div>
+	</h:form>
+	
+</div>
+
+
+
+</ui:define>
+</ui:composition>

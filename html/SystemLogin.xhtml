@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+template="LoginTemplate.xhtml">
+
+
+<ui:define name="contentPanel">
+
+
+<div id="Wrapper">
+<center>
+	<ui:include src="./snippets/MenuBars/MenuBarLoginSnippet.xhtml"/>
+	<h:form id="frmloginPage" prependId="false">
+	<div class="clear"></div>
+	<div id="addmodify">
+	<br/><br/><br/>
+		<h:outputText value="Wrong username and/or password" style="color:red;font-weight:bold;" rendered="#{userInfo.wrongDetails==true}"/>
+	<br/><br/>
+	<p:panel  styleClass="ui-custompanel" style="width:310px;">
+	<p:panelGrid id="paneluserloginoptions"  columns="2" styleClass="ui-custompanelgrid" columnClasses="basicStyle, rightStyle" style="width:295px;">
+		<h:outputLabel value="Username" for="username" style="font-size: 12px;font-family:Arial;width: 50px;"/>
+		<p:inputText value="#{userInfo.user.username}" id="username" size="28" required="true" requiredMessage="You must provide password"/>
+		<h:outputLabel value="Password" for="password" style="font-size: 12px;font-family:Arial;width: 50px;"/>
+		<p:password value="#{userInfo.user.password}" id="password" feedback="false" required="true" requiredMessage="You must provide password" size="28" />
+		<h:outputLabel value=""/>
+		<h:commandButton action="#{userInfo.processLogin}" type="image" image="./images/button_login.png"/>
+		<h:outputLabel value=""/>
+		<p:commandLink value="Problems Logging On?" action="ResetPasswordPage?faces-redirect=true" immediate="true"  style="color:#000000;font-size: 12px;font-family:Arial;text-decoration:none;"/>
+	</p:panelGrid>
+	</p:panel>
+	<p:focus for="username"/> 
+	<br/><br /><br /><br/><br/><br/><br/><br/>
+		<div id="copytext" style="font-size: 12px;font-family:Arial;">
+			Copyright 2011 Next Control Systems Ltd All rights reserved,Version 2.1.1.0 Released 01/06/2011
+		</div>
+	</div>
+	</h:form>
+	</center>
+	
+	<p:confirmDialog header="Oooops!!!" severity="alert" 
+                         visible="#{not empty param['expired']}" 
+                         message="Session has expired. Please login again" widgetVar="confirmDlg">
+            <p:commandButton type="button" value="OK" onclick="confirmDlg.hide()" />
+    </p:confirmDialog>
+</div>
+
+		
+        
+</ui:define>
+</ui:composition>

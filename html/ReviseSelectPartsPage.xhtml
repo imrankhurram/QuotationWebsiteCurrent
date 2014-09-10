@@ -1,0 +1,186 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+template="MainTemplate.xhtml">
+
+
+<ui:define name="contentPanel">
+
+
+<div id="Wrapper">
+<SCRIPT type="text/javascript">
+function autoSaveTimer(){
+	document.getElementById('txt_saving').style.display = 'block';
+	 var interval = setTimeout(function() {
+		 var newQuotePageNextLink=document.getElementById('toSummariesPage');
+		 //newQuotePageNextLink.trigger('click');
+		 newQuotePageNextLink.click();
+	      }, 1000);
+
+	return true;
+}
+function autoSaveTimerHome(){
+	document.getElementById('txt_saving').style.display = 'block';
+	 var interval = setTimeout(function() {
+		 var newQuotePageNextLink=document.getElementById('actionHomePartsPage');
+		 //newQuotePageNextLink.trigger('click');
+		 newQuotePageNextLink.click();
+	      }, 1000);
+
+	return true;
+}
+</SCRIPT>
+	
+	<ui:include src="./snippets/DlgPDFDownloadSnippet.xhtml"/>
+	
+	<h:form id="frmrevisedselectpartsPage" prependId="false">
+	<ui:include src="./snippets/MenuBars/MenuBarReviseSelectPartsSnippet.xhtml"/>
+	<div class="clear"></div>
+	<h:outputText id="txt_saving" value="Auto Saving..." rendered="true" style="display:none;margin-top:-20px;margin-left:20px;position:absolute;"/>
+	<div class="threequarters">
+	<center>
+	   <h:panelGrid columns="2" rendered="#{revisedquotation.quotation.individualquotepersite}">  
+	   		<h:outputText value="Site Name: " />  
+            <p:inputText value="#{revisedquotation.tempSiteName}" />
+		</h:panelGrid>  
+    </center>	
+			<h3><b>Standard Parts</b></h3>
+			
+			<p:dataTable id="parts" var="partvar" value="#{revisedquotation.tempStParts}" scrollable="true" scrollHeight="525"
+			    rowStyleClass="#{partvar.partType eq 'ASSEMBLY' ? 'expired' : 'standard'}"   emptyMessage="No parts found with given criteria"  >
+				<p:column headerText="Part no." width="127" >  
+            		<h:outputText id="pPartNumberSel" value="#{partvar.partNumber}" rendered="#{partvar.partType!='NonStandard Part'}">
+            			<p:tooltip for="pPartNumberSel" value = "#{partvar.pricecategory}"/>      
+            		</h:outputText>
+            		<p:inputText  value="#{partvar.partNumber}" rendered="#{partvar.partType eq 'NonStandard Part'}" style="width:111px">
+            		</p:inputText>
+            		
+        		</p:column>
+        		<p:column headerText="Description" width="251" >  
+            		<h:outputText id="pDescription" value="#{partvar.truncatedpartDescriptionnewquotation}" rendered="#{partvar.partType!='NonStandard Part'}">
+            			<p:tooltip for="pDescription" value = "#{partvar.partDescription}" rendered="#{partvar.partType!='NonStandard Part'}"/>    
+            		</h:outputText>
+            		<p:inputText id="pDescription2" value="#{partvar.partDescription}" rendered="#{partvar.partType eq 'NonStandard Part'}" style="width:211px">
+            		</p:inputText>
+            	</p:column>
+        		<p:column headerText="Unit Cost" width="75" >  
+            		<h:outputText value="#{partvar.listPrice}" rendered="#{partvar.partType!='NonStandard Part'}">
+            		   <f:convertNumber currencySymbol="#{revisedquotation.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+            		</h:outputText> 
+            		<p:inputText value="#{partvar.listPrice}" rendered="#{partvar.partType eq 'NonStandard Part'}" style="width:65px">
+            			 <p:ajax event="change" update="total" /> 
+            		</p:inputText> 
+        		</p:column>  
+        		<p:column headerText="Quantity" width="50" >  
+            		<p:inputText value="#{partvar.quoteQuantity}" style="width:31px">
+            		   <!-- <p:ajax event="change" update="total,:frmrevisedselectpartsPage:installationTime" /> -->
+            		   <c:choose>
+	            		   <c:when test="${revisedquotation.quotation.onsitesensorcalibration}">
+	            		   		<p:ajax event="change" update="total,:frmrevisedselectpartsPage:installationTime, :frmrevisedselectpartsPage:calibrationTime, :frmrevisedselectpartsPage:nistCalibration" />
+	            		   </c:when>
+	            		   <c:otherwise>
+	            		     	<p:ajax event="change" update="total,:frmrevisedselectpartsPage:installationTime, :frmrevisedselectpartsPage:nistCalibration" />
+	            		   </c:otherwise>
+            			</c:choose>  
+            		</p:inputText>  
+        		</p:column>
+        		<p:column  headerText="Total" width="75" >  
+        			<h:outputText id="total" value="#{partvar.quoteQuantity * partvar.listPrice}" >
+            		   <f:convertNumber currencySymbol="#{revisedquotation.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+            		</h:outputText>  
+        		</p:column>  
+        	</p:dataTable>
+	</div>
+			
+
+	<div id="SideContent">
+		<div class="quarter nobottommargin">			
+			<ul id="verticalnavnoaction">
+				<li><p:commandLink action="#" value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.company.companyName}" /></li>
+				<li><p:commandLink action="#" value="Quote Ref. #{revisedquotation.quotation.quotationref}" style="height:100%"/></li>
+			</ul>
+			<ul id="secondnav">
+				<li><p:commandLink action="#{revisedquotation.addNonStandardParts}"  value="Add Non Standard Parts" /></li>
+				<c:if test="${revisedquotation.quotation.numberofsites!=revisedquotation.currentPageCounter+1}">
+					<li><p:commandLink action="#{revisedquotation.selectPartsPageNext}"  value="Save and Proceed" rendered="#{revisedquotation.quotation.numberofsites!=revisedquotation.currentPageCounter+1}"/>
+					<!--<p:commandLink value="Review PDF" onstart= "pdfDownloadDialog.show();" rendered="#{revisedquotation.quotation.numberofsites==revisedquotation.currentPageCounter+1}"/></li>-->
+					<!-- <p:commandLink action="#{revisedquotation.tosummariesPage}"  value="Review Quotes" rendered="#{revisedquotation.quotation.numberofsites==revisedquotation.currentPageCounter+1}"/></li>
+					<li><p:commandLink action="#{revisedquotation.selectPartsPageBack}" value="Go Back" /> -->
+					</li>
+				</c:if>
+			</ul>
+		</div>
+		<div class="quarterminus25">
+		<h:panelGrid columns="1" style="width:222px;border-style:solid;	border-width:2px; float: center;" id="infoTable">  
+			<h:panelGrid columns="2">
+			<f:facet name="header">  
+                    Enter Number of Days  
+            </f:facet>  
+    		<h:outputText value="Site Installation:"/>
+    		<!-- <p:spinner id="installationTime" value="#{revisedquotation.tempSiteInstallation}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value."/> -->
+			<p:inputText id="installationTime" value="#{revisedquotation.tempSiteInstallation}" style="width:83px"/>
+			<h:outputText value="Installation Travel:"/>
+			<p:inputText value="#{revisedquotation.tempInstallationTravel}" style="width:83px"/>
+			<c:if test="${revisedquotation.quotation.onsitesensorcalibration}">
+			<h:outputText value="Site Calibration:"/>
+			<p:inputText  id="calibrationTime" value="#{revisedquotation.tempSiteCalibration}" style="width:83px"/>
+			<h:outputText value="Calibration Travel:"/>
+			<p:inputText value="#{revisedquotation.tempCalibartionTravel}" style="width:83px"/>
+			</c:if>
+			</h:panelGrid>
+			<h:panelGrid columns="2">
+			<f:facet name="header">  
+                   Annual Rates
+            </f:facet>  
+    		<h:outputText value="NIST Calibration :" />
+			<p:inputText id="nistCalibration" value="#{revisedquotation.tempAnnualSiteCalibration}" style="width:83px"/>
+			<h:outputText value="Travel Days:" />
+			<p:inputText value="#{revisedquotation.tempAnnualDeadTravelDays}" style="width:83px"/>
+			</h:panelGrid>
+			
+			<h:panelGrid columns="2" rendered="#{revisedquotation.quotation.updateInstallation}">
+			<f:facet name="header">  
+                    Existing cost per point  
+            </f:facet>  
+			<h:outputText value="Remote monitoring:" />
+			<p:spinner value="#{revisedquotation.tempRemoteMonitoring}"  prefix="#{revisedquotation.currency}" stepFactor="1" size="5" converterMessage="Enter a valid value."/>
+			<h:outputText value="Annual calibration:" />
+			<p:spinner value="#{revisedquotation.tempAnnualCalibration}" prefix="#{revisedquotation.currency}" min="0" stepFactor="1" size="5" converterMessage="Enter a valid value."/>
+			
+			</h:panelGrid>
+			
+			
+			<!-- <h:panelGrid columns="2" rendered="#{revisedquotation.quotation.numberofsites==revisedquotation.currentPageCounter+1}">
+			<f:facet name="header">  
+                    Enter Discounts Percentage  
+            </f:facet>  
+			<h:outputText value="Hardware:" />
+			<p:spinner value="#{revisedquotation.mHardwareDiscount}" suffix="%" min="0" max="20" stepFactor="1" size="5" converterMessage="Enter a valid discount."/>
+			<h:outputText value="Remote Monitoring:" />
+			<p:spinner value="#{revisedquotation.mRemoteMonitoringDiscount}" suffix="%" min="0" max="20" stepFactor="1" size="5" converterMessage="Enter a valid discount."/>
+			<h:outputText value="Site Installation:" />
+			<p:spinner value="#{revisedquotation.mSiteInstallationDiscount}" suffix="%" min="0" max="20" stepFactor="1" size="5" converterMessage="Enter a valid discount."/>
+			<h:outputText value="Service Options:" />
+			<p:spinner value="#{revisedquotation.mServiceOptionsDiscount}" suffix="%" min="0" max="20" stepFactor="1" size="5" converterMessage="Enter a valid discount."/>
+			</h:panelGrid> -->
+		</h:panelGrid>
+	</div>
+	</div>
+	</h:form>
+	<p:confirmDialog id="confirmDialog" message="Under Construction?"  
+                header="Review Quote PDF" severity="alert" widgetVar="confirmation" appendToBody="true">  
+            <h:form>
+               	<p:commandButton   id="decline" value="OK" onclick="confirmation.hide()" type="button" />   
+        	</h:form>
+       </p:confirmDialog>
+</div>
+
+
+
+</ui:define>
+</ui:composition>

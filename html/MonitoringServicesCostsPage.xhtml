@@ -1,0 +1,181 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+template="MainTemplate.xhtml">
+
+
+<ui:define name="contentPanel">
+
+<div id="Wrapper">
+
+	<ui:include src="./snippets/MenuBars/MenuBarAdminSnippet.xhtml"/>
+	<h:form id="frmmonitoringsPage" >
+	<div class="clear"></div>
+	<div class="threequarters">
+			<p:dataTable id="servicescosts" var="row" value="#{monitoringservices.selectedremotemonitoringService.monitoringCostsList}" rowKey="#{row.id}" 
+			 rowStyleClass="standard" scrollable="true" scrollHeight="525" selectionMode="single" >
+				<p:column width="70" >  
+					<f:facet name="header">
+      					<h:outputText value="No. of Sensors"/>
+    				</f:facet>
+                    	<h:outputText value="#{row.numberofSensors}" />  
+            	</p:column>  
+  				            
+        		<p:column id="OnyYearlyCostsCol" headerText="One Year" width="102" >  
+        			<!--  <h:outputText value="#{monitoringservices.selectedremotemonitoringService.currency}" rendered="#{monitoringservices.option eq 1 ? true : false}"/>
+            		<p:inputText id="OnyYearlyCosts" value="#{row.oneYearlyCosts}" style="width:51px" rendered="#{monitoringservices.option eq 1 ? true : false}"/> 
+            		
+            		<h:outputText value="#{row.oneYearlyCosts*monitoringservices.selectedremotemonitoringService.factor2}" rendered="#{monitoringservices.option eq 2 ? true : false}">
+                    	<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+                    </h:outputText>-->   
+                    <h:outputText value="#{monitoringservices.selectedremotemonitoringService.currency}" rendered="#{(monitoringservices.option eq 1 ? true : false) and ((row.numberofSensors eq 8 ? true : false) or (row.numberofSensors eq 1 ? true : false))}"/>
+            		<p:inputText id="OnyYearlyCosts" value="#{row.oneYearlyCosts}" style="width:51px" rendered="#{(monitoringservices.option eq 1 ? true : false) and ((row.numberofSensors eq 8 ? true : false) or (row.numberofSensors eq 1 ? true : false))}"/> 
+            		
+            		<h:outputText value="#{row.oneYearlyCosts}" rendered="#{(monitoringservices.option eq 1 ? true : false) and (row.numberofSensors ne 8 ? true : false) and (row.numberofSensors ne 1 ? true : false)}">
+                    	<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+                    </h:outputText>
+            		<h:outputText value="#{row.oneYearlyCosts*monitoringservices.selectedremotemonitoringService.factor2}" rendered="#{monitoringservices.option eq 2 ? true : false}">
+                    	<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+                    </h:outputText>
+          		</p:column>
+          		
+          		<p:column width="65">  
+        			<f:facet name="header">
+      					<h:outputText value="One Month"/>
+    				</f:facet>
+                    	<h:outputText value="#{row.oneYearlyCosts/12}" rendered="#{monitoringservices.option eq 1 ? true : false}">
+                    		<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+                    	</h:outputText>
+                    	<h:outputText value="#{row.oneYearlyCosts*monitoringservices.selectedremotemonitoringService.factor2/12}" rendered="#{monitoringservices.option eq 2 ? true : false}">
+                    		<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+                    	</h:outputText>  
+          		</p:column>
+          		
+          		<p:column width="85">  
+        			<f:facet name="header">
+      					<h:outputText value="Three Year"/>
+    				</f:facet>
+                    	<h:outputText value="#{row.oneYearlyCosts - (row.oneYearlyCosts*monitoringservices.selectedremotemonitoringService.threeyeardisc/100)}" rendered="#{monitoringservices.option eq 1 ? true : false}">
+                    		<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+                    	</h:outputText>
+                    	<h:outputText value="#{(row.oneYearlyCosts*monitoringservices.selectedremotemonitoringService.factor2) - (row.oneYearlyCosts*monitoringservices.selectedremotemonitoringService.threeyeardisc/100)}" rendered="#{monitoringservices.option eq 2 ? true : false}">
+                    		<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+                    	</h:outputText>  
+          		</p:column>
+          		
+          		<p:column width="65">  
+        			<f:facet name="header">
+      					<h:outputText value="One Month"/>
+    				</f:facet>
+                    	<h:outputText value="#{(row.oneYearlyCosts - (row.oneYearlyCosts*monitoringservices.selectedremotemonitoringService.threeyeardisc/100))/12}" rendered="#{monitoringservices.option eq 1 ? true : false}">
+                    	<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+                    	</h:outputText>
+                    	<h:outputText value="#{(row.oneYearlyCosts*monitoringservices.selectedremotemonitoringService.factor2 - (row.oneYearlyCosts*monitoringservices.selectedremotemonitoringService.threeyeardisc/100))/12}" rendered="#{monitoringservices.option eq 2 ? true : false}">
+                    	<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+                    	</h:outputText>  
+          		</p:column>
+          		
+          		<p:column width="85">  
+        			<f:facet name="header">
+      					<h:outputText value="Five Year"/>
+    				</f:facet>
+                    	<h:outputText value="#{row.oneYearlyCosts - (row.oneYearlyCosts*monitoringservices.selectedremotemonitoringService.fiveyeardisc/100)}" rendered="#{monitoringservices.option eq 1 ? true : false}">
+                    	<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+                    	</h:outputText>
+                    	<h:outputText value="#{row.oneYearlyCosts*monitoringservices.selectedremotemonitoringService.factor2 - (row.oneYearlyCosts*monitoringservices.selectedremotemonitoringService.fiveyeardisc/100)}" rendered="#{monitoringservices.option eq 2 ? true : false}">
+                    	<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+                    	</h:outputText>  
+          		</p:column>
+          		<p:column width="65">  
+        			<f:facet name="header">
+      					<h:outputText value="One Month"/>
+    				</f:facet>
+                    	<h:outputText value="#{(row.oneYearlyCosts - (row.oneYearlyCosts*monitoringservices.selectedremotemonitoringService.fiveyeardisc/100))/12}" rendered="#{monitoringservices.option eq 1 ? true : false}">
+                    	<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+                    	</h:outputText>
+                    	<h:outputText value="#{(row.oneYearlyCosts*monitoringservices.selectedremotemonitoringService.factor2 - (row.oneYearlyCosts*monitoringservices.selectedremotemonitoringService.fiveyeardisc/100))/12}" rendered="#{monitoringservices.option eq 2 ? true : false}">
+                    	<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+                    	</h:outputText>  
+          		</p:column>
+          	</p:dataTable>
+  </div>
+	
+	             
+	<div id="SideContent">
+		<div class="quarter nobottommargin">
+			<ul id="verticalnavnoaction">
+				<li><p:commandLink action="#" value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.company.companyName}" /></li>			
+			</ul>			
+			<ul id="secondnav">
+				<li><p:commandLink action="#{monitoringservices.saveCosts}" value="Save Changes" /></li>
+				<li><p:commandLink action="MonitoringServicesPage?faces-redirect=true" value="Cancel" /></li>
+			</ul>
+		</div>
+	</div>
+	<div class="quarterminus25">		
+	 		<h:panelGrid columns="1" >  
+			<p:selectOneRadio id="options" layout="pageDirection" value="#{monitoringservices.option}" onchange="submit()">
+        	    <f:selectItem itemLabel="Monitoring and Recording" itemValue="1" />
+            	<f:selectItem itemLabel="Recording Only" itemValue="2" />
+            	<p:ajax process="@this,options"  update="servicescosts"/>
+        	</p:selectOneRadio>
+            </h:panelGrid>
+			<h:panelGrid id="grid" columns="1" style="width:222px;border-style:solid;	border-width:2px; float: center;">  
+				<h:panelGrid columns="2">  
+				<h:outputLabel for="numberofsensor" value="Sensors: " style="width:120px"/>  
+				<p:inputText id="numberofsensor" value="#{monitoringservices.numberOfSensor}" style="width:100px" required="true" requiredMessage="Required"/>
+        		<h:outputLabel for="salesdiscount" value="Sales Discount: " style="width:120px"/>  
+				<p:spinner id="salesdiscount" value="#{monitoringservices.salesDiscount}" min="0" max="100" size="9" suffix="%"  />
+        		<p:commandButton value="Lookup" id="lookup" process="@this,numberofsensor,salesdiscount" update="grid" actionListener="#{monitoringservices.lookupTable}"/>    
+        		</h:panelGrid>
+        		<h:panelGrid columns="6" style="width:210px;border-style:solid;	border-width:1px; text-align: center;">  
+        			<f:facet name="header">
+        			  	<h:outputText value="Monitoring and Recording" />
+                    </f:facet>  
+					<h:outputLabel for="oneyear" value="1Y : " />  
+					<h:outputText id="oneyear" value="#{monitoringservices.oneYearOption-(monitoringservices.oneYearOption*monitoringservices.salesDiscount/100)}"  >
+						<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+					<h:outputLabel for="threeyear" value="3Y : " />  
+					<h:outputText id="threeyear" value="#{(monitoringservices.oneYearOption - (monitoringservices.oneYearOption*monitoringservices.selectedremotemonitoringService.threeyeardisc/100))-(monitoringservices.oneYearOption - (monitoringservices.oneYearOption*monitoringservices.selectedremotemonitoringService.threeyeardisc/100))*monitoringservices.salesDiscount/100}"  >
+						<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+					<h:outputLabel for="fiveyear" value="5Y : " />  
+					<h:outputText id="fiveyear" value="#{(monitoringservices.oneYearOption- (monitoringservices.oneYearOption*monitoringservices.selectedremotemonitoringService.fiveyeardisc/100))-(monitoringservices.oneYearOption- (monitoringservices.oneYearOption*monitoringservices.selectedremotemonitoringService.fiveyeardisc/100))*monitoringservices.salesDiscount/100}" >
+						<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+				</h:panelGrid>	
+				<h:panelGrid columns="6" style="width:210px;border-style:solid;	border-width:1px; text-align: center;">  
+					<f:facet name="header">
+        			  	<h:outputText value="Recording Only" />
+                    </f:facet> 
+					<h:outputLabel for="oneyear2" value="1Y : " />  
+					<h:outputText id="oneyear2" value="#{(monitoringservices.oneYearOption*monitoringservices.selectedremotemonitoringService.factor2)
+					-monitoringservices.oneYearOption*monitoringservices.selectedremotemonitoringService.factor2*monitoringservices.salesDiscount/100}"  >
+						<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+					<h:outputLabel for="threeyear2" value="3Y : " />  
+					<h:outputText id="threeyear2" value="#{(monitoringservices.oneYearOption*monitoringservices.selectedremotemonitoringService.factor2) - (monitoringservices.oneYearOption*monitoringservices.selectedremotemonitoringService.threeyeardisc/100)-((monitoringservices.oneYearOption*monitoringservices.selectedremotemonitoringService.factor2) - (monitoringservices.oneYearOption*monitoringservices.selectedremotemonitoringService.threeyeardisc/100))*monitoringservices.salesDiscount/100}"  >
+						<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+					<h:outputLabel for="fiveyear2" value="5Y : " />  
+					<h:outputText id="fiveyear2" value="#{(monitoringservices.oneYearOption*monitoringservices.selectedremotemonitoringService.factor2 - (monitoringservices.oneYearOption*monitoringservices.selectedremotemonitoringService.fiveyeardisc/100))-(monitoringservices.oneYearOption*monitoringservices.selectedremotemonitoringService.factor2 - (monitoringservices.oneYearOption*monitoringservices.selectedremotemonitoringService.fiveyeardisc/100))*monitoringservices.salesDiscount/100}" >
+						<f:convertNumber currencySymbol="#{monitoringservices.selectedremotemonitoringService.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
+					</h:outputText>
+        		</h:panelGrid>
+        	</h:panelGrid>
+     </div>
+	 </h:form>  
+	 
+
+</div>
+
+
+
+</ui:define>
+</ui:composition>

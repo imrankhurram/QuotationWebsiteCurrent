@@ -1,0 +1,246 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="MainTemplate.xhtml">
+
+
+	<ui:define name="contentPanel">
+
+		<div id="Wrapper">
+ 
+			<ui:include src="./snippets/MenuBars/MenuBarMainSnippet.xhtml" />
+			<ui:include src="./snippets/DlgViewPDFDownloadSnippet.xhtml" />
+			<p:ajaxStatus style="width:20px;height:20px;text-align:right;" id="ajaxStatusPanel">
+				<f:facet name="start">
+					<h:graphicImage value="./images/ajaxloading.gif"/>
+				</f:facet>
+				
+				<f:facet name="complete">
+					<h:outputText value=""/>
+				</f:facet>
+			</p:ajaxStatus>
+			<h:form id="frmquotationPage">
+				<script type="text/javascript">
+					document.ready = function() {
+						Tb.clearFilters()
+					}
+				</script>
+				<div class="clear"></div>
+				<div class="threequarters">
+
+					<p:messages id="valMsg" />
+					<h3>
+						<c:choose>
+							<c:when test="${quotations.showCompletedQuotations}">
+								<b>Completed Quotations</b>
+							</c:when>
+							<c:otherwise>
+								<b>Incomplete Quotations</b>
+							</c:otherwise>
+						</c:choose>
+
+					</h3>
+					<!-- rowStyleClass="#{row.accepted eq 'true'? 'standard' : 'expired'}"-->
+					<p:dataTable widgetVar="Tb" id="tbQuotationsList" var="row"
+						value="#{quotations.quotationsList}" rowKey="#{row.id}"
+						scrollable="true" scrollHeight="525" 
+						emptyMessage="Change From/To values to see some data."
+						rowStyleClass="standard" selectionMode="single"
+						filteredValue="#{quotations.filteredquotationsList}"
+						selection="#{quotations.selectedQuotation}"
+						resizableColumns="true">
+
+						<p:column width="100" filterBy="#{row.quotationref}">
+							<f:facet name="header">
+								<h:outputText value="Quotation Ref" />
+							</f:facet>
+							<h:outputText id="quoteref" value="#{row.quotationref}" >
+								<p:tooltip for="quoteref" value="#{row.quotationref}" />
+							</h:outputText>
+						</p:column>
+						<p:column width="115" filterBy="#{row.projectname}"><!--125  -->
+							<f:facet name="header">
+								<h:outputText value="Project Name" />
+							</f:facet>
+							<h:outputText value="#{row.projectname}" />
+						</p:column>
+						<p:column width="125" filterBy="#{row.customername}"><!--125  -->
+							<f:facet name="header">
+								<h:outputText value="Customer Name" />
+							</f:facet>
+							<h:outputText value="#{row.customername}" />
+						</p:column>
+						<p:column width="60"><!--85  -->
+							<f:facet name="header">
+								<h:outputText value="Creation Date" />
+							</f:facet>
+							<h:outputText value="#{row.creatTime}" />
+						</p:column>
+						<p:column width="95" filterBy="#{row.user.username}"><!--115  -->
+							<f:facet name="header">
+								<h:outputText value="Created By" />
+							</f:facet>
+							<h:outputText id="createdby" value="#{row.user.username}">
+								<p:tooltip for="createdby" value="#{row.user.username}" />
+							</h:outputText>
+						</p:column>
+						<p:column width="22">
+							<f:facet name="header">
+								<h:outputText value="View Parts"
+									rendered="true" />
+							</f:facet>
+							<h:panelGrid columns="1" styleClass="actions"
+								rendered="true">
+								<!-- oncomplete="pdfviewDownloadDialog.show();" ajax="true" -->
+								<p:commandButton id="selectButton"
+									icon="ui-icon-search" title="View" action="#{quotations.showParts(row)}">
+									<!-- <f:actionListener  value="#{row}"
+										target="#{quotations.showParts}" /> -->
+								</p:commandButton>
+							</h:panelGrid>
+						</p:column>
+						<p:column width="22" exportable="false">
+							<f:facet name="header">
+								<h:outputText value="Down load"/>
+							</f:facet>
+							<h:panelGrid columns="1" styleClass="actions">
+								
+								<p:commandButton id="selectDownloadButton" oncomplete="pdfviewDownloadDialog.show();" ajax="true"
+									icon="ui-icon-search" title="View" update="@form">
+									<f:setPropertyActionListener value="#{row}" target="#{quotations.selectedQuotation}" />
+								</p:commandButton>
+							</h:panelGrid>
+						</p:column> 
+						
+						<f:facet name="footer"></f:facet>
+					</p:dataTable>
+				</div>
+
+				<div id="SideContent">
+					<div class="quarter nobottommargin">
+						<ul id="verticalnavnoaction">
+							<li><p:commandLink action="#"
+									value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+							<li><p:commandLink action="#"
+									value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+							<li><p:commandLink action="#"
+									value="#{userInfo.user.company.companyName}" /></li>
+						</ul>
+						<ul id="secondnav">
+							<li><p:commandLink
+									action="#{mainmenubar.actionReviseQuotationPage(quotations.selectedQuotation)}"
+									value="Open Selected Quotation" disabled="${(userInfo.user.usertype eq 'ProjectAdmin')}" /></li>
+
+							<c:choose>
+								<c:when test="${quotations.showCompletedQuotations}">
+									<li><p:commandLink action="#{quotations.updateDataTable}"
+											actionListener="#{quotations.setShowCompletedQuotations(false)}"
+											value="Incomplete Quotations List"  disabled="${(userInfo.user.usertype eq 'ProjectAdmin')}"/></li>
+								</c:when>
+								<c:otherwise>
+									<li><p:commandLink action="#{quotations.updateDataTable}"
+											actionListener="#{quotations.setShowCompletedQuotations(true)}"
+											value="Completed Quotations List" /></li>
+								</c:otherwise>
+							</c:choose>
+
+
+
+							<c:if test="${(userInfo.user.usertype eq 'Master')}">
+								<li><p:commandLink value="Delete"
+										onclick="confirmDlg.show()"  disabled="${(userInfo.user.usertype eq 'ProjectAdmin')}"/></li>
+							</c:if>
+							<h:panelGrid columns="2"
+								style="background-color: #C0D4CF;border-width:2px; text-align: center;width:100%;margin-top:36px">
+								<!--border-style:solid;  -->
+								<h:outputText value="From  : " />
+								<p:calendar id="dateFromHist" value="#{quotations.dateFrom}"
+									effect="slideDown" pattern="dd/MM/yyyy"
+									styleClass="calendarWidget" />
+								<!--dd/MM/yyyy HH:mm  -->
+								<h:outputText value="To  : " />
+								<p:calendar id="dateToHist" value="#{quotations.dateTo}"
+									effect="slideDown" pattern="dd/MM/yyyy"
+									styleClass="calendarWidget" />
+
+								<h:outputText value="" />
+								<p:commandButton value="Update"
+									action="#{quotations.updateDataTable}" update=":frmquotationPage:tbQuotationsList"
+									style="width:100px !important;line-height:1.6 !important;height: 30px !important;-webkit-border-radius:5px !important;border-radius:5px !important;-moz-border-radius:5px !important" />
+							</h:panelGrid>
+							<!--<li><p:commandLink onclick="PODialog.show()"
+									value="Accepted By Client" /></li>-->
+						</ul>
+						<!-- <h:panelGrid columns="2"
+							style="border-style:solid;	border-width:2px; text-align: center;width:100%;margin-top:20px">
+							<h:outputText value="Accepted Quotations : " />
+							<div class="legendAccepted"></div>
+
+							<h:outputText value="Non-Accepted Quotations : " />
+							<div class="legendNonAccepted"></div>
+
+						</h:panelGrid> -->
+
+					</div>
+				</div>
+			</h:form>
+			<p:confirmDialog widgetVar="confirmDlg" header="Delete Quotation"
+				appendToBody="true" closable="false"
+				message="Are you sure you want to delete the selected quotation ?">
+				<h:form>
+					<h:panelGrid columns="2">
+						<p:commandButton value="Delete"
+							actionListener="#{quotations.deleteQuotation}"
+							oncomplete="confirmDlg.hide()"
+							update=":frmquotationPage:tbQuotationsList" />
+						<p:commandButton value="Close" onclick="confirmDlg.hide()" />
+					</h:panelGrid>
+				</h:form>
+
+			</p:confirmDialog>
+			<!--<p:confirmDialog widgetVar="PODialog" header="Upload P.O"
+				closable="false" appendToBody="true"
+				message="Tick if you want to upload P.O.">
+				<h:form id="PODlgFrm" prependId="false" enctype="multipart/form-data">
+					<h:panelGrid columns="3">
+						<p:outputLabel for="uploadFileCheck" value="Upload file: " />
+						<p:selectBooleanCheckbox id="uploadFileCheck"
+							value="#{quotations.uploadPO}">
+							<p:ajax process="uploadFileCheck"
+								update="uploadGrid, uploadButtonGrid" />
+						</p:selectBooleanCheckbox>
+						<p:panelGrid id="uploadGrid" columns="2">
+							<p:outputLabel for="file" id="nameLbl" value="Select File: "
+								rendered="#{quotations.uploadPO}" />
+							 
+							<h:inputFile id="file" value="#{quotations.poFile}"
+									required="true"
+									requiredMessage="Please select file to upload."
+									rendered="#{quotations.uploadPO}" />
+							
+						</p:panelGrid>
+
+					</h:panelGrid>
+					<h:panelGrid id="uploadButtonGrid" columns="3">
+						<p:commandButton value="Save with file"
+							oncomplete="PODialog.hide()" styleClass="dialogButton"
+							action="#{quotations.updateDataTable}"
+							actionListener="#{quotations.uploadPO}"
+							rendered="#{quotations.uploadPO}" />
+						<p:commandButton value="Save without file"
+							oncomplete="PODialog.hide()"
+							rendered="#{quotations.uploadPO==false}"
+							action="#{quotations.updateDataTable}"
+							actionListener="#{quotations.acceptQuotation}"
+							styleClass="dialogButton" />
+						<p:commandButton value="Cancel" onclick="PODialog.hide()"
+							styleClass="dialogButton" />
+					</h:panelGrid>
+				</h:form>
+			</p:confirmDialog>-->
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,314 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="MainTemplate.xhtml">
+
+
+	<ui:define name="contentPanel">
+
+
+		<div id="Wrapper">
+
+
+			<ui:include src="./snippets/DlgPDFDownloadSnippet.xhtml" />
+
+			<h:form id="frmdisplayeditPage" prependId="false">
+				<ui:include
+					src="./snippets/MenuBars/MenuBarDisplaynEditSnippet.xhtml" />
+				<div class="clear"></div>
+				<p:messages id="valMsg" />
+
+				<p:outputPanel id="outerPnl" styleClass="threequarters">
+					<div class="threequarters">
+						<h3>Quote Cover Letter</h3>
+						<h:panelGroup
+							style=" border-left:2px solid #A8A8A8;border-top:2px solid #A8A8A8;border-right:2px solid #A8A8A8;background:#EBEAEA;"
+							layout="block">
+							<h:outputText escape="false"
+								value="#{newquote.quotationCoverUpperText}"></h:outputText>
+						</h:panelGroup>
+						<p:editor id="editor" value="#{newquote.quotationcoveringletter}" disabled="#{newquote.quotation.disable_coveringletter}"
+							style="border-left: 2px solid #A8A8A8;border-right: 2px solid #A8A8A8;"
+							styleClass="#{newquote.quotation.disable_coveringletter ? 'greyBackground' : ''}"
+							width="695" height="338" 
+							controls="bold italic underline strikethrough subscript superscript font size style color highlight bullets
+									numbering alignleft center alignright justify undo redo rule image link unlink cut copy paste" />
+						<h:panelGroup
+							style=" border-left:2px solid #A8A8A8;border-bottom:2px solid #A8A8A8;border-right:2px solid #A8A8A8;background:#EBEAEA;"
+							layout="block">
+							<h:outputText escape="false"
+								value="#{newquote.quotationCoverLowerText}"></h:outputText>
+						</h:panelGroup>
+					</div>
+
+
+				</p:outputPanel>
+				<div id="SideContent">
+					<div class="quarter">
+						<!-- nobottommargin -->
+						<ul id="verticalnavnoaction">
+							<li><p:commandLink action="#"
+									value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+							<li><p:commandLink action="#"
+									value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+							<li><p:commandLink action="#"
+									value="#{userInfo.user.company.companyName}" /></li>
+							<li><p:commandLink action="#"
+									value="Quote Ref. #{newquote.quotation.quotationref}" /></li>
+						</ul>
+						<ul id="secondnav">
+							<li><p:commandLink ajax="true"
+									onclick="confirmLetterTemplateSave.show()"
+									value="Save cover letter" /></li>
+						</ul>
+					</div>
+
+					<div class="quarterminus25" style="padding-bottom: 127px">
+						<h:panelGrid columns="1"
+							style="width:222px;border-style:solid;	border-width:2px; float: center;">
+							<h:panelGrid columns="1">
+								<f:facet name="header">  
+                                 Choose another cover letter
+                               </f:facet>
+								<p:selectOneMenu id="chooseTemplate"
+									style="width:200px !important"
+									value="#{newquote.selectedTemplate}"
+									onchange="confirmChngDlg.show()">
+									<f:selectItem itemLabel="" itemValue="" />
+									<f:selectItems value="#{newquote.templates}" />
+									<p:ajax event="change" process="chooseTemplate"
+										update="frmdisplayeditPage" />
+								</p:selectOneMenu>
+							</h:panelGrid>
+						</h:panelGrid>
+						<br/>
+						<h:panelGrid columns="2"
+							style="width:222px;border-style:solid;	border-width:2px; float: center;">
+							   <h:outputText value="Disable Covering Letter:" style="font-weight:bold;"/>
+								<p:selectBooleanCheckbox id="disableCoveringLetter"
+							value="#{newquote.quotation.disable_coveringletter}">
+							<p:ajax event="change" update="editor"></p:ajax>
+							</p:selectBooleanCheckbox>
+						</h:panelGrid>
+					</div>
+
+				</div>
+			</h:form>
+		</div>
+		<p:dialog widgetVar="confirmLetterTemplateSave"
+			header="Save Letter Template" closable="false" appendToBody="true">
+			<h:form id="confirmLetterTemplateDlgFrm" prependId="false">
+				<h:panelGrid columns="2">
+					<p:outputLabel for="letterTemplateName" id="letterTemplateNameLbl"
+						value="Template Name: " rendered="true" />
+					<p:inputText id="letterTemplateName"
+						value="#{newquote.templateName}" required="true"
+						requiredMessage="Please Provide template name to save."
+						rendered="true" />
+				</h:panelGrid>
+				<h:panelGrid id="letterTemplateButtonGrid" columns="2">
+					<p:commandButton value="Save"
+						action="#{newquote.saveLetterTemplate}"
+						oncomplete="confirmLetterTemplateSave.hide()"
+						styleClass="dialogButton" update=":frmdisplayeditPage"
+						rendered="true" />
+					<p:commandButton value="Cancel"
+						onclick="confirmLetterTemplateSave.hide()"
+						styleClass="dialogButton" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		<!-- <p:confirmDialog widgetVar="confirmEmailTemplateSave"
+			header="Save Template" closable="false" appendToBody="true"
+			message="Please provide email template name">
+			<h:form id="confirmEmailTemplateDlgFrm" prependId="false">
+				<h:panelGrid columns="2">
+					<p:outputLabel for="emailTemplateName" id="emailTemplateNameLbl"
+						value="Template Name: " rendered="true" />
+					<p:inputText id="emailTemplateName"
+						value="#{newquote.emailTempName}" required="true"
+						requiredMessage="Please Provide template name to save."
+						rendered="true" />
+				</h:panelGrid>
+				<h:panelGrid id="emailTemplateButtonGrid" columns="2">
+					<p:commandButton value="Save"
+						action="#{newquote.saveEmailTemplate}"
+						oncomplete="confirmEmailTemplateSave.hide()"
+						styleClass="dialogButton" update=":frmdisplayeditPage"
+						rendered="true" />
+					<p:commandButton value="Cancel"
+						onclick="confirmEmailTemplateSave.hide()"
+						styleClass="dialogButton" />
+				</h:panelGrid>
+			</h:form>
+		</p:confirmDialog> -->
+		<p:dialog widgetVar="confirmDlg" header="Save And Send"
+			closable="false" appendToBody="true" style="" styleClass="dialog">
+			<p:ajaxStatus style="width:20px;height:20px;text-align:right;" id="ajaxStatusPanel">
+				<f:facet name="start">
+					<h:graphicImage value="./images/ajaxloading.gif"/>
+				</f:facet>
+				
+				<f:facet name="complete">
+					<h:outputText value=""/>
+				</f:facet>
+			</p:ajaxStatus>
+			<!--	message="Enter email addresses."  -->
+			<h:form id="confirmDlgFrm" prependId="false">
+				<!-- <h:panelGrid columns="3">
+					<p:outputLabel for="saveLetterTemp" value="Save Letter Template: " />
+					<p:selectBooleanCheckbox id="saveLetterTemp"
+						value="#{newquote.saveLetterTemp}">
+						<p:ajax process="saveLetterTemp" update="letterGrid, buttonGrid" />
+					</p:selectBooleanCheckbox>
+					<p:panelGrid id="letterGrid" columns="2">
+						<p:outputLabel for="name" id="nameLbl"
+							value="Letter Template Name: "
+							rendered="#{newquote.saveLetterTemp}" />
+						<p:inputText id="name" value="#{newquote.templateName}"
+							required="true"
+							requiredMessage="Please Provide template name to save."
+							rendered="#{newquote.saveLetterTemp}" />
+					</p:panelGrid>
+					<p:outputLabel for="saveEmailTemp" value="Save Email Template: " />
+					<p:selectBooleanCheckbox id="saveEmailTemp"
+						value="#{newquote.saveEmailTemp}">
+						<p:ajax process="saveEmailTemp" update="eamilGrid, buttonGrid" />
+					</p:selectBooleanCheckbox>
+					<p:panelGrid id="eamilGrid" columns="2">
+						<p:outputLabel id="emailTempNameLbl" for="emailTempName"
+							value="Email Template Name: "
+							rendered="#{newquote.saveEmailTemp}" />
+						<p:inputText id="emailTempName" value="#{newquote.emailTempName}"
+							rendered="#{newquote.saveEmailTemp}" required="true"
+							requiredMessage="Please Provide template name to save." />
+					</p:panelGrid>
+				</h:panelGrid> -->
+				<p:panelGrid
+					style="width:500px; float: center;background:#C0D4CF !important">
+					<!--border-style:solid;	border-width:2px;  -->
+					<!-- <h:panelGrid> -->
+					<!-- <f:facet name="header">  
+                                 Enter Email Addresses
+                           </f:facet> -->
+
+					<p:row>
+						<p:column style="text-align:right;background:#C0D4CF !important">
+							<h:outputText value="From: " />
+						</p:column>
+						<p:column style="background:#C0D4CF !important">
+							<p:inputText id="email1" value="#{newquote.emailCc}"
+								required="true" requiredMessage="Required" disabled="true"
+								style="width:625px" />
+						</p:column>
+					</p:row>
+					<!--style="width:200px"  -->
+					<!-- <p:watermark for="email1" value="e.g. sample@tutelamedical.com" /> -->
+					<p:row>
+						<p:column style="text-align:right;background:#C0D4CF !important">
+							<h:outputText value="To: " />
+						</p:column>
+						<p:column style="background:#C0D4CF !important">
+							<p:inputText value="#{newquote.email1}" style="width:625px" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column style="text-align:right;background:#C0D4CF !important">
+							<h:outputText value="Cc: " />
+						</p:column>
+						<p:column style="background:#C0D4CF !important">
+							<p:inputText value="#{newquote.emailCc}" style="width:625px" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column style="text-align:right;background:#C0D4CF !important">
+							<h:outputText value="Bcc: " />
+						</p:column>
+						<p:column style="background:#C0D4CF !important">
+							<p:inputText value="#{newquote.emailBcc}" style="width:625px" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column style="text-align:right;background:#C0D4CF !important">
+							<h:outputText value="Subject: " />
+						</p:column>
+						<p:column style="background:#C0D4CF !important">
+							<p:inputText style="width:625px" value="#{newquote.emailSubject}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2" style="background:#C0D4CF !important">
+							<p:editor id="editor2" value="#{newquote.quotation.emailBody}"
+								style="border: 2px solid #A8A8A8;" width="695" height="338"
+								controls="bold italic underline strikethrough subscript superscript font size style color highlight bullets
+									numbering alignleft center alignright justify undo redo image link unlink" />
+						</p:column>
+
+					</p:row>
+					<!-- <p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
+							<f:facet name="start">
+								<h:graphicImage value="./images/loading.gif" />
+							</f:facet>
+
+							<f:facet name="complete">
+								<h:outputText value="" />
+							</f:facet>
+						</p:ajaxStatus> -->
+					<!-- </h:panelGrid> -->
+
+				</p:panelGrid>
+				<h:panelGrid id="buttonGrid" columns="2">
+					<!-- 	<p:commandButton value="Send with saving"
+						actionListener="#{newquote.saveTemplate}"
+						action="#{newquote.saveAndSendtest}"
+						oncomplete="confirmDlg.hide()" styleClass="dialogButton"
+						update=":frmdisplayeditPage"
+						rendered="#{newquote.saveLetterTemp || newquote.saveEmailTemp}" />
+					<p:commandButton value="Send without saving"
+						oncomplete="confirmDlg.hide()"
+						rendered="#{newquote.saveLetterTemp == false &amp;&amp; newquote.saveEmailTemp == false}"
+						styleClass="dialogButton" action="#{newquote.saveAndSendtest}" /> -->
+					<p:commandButton value="Send" oncomplete="confirmDlg.hide()"
+						rendered="true" styleClass="dialogButton"
+						action="#{newquote.saveAndSendtest}" />
+					<p:commandButton value="Cancel" onclick="confirmDlg.hide()"
+						styleClass="dialogButton" />
+				</h:panelGrid>
+			</h:form>
+						
+		</p:dialog>
+		<p:confirmDialog widgetVar="confirmChngDlg"
+			header="Update Letter Template" closable="false" appendToBody="true"
+			message="Are you sure you want to replace the existing letter template with the selected one ?">
+			<h:form>
+				<p:commandButton value="Yes Sure"
+					action="#{newquote.updateTemplateSelection}"
+					oncomplete="confirmChngDlg.hide()" update=":frmdisplayeditPage" />
+				<p:commandButton value="Not yet"
+					actionListener="#{newquote.revertSelection}"
+					oncomplete="confirmChngDlg.hide()" update=":frmdisplayeditPage" />
+			</h:form>
+
+		</p:confirmDialog>
+		<p:confirmDialog widgetVar="confirmEmailChngDlg"
+			header="Update Email Template" closable="false" appendToBody="true"
+			message="Are you sure you want to replace the existing email template with the selected one ?">
+			<h:form>
+				<p:commandButton value="Yes Sure"
+					action="#{newquote.updateEmailTemplateSelection}"
+					oncomplete="confirmEmailChngDlg.hide()"
+					update=":frmdisplayeditPage" />
+				<p:commandButton value="Not yet"
+					actionListener="#{newquote.revertSelection}"
+					oncomplete="confirmEmailChngDlg.hide()"
+					update=":frmdisplayeditPage" />
+			</h:form>
+
+		</p:confirmDialog>
+
+
+	</ui:define>
+</ui:composition>

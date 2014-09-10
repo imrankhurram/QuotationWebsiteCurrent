@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+template="MainTemplate.xhtml">
+
+
+<ui:define name="contentPanel">
+
+<div id="Wrapper">
+
+	<ui:include src="./snippets/MenuBars/MenuBarAdminSnippet.xhtml"/>
+<h:form id="frmcompaniesPage" >
+<script type="text/javascript">  
+		document.ready = function() {
+        Tb.clearFilters()
+ 	 }
+	</script>
+	<div class="clear"></div>
+	<div class="threequarters">
+			<h3><b>List of Companies</b></h3>
+			<p:dataTable id="tbCompaniesList" var="row" value="#{companies.companyList}" rowKey="#{row.id}" scrollable="true" scrollHeight="525" widgetVar="Tb"
+			    rowStyleClass="standard" selection="#{companies.selectedCompany}" selectionMode="single"   filteredValue="#{companies.filteredCompanyList}">
+			   			   
+				<p:column  width="170" filterBy="#{row.companyName}">
+    				<f:facet name="header">
+      					<h:outputText value="Company Name"/>
+    				</f:facet>
+    				<h:outputText value="#{row.companyName}" />
+  				</p:column>
+  				<p:column  width="70" filterBy="#{row.companyRef}">
+    				<f:facet name="header">
+      					<h:outputText value="Company Ref"/>
+    				</f:facet>
+    				<h:outputText value="#{row.companyRef}" />
+  				</p:column>
+  				<p:column width="50">
+    				<f:facet name="header">
+     		 			<h:outputText value=" Default Markup"/>
+    				</f:facet>
+    				<h:outputText value="#{row.markup}" />
+  				</p:column>
+  				<p:column width="60">
+    				<f:facet name="header">
+      					<h:outputText value="Hardware Discount Limit"/>
+    				</f:facet>
+    				<h:outputText value="#{row.hwdiscount}%" />
+  				</p:column>
+  				<p:column width="60">
+    				<f:facet name="header">
+      					<h:outputText value="Monitoring Discount Limit"/>
+    				</f:facet>
+    				<h:outputText value="#{row.monitoringdiscount}%" />
+  				</p:column>
+  				<p:column width="95" sortBy="#{row.country.country}" filterBy="#{row.country.country}">
+    				<f:facet name="header">
+      					<h:outputText value="Country"/>
+    				</f:facet>
+    				<h:outputText value="#{row.country.country}" />
+  				</p:column>
+  				<p:column width="60">
+    				<f:facet name="header">
+      					<h:outputText value="Multiyear options"/>
+    				</f:facet>
+    				<h:selectBooleanCheckbox value="#{row.multiyear_options}" disabled="true"/>
+  				</p:column>
+  				<f:facet name="footer"></f:facet>
+		</p:dataTable>	  
+	</div>
+	
+	             
+	<div id="SideContent">
+		<div class="quarter nobottommargin">
+			<ul id="verticalnavnoaction">
+				<li><p:commandLink action="#" value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.company.companyName}" /></li>
+			</ul>			
+			<ul id="secondnav">
+				<li><p:commandLink action="#{adminmenubar.actionAddCompanyPage}" value="Add Company" /></li>
+				<li><p:commandLink action="#{adminmenubar.actionModifyCompanyPage}" value="Modify Company" /></li>
+				<li><p:commandLink onclick="confirmation.show()" value="Delete Company" /></li>
+			</ul>
+		</div>
+	</div>
+	 </h:form>  
+	 
+	<p:confirmDialog id="confirmDialog" message="Are you sure want to delete the selected row?"  
+                header="Initiating delete process" severity="alert" widgetVar="confirmation" appendToBody="true">  
+            <h:form>
+            <p:commandButton   id="confirm" value="Yes Sure" oncomplete="confirmation.hide()"  
+                    action="#{companies.deleteCompany}" />  
+        	<p:commandButton   id="decline" value="Not Yet" onclick="confirmation.hide()" type="button" />   
+        	</h:form>
+       </p:confirmDialog>
+</div>
+</ui:define>
+</ui:composition>

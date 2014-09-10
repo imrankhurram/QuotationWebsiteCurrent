@@ -1,0 +1,205 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+template="MainTemplate.xhtml">
+
+
+<ui:define name="contentPanel">
+<h:form id="frmtotaldiscountPage" prependId="false">
+
+<div id="Wrapper">
+
+	<div class="quarter">
+	<img src="./images/next1.gif" class="logo"/>
+	</div>
+	<div class="threequarters-menu">
+		 <ul id="nav">
+	        <li class=""><p:commandLink action="HomePage.xhtml?faces-redirect=true" value="Home" /></li> 
+	        <li class="active"><p:commandLink action="#" value="New Quotations" /></li> 
+	        <li class=""><p:commandLink action="#" value="Existing Quotations" /></li> 
+	        <li class=""><p:commandLink action="#" value="Change Quotation Status" /></li> 
+	        <li class=""><p:commandLink action="#" value="Admin" /></li> 
+	        <li class=""><p:commandLink action="#" value="Logout" /></li>  
+	    </ul> 
+	</div>
+	<div class="clear"></div>
+	<div class="quarternhalf">
+		<div class="quarternhalf">
+			<h3><b>Hardware                     Cost</b></h3>	
+			<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
+				<h:outputText value="STANDARD MONITORING HARDWARE: " />
+				<p:spinner id="standardMonitoringHD" value="#{newquotation.standardmonitoringhardware}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+        	
+			
+				<h:outputText value="INCUBATOR CO2 + RH HARDWARE: "/>
+		    	<p:spinner id="incubartorCO2RHHD" value="#{newquotation.incubatorCO2rhhardware}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+        	
+				<h:outputText value="CLEAN ROOM DPT HARDWARE  : "/>
+			    <p:spinner id="cleanRoomDPTHD" value="#{newquotation.cleanroomdpthardware}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+        	
+				<h:outputText value="O2 OXYGEN SENSING HARDWARE  : "/>
+		        <p:spinner id="o2OxygenSensingHD" value="#{newquotation.o2oxygensensinghardware}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+		
+				<h:outputText value="NON STANDARD HARDWARE  : "/>
+			    <p:spinner id="nonStandardHD" value="#{newquotation.nonstandardhardware}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+
+				<h:outputText value="AGREED DISCOUNT  : "/>
+			    <p:spinner id="agreedDiscount1" value="#{newquotation.agreeddiscounthardware}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+
+				
+				<h:outputText value="TOTAL HARDWARE COST   : "/>
+			    <p:spinner id="totalHDCost" value="#{newquotation.totalhardwarecost}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+
+				</p:panelGrid>
+		</div>
+		<div class="quarternhalf">
+			<h3><b>Site Installation            Cost</b></h3>
+			<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
+				<h:outputText value="SITE NIST SENSOR CALIBRATION: "/>
+				<p:spinner id="siteNistSensorCalib" value="#{newquotation.sitenistsensorcalibration}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+        	
+				<h:outputText value="SITE INSTALLATION: "/>
+				<p:spinner id="SiteInstallation" value="#{newquotation.siteinstallation}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+
+				<h:outputText value="INSTALLATION TRAVEL DAYS: "/>
+				<p:spinner id="InstallationTravelDays" value="#{newquotation.installtraveldays}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+
+	
+				<h:outputText value="AGREED DISCOUNT: "/>
+				<p:spinner id="agreedDiscount2" value="#{newquotation.agreeddiscountsiteinstall}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+	
+				<h:outputText value="TOTAL INSTALL COST: "/>
+				<p:spinner id="totalInstallCost" value="#{newquotation.totalinstallcost}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+
+			</p:panelGrid>			
+		</div>
+		<div class="quarternhalf">
+			<h3><b>SERVICE OPTIONS            Cost</b></h3>
+			<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
+				<h:outputText value="FACTORY NIST SENSOR CALIBRATION: "/>
+				<p:spinner id="factoryNistSensorCalib" value="#{newquotation.factorynistsensorcalibration}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+		
+				<h:outputText value="DQ,IQ,OQ DOCUMENTATION: "/>
+				<p:spinner id="dqiqoqDocs" value="#{newquotation.dqiqoqdocumentation}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+
+				<h:outputText value="WEB SITE + DATABASE SETUP: "/>
+				<p:spinner id="websiteDBSetup" value="#{newquotation.websitedatabasesetup}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+			
+				<h:outputText value="WEB HOSTED GUI DISPLAY PAGES  : "/>
+				<p:spinner id="webHostedGUIDisplayPages" value="#{newquotation.webhostedguidisplaypages}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+				
+
+				<h:outputText value="AGREED DISCOUNT: "/>
+				<p:spinner id="agreedDiscount3" value="#{newquotation.agreeddiscountserviceoption}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+
+				<h:outputText value="TOTAL OPTIONS COST: "/>
+				<p:spinner id="totalOptionsCost" value="#{newquotation.totaloptionscost}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="5"/>
+
+			</p:panelGrid>			
+		</div>
+	</div>
+	
+	<div class="quarternhalf">
+		<div class="quarternhalf">
+			<h3><b>RE-CALIBRATION SERVICE           Cost</b></h3>
+			<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
+				<h:outputText value="NIST SENSOR RE-CALIBRATION 1 YEAR: "/>
+				<p:spinner id="nistSensorReCalib1Year" value="#{newquotation.nistsensorreclibration1year}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="3"/>
+	
+				<h:outputText value="NIST SENSOR RE-CALIBRATION 3 YEAR: "/>
+				<p:spinner id="nistSensorReCalib3Year" value="#{newquotation.nistsensorreclibration3year}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="3"/>
+	
+			<h:outputText value="NIST SENSOR RE-CALIBRATION 5 YEAR: "/>
+				<p:spinner id="nistSensorReCalib5Year" value="#{newquotation.nistsensorreclibration5year}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="3"/>
+				
+			</p:panelGrid>			
+		</div>		
+		<div class="quarternhalf">
+			<h3><b>REMOTE RECORDING SERVICE         Cost</b></h3>
+			<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
+				<h:outputText value="RECORDING ONLY 1 YEAR: "/>
+				<p:spinner id="recordingOnly1Year" value="#{newquotation.recordingonly1year}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="3"/>
+			
+				<h:outputText value="RECORDING ONLY 3 YEAR: "/>
+				<p:spinner id="recordingOnly3Year" value="#{newquotation.recordingonly3year}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="3"/>
+			
+				<h:outputText value="RECORDING ONLY 5 YEAR: "/>
+				<p:spinner id="recordingOnly5Year" value="#{newquotation.recordingonly5year}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="3"/>
+			
+			</p:panelGrid>			
+		</div>	
+		<div class="quarternhalf">
+			<h3><b>REMOTE RECORDING + ALARMING         Cost</b></h3>
+			<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
+				<h:outputText value="ALARMING + RECORDING 1 YEAR: "/>
+				<p:spinner id="recordingpAlarming1Year" value="#{newquotation.alarmingrecording1year}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="3"/>
+			
+				<h:outputText value="ALARMING + RECORDING 3 YEAR: "/>
+				<p:spinner id="recordingpAlarming3Year" value="#{newquotation.alarmingrecording3year}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="3"/>
+
+				<h:outputText value="ALARMING + RECORDING 5 YEAR: "/>
+				<p:spinner id="recordingpAlarming5Year" value="#{newquotation.alarmingrecording5year}" prefix="#{newquotation.currency}" readonly="TRUE" min="0" size="3"/>
+
+			</p:panelGrid>			
+		</div>	
+		<div class="quarternhalfborder">
+			<h3><b>ENTER DETAILS</b></h3>
+			<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
+				<h:outputText value="INSTALL DAYS: "/>
+				<p:inputText id="installDays" value="#{newquotation.installdays}" style="background:#c0d4cf;" size="4"/>
+				
+				<h:outputText value="INSTALL TRAVEL DAYS: "/>
+				<p:inputText id="installTravelDays" value="#{newquotation.installtraveldays}" style="background:#c0d4cf;" size="4"/>
+				<h:outputText value="CALIBRATION DAYS: "/>
+				<p:inputText id="calibrationDays" value="#{newquotation.calibrationdays}" style="background:#c0d4cf;" size="4"/>
+				
+				
+				<h:outputText value="CALIBRATION TRAVEL DAYS: "/>
+				<p:inputText id="calibrationTravelDays" value="#{newquotation.calibrationtraveldays}" style="background:#c0d4cf;" size="4"/>
+				<h:outputText value="HARDWARE DISCOUNT %: "/>
+				<p:inputText id="hdDiscountper" value="#{newquotation.hardwarediscount}" style="background:#c0d4cf;" size="4"/>
+				<h:outputText value="SITE INSTALLATION DISCOUNT %: "/>
+				<p:inputText id="siDiscountper" value="#{newquotation.siteinstallationdiscount}" style="background:#c0d4cf;" size="4"/>
+				<h:outputText value="SERVICE OPTION DISCOUNT %: "/>
+				<p:inputText id="soDiscountper" value="#{newquotation.serviceoptiondiscount}" style="background:#c0d4cf;" size="4"/>
+				
+				<h:outputText value="MONITORING DISCOUNT %: "/>
+				<p:inputText id="monitoringDiscountper" value="#{newquotation.monitoringdiscount}" style="background:#c0d4cf;" size="4"/>
+				<h:outputText value="DISCRETIONARY DISCOUNT %: "/>
+				<p:inputText id="discretionarydiscount" value="#{newquotation.discretionarydiscount}" style="background:#c0d4cf;" size="4"/>
+				
+				<h:outputText value="TOTAL COST: "/>
+				<p:inputText id="totalcost" value="#{newquotation.totalcost}" style="background:#c0d4cf;" size="4"/>
+				
+				<f:facet name="footer">  
+        			<p:commandButton action="#{newquotation.recalculateCost}" update="frmtotaldiscountPage"   value="RECALCULATE" style="margin:0"/>  
+    			</f:facet>  
+			</p:panelGrid>			
+		</div>	
+		
+	</div>
+	<div id="SideContent">
+		<div class="quarter nobottommargin">	
+		<ul id="secondnav">
+			<li><p:commandLink action="#" value="[  #{userInfo.currTime}  ]" /></li>
+			<li><p:commandLink action="#" value="#{userInfo.currDate}" /></li>
+			<li><p:commandLink action="#" value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+			<li><p:commandLink action="#" value="#{userInfo.user.company.companyName}" /></li>
+			<li><p:commandLink action="#" value="Quotation no. [   #{newquotation.quotation.quotationref}  ]" /></li>
+			<li><p:commandLink action="#" value="Total No. of sensors [#{newquotation.noOfsensors}]" /></li>
+			<li><p:commandLink action="#{newquotation.goBackTotalDiscount}" value="Go Back" /></li>
+			<li><p:commandLink action="#{newquotation.saveDiscount}" value="Save and Proceed" ajax="false" /></li>
+			
+		</ul>
+		</div>
+	</div>
+</div>
+
+</h:form>
+
+
+</ui:define>
+</ui:composition>

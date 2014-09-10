@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+template="MainTemplate.xhtml">
+
+
+<ui:define name="contentPanel">
+<div id="Wrapper">
+
+	<ui:include src="./snippets/MenuBars/MenuBarAdminSnippet.xhtml"/>
+	<h:form id="frmtotaldiscountPage" prependId="false">
+	<div class="clear"></div>
+	<div id="addmodify" style="border-style:solid;	border-width:5px;float: left;width: 500px;margin: 0 100px 20px;">
+			<h3><b>Add Rate</b></h3>	
+			<p:panelGrid id="panel" columns="3" columnClasses="basicStyle, rightStyle">
+			
+				<h:outputLabel for="description" value="Description: " />  
+			   	<p:selectOneMenu id="description" value="#{days.newday.name}"  style="width:208px; text-align: left;" required="true" requiredMessage="Required.">  
+            		<f:selectItem itemLabel="System Installation" itemValue="System Installation" />    
+            		<f:selectItem itemLabel="Sensor Calibration" itemValue="Sensor Calibration" />  
+            		<f:selectItem itemLabel="Installation Travel" itemValue="Installation Travel" /> 
+            		<f:selectItem itemLabel="Calibration Travel" itemValue="Calibration Travel" />  
+            	</p:selectOneMenu>
+            	<p:message for="description" display="icon"/>
+            
+				<h:outputText value="Cost Per Day  " />
+				<p:spinner id="cosstperday" value="#{days.newday.costperday}" min="0" size="26" converterMessage="Enter a Cost per day." />
+			    <p:message for="cosstperday" display="icon"/>
+			    
+			     <h:outputLabel for="currency" value="Currency: " />  
+				<p:selectOneMenu id="currency" value="#{days.newday.currency}"  style="width:208px; text-align: left;" required="true" requiredMessage="Select a currency.">  
+                	<f:selectItems value="#{days.currencies}" />  
+            	</p:selectOneMenu>            	
+            	<p:message for="currency" display="icon"/>	  
+            	
+			    <h:outputLabel for="country" value="Country: " />  
+				<p:selectOneMenu id="country" value="#{days.newday.country}"  editable="true" style="width:208px; text-align: left;" required="true" requiredMessage="Select a country.">  
+                	<f:selectItems value="#{days.countries}" />  
+            	</p:selectOneMenu>            	
+            	<p:message for="country" display="icon"/>
+        	</p:panelGrid>
+	</div>
+	
+	<div id="SideContent">
+		<div class="quarter nobottommargin">
+			<ul id="verticalnavnoaction">	
+				<li><p:commandLink action="#" value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+				<li><p:commandLink action="#" value="#{userInfo.user.company.companyName}" /></li>
+			</ul>
+			<ul id="secondnav">
+				<li><p:commandLink action="#{days.addNewDay}" update="panel" value="Save" /></li>
+				<li><p:commandLink action="DaysPage.xhtml?faces-redirect=true" immediate="true" value="Cancel" /></li>
+			</ul>
+		</div>
+	</div>
+</h:form>
+</div>
+
+
+</ui:define>
+</ui:composition>

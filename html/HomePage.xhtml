@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+template="MainTemplate.xhtml">
+
+
+<ui:define name="contentPanel">
+
+<div id="Wrapper">
+	<ui:include src="./snippets/MenuBars/MenuBarMainSnippet.xhtml"/>
+
+	<h:form id="frmhomePage" prependId="false">
+	<div id="MainContent" class="homepage">
+			<div class="clear"></div>
+	
+	<div class="half">
+	
+		<div class="postpage" id="post-2">
+		<div class="entry">
+		<br/><br/>
+		<h1>Web-based Medical Wireless Temperature Monitoring</h1>
+			<p><strong> Welcome to the online quotation service for Tutela Monitoring
+			Systems. Please make your selection above to either generate a new or update an existing quotation.</strong></p>
+			<h3 class="warning">WARNING</h3>
+			
+			<p><STRONG>You are reminded that in using this website you agree to be bound by the
+                       Terms and Conditions of use and Non Disclosure Agreement. You will become
+                       personally liable should you fail to comply with all the provisions contained
+                       therein.</STRONG></p>
+                       <br/>
+                       <p><STRONG>If you wish to be reminded of these Terms and Conditions, then please select
+                                  the VIEW TERMS AND CONDITIONS button above.</STRONG></p>
+			<p><strong>Should you encounter any problems when using this service then please contact us at.</strong></p>
+			<p align="center"><strong>NORTH AMERICA.</strong></p>
+			<p align="center"><strong>Call :941-408-7589</strong></p>
+			<p align="center"><strong>Email :ussales@tutelamedical.com</strong></p>
+			<br/>
+			<p align="center"><strong>EUROPE.</strong></p>
+			
+			<p align="center"><strong>Call :01252406399</strong></p>
+			<p align="center"><strong>Email :sales@tutelamedical.com</strong></p>
+			<p ><strong>Thank you for using this service.</strong></p>
+			
+		</div>
+		</div>
+	</div>
+	
+	<div id="SideContent">
+		<div class="quarter nobottommargin">			
+			<br/><br/>
+		<ul id="verticalnavnoaction">
+			<li><p:commandLink action="#" value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+			<li><p:commandLink action="#" value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+			<li><p:commandLink action="#" value="#{userInfo.user.company.companyName}" /></li>
+			<li><p:commandLink action="#" value="#{userInfo.user.company.country.country}" /></li>
+		</ul>
+		
+		<ul id="secondnav">
+			<li><p:commandLink onclick="termsncondition.show()" value="View Terms and Conditions"  disabled="${(userInfo.user.usertype eq 'ProjectAdmin')}"/></li>
+		</ul>	
+		</div>
+	</div>	
+	</div>	
+	</h:form>
+	
+	<p:confirmDialog id="confirmDialog"  message="Terms and Conditions" closable ="false" visible="#{!userInfo.user.termsnConditions}"
+                header="Ts and Cs" widgetVar="confirmation" appendToBody="true">  
+            <p:scrollPanel style="width:850px;height:520px">  
+                 <ui:include src="./snippets/TermsnConditions.xhtml"/>
+            </p:scrollPanel>
+            <h:form>
+            
+            <p:commandButton   id="confirm" value="Accept" oncomplete="confirmation.hide()" 
+                    action="#{userInfo.acceptTermsnConditions}" />  
+            
+        	<p:commandButton   id="decline" value="Not Yet" action="#{mainmenubar.actionLogOutPage}" oncomplete="confirmation.hide()" />   
+        	</h:form>
+    </p:confirmDialog>
+    
+    
+    <p:confirmDialog id="termsnconditionDialog"  message="Terms and Conditions" closable ="false" 
+                header="Ts and Cs" widgetVar="termsncondition" appendToBody="true">  
+            <p:scrollPanel  mode="native" style="width:850px;height:520px; ">
+            <!-- border-right-width: 2px !important;overflow: -moz-scrollbars-vertical;overflow-x: hidden;overflow-y: auto;max-height:400px !important; -->  
+                 <ui:include src="./snippets/TermsnConditions.xhtml"/>
+            </p:scrollPanel>
+            <h:form>
+                                  
+           <center> <p:commandButton   id="ok" value="OK" onclick="termsnconditionDialog.hide()" /></center>           
+        	</h:form>
+    </p:confirmDialog>
+</div>
+
+
+
+</ui:define>
+</ui:composition>

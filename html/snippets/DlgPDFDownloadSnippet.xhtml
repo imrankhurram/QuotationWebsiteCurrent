@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui">
+
+<!-- START OF DIALOG -->
+<p:dialog widgetVar="pdfDownloadDialog" header="Download PDF" modal="true"  appendToBody="true"
+	fixedCenter="true"   effect="FADE" close="true" >
+	<h:form >
+	
+	<p:toolbarGroup>
+			<p:commandButton ajax="false"  value="Download" action="#{pdfhtmlExp.export}"  styleClass="dialogButton"    />
+			<h:outputText value=" " />
+			<p:commandButton  value="Close" ajax="false" action="#{pdfExp.pageRedirect}" styleClass="dialogButton"  />
+			<h:outputText value=" " />
+	</p:toolbarGroup>
+	</h:form>
+</p:dialog>
+<!-- END OF DIALOG -->
+</ui:composition>

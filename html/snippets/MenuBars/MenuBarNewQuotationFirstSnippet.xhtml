@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:c="http://java.sun.com/jsp/jstl/core">
+<!-- <h:form> -->
+	<div class="quarter">
+		<!--  <img src="./images/next1.gif" class="logo"/>-->
+		<img src="./images/logo.jpg" class="logo" width="250" height="120"/>
+	</div>
+	<div class="threequarters-menu">
+		 <ul id="nav">
+		 	<li class="#{mainmenubar.linkClicked == 1 ? null : null}"><h:link outcome="HomePage" value="Home"></h:link></li>
+		 	<li class="#{mainmenubar.linkClicked == 2 ? null : null}"><p:commandLink  onclick="autoSaveTimer();" value="Proceed to quote"/><p:commandLink id="newQuotePageNext" action="#{newquote.newQuotationPageNext}" style="display:none;"/></li> 
+	        <li class="#{mainmenubar.linkClicked == 3 ? null : null}"><p:commandLink action="#" value="" style="width:72px;height:26px"/></li> 
+	        <li class="#{mainmenubar.linkClicked == 4 ? null : null}"><p:commandLink action="#" value=""  style="width:72px;height:26px" ></p:commandLink></li> 
+	        <li class="#{mainmenubar.linkClicked == 5 ? null : null}"><p:commandLink action="#" value="" style="width:32px;height:26px"/></li> 
+	        <li class="#{mainmenubar.linkClicked == 6 ? null : null}"><p:commandLink action="#" value="" style="width:32px;height:26px"/></li>  
+	    </ul> 
+	</div>
+<!-- </h:form> -->
+	
+</ui:composition>
