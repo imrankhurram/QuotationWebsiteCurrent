@@ -137,6 +137,7 @@ public class PDFExporterFromHTMLPageBeanRevision implements Serializable {
 		document.newPage();
 		contents += getFirstPage() + "_";
 		pageSection = 1;
+		System.out.println("page 0");
 		if (userInfo.getUser().getCompany().getCountry().getCountry()
 				.compareToIgnoreCase("UK") == 0) {
 			under.addImage(this.setBackGroundImage(
@@ -159,6 +160,7 @@ public class PDFExporterFromHTMLPageBeanRevision implements Serializable {
 		}
 		XMLWorkerHelper.getInstance().parseXHtml(writer, document,
 				new ByteArrayInputStream(getFirstPage().getBytes()));
+		System.out.println("page 1");
 		if (!quotationBean.getQuotation().isDisable_coveringletter()) {
 			document.setMargins(70, 90, 35, 70);
 			document.newPage();
@@ -194,6 +196,7 @@ public class PDFExporterFromHTMLPageBeanRevision implements Serializable {
 			}
 			XMLWorkerHelper.getInstance().parseXHtml(writer, document,
 					new ByteArrayInputStream(getSecondPage().getBytes()));
+			System.out.println("page 2");
 		}
 		/*
 		 * int pageNumber=1; XMLWorkerHelper.getInstance().parseXHtml(writer,
@@ -218,7 +221,7 @@ public class PDFExporterFromHTMLPageBeanRevision implements Serializable {
 							.getWidth()));
 			XMLWorkerHelper.getInstance().parseXHtml(writer, document,
 					new ByteArrayInputStream(getThirdPage().getBytes()));
-
+			System.out.println("page 3");
 			document.newPage();
 			contents += getFourthPage() + "_";
 			pageSection = 4;
@@ -232,6 +235,7 @@ public class PDFExporterFromHTMLPageBeanRevision implements Serializable {
 							.getWidth()));
 			XMLWorkerHelper.getInstance().parseXHtml(writer, document,
 					new ByteArrayInputStream(getFourthPage().getBytes()));
+			System.out.println("page 4");
 		}
 		document.setMargins(70, 90, 35, 70);
 		document.newPage();
@@ -247,7 +251,7 @@ public class PDFExporterFromHTMLPageBeanRevision implements Serializable {
 						.getWidth()));
 		XMLWorkerHelper.getInstance().parseXHtml(writer, document,
 				new ByteArrayInputStream(getFifthPage().getBytes()));
-		
+		System.out.println("page 5");
 
 		document.setMargins(70, 90, 35, 70);
 		document.newPage();
@@ -263,6 +267,7 @@ public class PDFExporterFromHTMLPageBeanRevision implements Serializable {
 						.getWidth()));
 		XMLWorkerHelper.getInstance().parseXHtml(writer, document,
 				new ByteArrayInputStream(getSixthPage().getBytes()));
+		System.out.println("page 6");
 		/*
 		 * document.newPage(); contents += getSixthPage()+"_";
 		 * under.addImage(this.setBackGroundImage(((ServletContext)
@@ -292,6 +297,7 @@ public class PDFExporterFromHTMLPageBeanRevision implements Serializable {
 						.getWidth()));
 		XMLWorkerHelper.getInstance().parseXHtml(writer, document,
 				new ByteArrayInputStream(getSeventhPage().getBytes()));
+		System.out.println("page 7");
 
 		if (userInfo.getUser().getCompany().getCountry().getCountry()
 				.compareToIgnoreCase("US") == 0) {
@@ -310,6 +316,7 @@ public class PDFExporterFromHTMLPageBeanRevision implements Serializable {
 							.getWidth()));
 			XMLWorkerHelper.getInstance().parseXHtml(writer, document,
 					new ByteArrayInputStream(getEighthPage().getBytes()));
+			System.out.println("page 8");
 		}
 
 		document.close();
