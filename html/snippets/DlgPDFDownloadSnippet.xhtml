@@ -1,21 +1,76 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-xmlns:ui="http://java.sun.com/jsf/facelets"
-xmlns:f="http://java.sun.com/jsf/core"
-xmlns:h="http://java.sun.com/jsf/html"
-xmlns:p="http://primefaces.org/ui">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
 
-<!-- START OF DIALOG -->
-<p:dialog widgetVar="pdfDownloadDialog" header="Download PDF" modal="true"  appendToBody="true"
-	fixedCenter="true"   effect="FADE" close="true" >
-	<h:form >
-	
-	<p:toolbarGroup>
-			<p:commandButton ajax="false"  value="Download" action="#{pdfhtmlExp.export}"  styleClass="dialogButton"    />
-			<h:outputText value=" " />
-			<p:commandButton  value="Close" ajax="false" action="#{pdfExp.pageRedirect}" styleClass="dialogButton"  />
-			<h:outputText value=" " />
-	</p:toolbarGroup>
-	</h:form>
-</p:dialog>
-<!-- END OF DIALOG -->
+	<!-- START OF DIALOG -->
+
+	<p:dialog widgetVar="pdfDownloadDialog" header="Download PDF"
+		modal="true" appendToBody="true" fixedCenter="true" effect="FADE"
+		height="65" close="true">
+		<script type="text/javascript">
+		/* 	function toggle(id) {
+				/* console.log("id: " + id); 
+				var element = document.getElementById(id);
+				/* console.log("element: " + element); 
+				if (element.style.display == 'block') {
+					element.style.display = 'none';
+				} else {
+					element.style.display = 'block'
+				}
+			} */
+			function autoStatusCheck(id) {
+				/* toggle(id); */
+				//e.stopPropagation()
+				var element = document.getElementById(id);
+				element.className="show";
+				var interval = setInterval(function() {
+					var checkStatus = document
+							.getElementById('pdfDownloadForm:checkStatusid');
+					console.log("its called yahuooo");
+					counter = 1;
+					//newQuotePageNextLink.trigger('click');
+
+					checkStatus.click();
+					flag = true;
+
+				}, 3000);
+				//return false;
+
+			}
+		</script>
+		<h:form id="pdfDownloadForm">
+			<p:commandLink id="checkStatusid" action="#{pdfhtmlExp.checkStatus}"
+				style="display:none;" />
+
+			<!-- <p:outputLabel value="#{pdfhtmlExp.loadingAnimation}" id="txt"></p:outputLabel> -->
+			<!-- onclick="toggle('pdfDownloadForm:animateLoading');" oncomplete="toggle('pdfDownloadForm:animateLoading');" -->
+			<!-- <p:toolbarGroup> -->
+			<table style="height: 60px;">
+				<tr>
+					<td><p:graphicImage
+							value="./images/LoadingGraphicAnimation.gif" id="animateLoading"
+							style="width:50px;height:50px;text-align:right;"
+							styleClass="#{pdfhtmlExp.loadingClass}"
+							 /></td>
+							 <!-- rendered="#{pdfhtmlExp.loading}" -->
+					<td><p:commandButton ajax="false" value="Download"
+							onclick="autoStatusCheck('pdfDownloadForm:animateLoading');"
+							action="#{pdfhtmlExp.export}" styleClass="dialogButton">
+
+						</p:commandButton></td>
+					<td>
+						<!-- <h:outputText value=" " /> --> <p:commandButton value="Close"
+							ajax="false" action="#{pdfExp.pageRedirect}"
+							styleClass="dialogButton" />
+					</td>
+				</tr>
+			</table>
+			<!-- <h:outputText value=" " /> -->
+			<!-- </p:toolbarGroup> -->
+
+		</h:form>
+	</p:dialog>
+	<!-- END OF DIALOG -->
 </ui:composition>

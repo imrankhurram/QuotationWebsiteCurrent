@@ -1427,7 +1427,7 @@ public class QuotationRevisionPageBean implements Serializable {
 		if (this.quotation.isUpdateInstallation()) {
 			costHeading = "SYSTEM UPGRADE COST";
 		}
-//		<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		// <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 		summariesSecondPage = "<div>"
 				+ "<p style='font-family: Arial, Verdana; font-size: 10pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;color:#41918A;'>"
 				+ costHeading
@@ -1631,7 +1631,6 @@ public class QuotationRevisionPageBean implements Serializable {
 				.compareToIgnoreCase("UK") == 0) {
 			VATLabel = " (Ex Vat)";
 		}
-		summariesThirdPage += "<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>";
 		if ((this.getQuotation().getCombinedrnamonitoring() && !this
 				.getQuotation().isUpdateInstallation())
 				|| this.getQuotation().getRecordingonly()
@@ -1762,7 +1761,14 @@ public class QuotationRevisionPageBean implements Serializable {
 
 			summariesThirdPage += "</table></div>";
 		}
-
+		// if (userInfo.getUser().getCompany().getCountry().getCountry()
+		// .compareToIgnoreCase("UK")==0) {
+		summariesSecondPage += summariesThirdPage;
+		summariesThirdPage = "";
+		// }else{
+		// summariesThirdPage =
+		// "<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>"+summariesThirdPage;
+		// }
 		// ./images/logo.jpg
 		summariesFirstImage = "./images/" + "Bio Tech And Life Sciences4.png";
 		summariesSecondImage = "./images/" + "Bio Tech And Life Sciences5.png";
@@ -1897,8 +1903,21 @@ public class QuotationRevisionPageBean implements Serializable {
 
 			// System.out.println(this.quotation.getQuotationcoveringletter());
 		} else {
-			this.quotationcoveringletter = this.quotation
-					.getQuotationcoveringletter();
+			String cover = this.quotation.getQuotationcoveringletter();
+			if (cover.indexOf("Dear") != -1) {
+				cover = cover.substring(cover.indexOf("Dear"), cover.length());
+			}
+			if (cover.lastIndexOf("Yours truly,") != -1) {
+				cover = cover.substring(0, cover.lastIndexOf("Yours truly,"));
+			}
+			if (cover.indexOf("Dear") == 0) {
+				String salutationTxt = cover.substring(cover.indexOf("Dear"),
+						cover.indexOf(","));
+				cover = cover.substring(cover.indexOf(salutationTxt)
+						+ (salutationTxt.length() + 1), cover.length());
+			}
+
+			this.quotationcoveringletter = cover;
 		}
 		// if (quotation != null && quotation.isCompleted()) {
 		// if (quotation.getQuotationcoveringletter().indexOf(

@@ -592,3 +592,9 @@ h3.warning {
 .greyBackground .ui-editor{
 	background: #EBEAEA;
 }
+.hide{
+	display:none;
+}
+.show{
+	display:block;
+}

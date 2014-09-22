@@ -9,18 +9,65 @@
 	<p:dialog widgetVar="pdfviewDownloadDialog" header="Download PDF"
 		modal="true" appendToBody="true" fixedCenter="true" effect="FADE"
 		close="true">
+			<script type="text/javascript">
+		/* 	function toggle(id) {
+				/* console.log("id: " + id); 
+				var element = document.getElementById(id);
+				/* console.log("element: " + element); 
+				if (element.style.display == 'block') {
+					element.style.display = 'none';
+				} else {
+					element.style.display = 'block'
+				}
+			} */
+			function autoStatusCheck(id) {
+				/* toggle(id); */
+				//e.stopPropagation()
+				var element = document.getElementById(id);
+				element.className="show";
+				var interval = setInterval(function() {
+					var checkStatus = document
+							.getElementById('pdfDownload:checkStatusid');
+					console.log("its called yahuooo");
+					counter = 1;
+					//newQuotePageNextLink.trigger('click');
+
+					checkStatus.click();
+					flag = true;
+
+				}, 3000);
+				//return false;
+
+			}
+		</script>
 		<h:form id="pdfDownload">
-			<p:toolbarGroup>
-				<p:commandButton ajax="false" value="Download"
-					action="#{quotations.view}"  
-					styleClass="dialogButton" />
-				<h:outputText value=" " />
-				<p:commandButton value="Close"
-					action="QuotationsPage?faces-redirect=true"
-					styleClass="dialogButton" />
-			</p:toolbarGroup>
+			<p:commandLink id="checkStatusid" action="#{pdfviewhtmlExp.checkStatus}"
+				style="display:none;" />
+			<table style="height: 60px;">
+				<tr>
+					<td><p:graphicImage
+							value="./images/LoadingGraphicAnimation.gif" id="animateLoading"
+							style="width:50px;height:50px;text-align:right;"
+							styleClass="#{pdfviewhtmlExp.loadingClass}"
+							 /></td>
+							 <!-- rendered="#{pdfhtmlExp.loading}" -->
+					<td><p:commandButton ajax="false" value="Download"
+							onclick="autoStatusCheck('pdfDownload:animateLoading');"
+							action="#{quotations.view}" styleClass="dialogButton">
+
+						</p:commandButton></td>
+					<td>
+						<!-- <h:outputText value=" " /> --> <p:commandButton value="Close"
+							ajax="false" action="QuotationsPage?faces-redirect=true"
+							styleClass="dialogButton" />
+					</td>
+				</tr>
+			</table>
+			<!-- <h:outputText value=" " /> -->
+			<!-- </p:toolbarGroup> -->
 
 		</h:form>
+		
 	</p:dialog>
 	<!-- END OF DIALOG -->
 </ui:composition>

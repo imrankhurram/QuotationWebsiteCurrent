@@ -35,6 +35,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.primefaces.context.RequestContext;
+
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -77,6 +79,14 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 	int pageSection = 0;
 	int pageSection2 = 0;
 	String extraUKBr = "";
+	int thirdPart = 0;
+	int secondPart = 0;
+	String pageContents2 = "";
+	String pageContents3 = "";
+	boolean isFirstBreak = false;
+	boolean loading = false;
+	String loadingClass="hide";
+	int status = 0;
 
 	// String country;
 
@@ -130,8 +140,8 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 
 		document.open();
 		PdfContentByte under = writer.getDirectContentUnder();
-		
-		pageSection2=0;
+
+		pageSection2 = 0;
 		document.newPage();
 		contents += getFirstPage() + "_";
 		pageSection = 1;
@@ -166,21 +176,29 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 					.compareToIgnoreCase("UK") == 0) {
 				under.addImage(this.setBackGroundImage(
 						((ServletContext) FacesContext.getCurrentInstance()
-								.getExternalContext().getContext()).getRealPath("")
-								+ File.separator + "images" + File.separator
-								// + quotationBean.getQuotation().getFacilitytype()
-								+ "Bio Tech And Life Sciences" + "2.png", document
-								.getPageSize().getHeight(), document.getPageSize()
-								.getWidth()));
+								.getExternalContext().getContext())
+								.getRealPath("")
+								+ File.separator
+								+ "images"
+								+ File.separator
+								// +
+								// quotationBean.getQuotation().getFacilitytype()
+								+ "Bio Tech And Life Sciences" + "2.png",
+						document.getPageSize().getHeight(), document
+								.getPageSize().getWidth()));
 			} else {
 				under.addImage(this.setBackGroundImage(
 						((ServletContext) FacesContext.getCurrentInstance()
-								.getExternalContext().getContext()).getRealPath("")
-								+ File.separator + "images" + File.separator
-								// + quotationBean.getQuotation().getFacilitytype()
+								.getExternalContext().getContext())
+								.getRealPath("")
+								+ File.separator
+								+ "images"
+								+ File.separator
+								// +
+								// quotationBean.getQuotation().getFacilitytype()
 								+ "Bio Tech And Life Sciences" + "US2.png",
-						document.getPageSize().getHeight(), document.getPageSize()
-								.getWidth()));
+						document.getPageSize().getHeight(), document
+								.getPageSize().getWidth()));
 			}
 			XMLWorkerHelper.getInstance().parseXHtml(writer, document,
 					new ByteArrayInputStream(getSecondPage().getBytes()));
@@ -229,7 +247,25 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 						.getWidth()));
 		XMLWorkerHelper.getInstance().parseXHtml(writer, document,
 				new ByteArrayInputStream(getFifthPage().getBytes()));
-
+		//System.out.println("page 5");
+		if (isFirstBreak) {
+			document.setMargins(70, 90, 35, 70);
+			document.newPage();
+			String page6 = pageContents2 + pageContents3;
+			contents += page6 + "_";
+			pageSection = 5;
+			under.addImage(this.setBackGroundImage(
+					((ServletContext) FacesContext.getCurrentInstance()
+							.getExternalContext().getContext()).getRealPath("")
+							+ File.separator + "images" + File.separator
+							// + quotationBean.getQuotation().getFacilitytype()
+							+ "Bio Tech And Life Sciences" + "5.png", document
+							.getPageSize().getHeight(), document.getPageSize()
+							.getWidth()));
+			XMLWorkerHelper.getInstance().parseXHtml(writer, document,
+					new ByteArrayInputStream(page6.getBytes()));
+			//System.out.println("page 6");
+		}
 		/*
 		 * document.newPage(); contents += getSixthPage()+"_";
 		 * under.addImage(this.setBackGroundImage(((ServletContext)
@@ -242,7 +278,7 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 		 * XMLWorkerHelper.getInstance().parseXHtml(writer, document, new
 		 * ByteArrayInputStream(getSixthPage().getBytes()));
 		 */
-		pageSection2=7;
+		pageSection2 = 7;
 		document.setMargins(70, 90, 44, 0);
 		document.newPage();
 		contents += getSeventhPage();
@@ -301,26 +337,27 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 		@Override
 		public void onStartPage(PdfWriter writer, Document document) {
 			super.onStartPage(writer, document);
-//			System.out.println("-------------start page: "+ writer.getPageNumber());
-//			System.out.println("start section: " + pageSection);
-//			System.out.println("start section2: " + pageSection2);
+			// System.out.println("-------------start page: "+
+			// writer.getPageNumber());
+			// System.out.println("start section: " + pageSection);
+			// System.out.println("start section2: " + pageSection2);
 
 			if (pageSection == 2) {
 				document.setMargins(70, 70, 90, 70);
 			} else if (pageSection == 5) {
 				document.setMargins(70, 90, 44, 0);
-//				System.out.println("entered condition page section 5 start");
+				// System.out.println("entered condition page section 5 start");
 			}
-			if(pageSection==3){
+			if (pageSection == 3) {
 				document.setMargins(70, 70, 44, 70);
-//				System.out.println("entered condition page section 3 start");
+				// System.out.println("entered condition page section 3 start");
 			}
-//			if (pageSection == 7) {
-//				document.setMargins(70, 90, 44, 0);
-////				System.out.println("entered condition page section 7 start");
-//			}
-//			System.out.println("start margin: " + document.bottomMargin());
-//			System.out.println("start margin top: " + document.topMargin());
+			// if (pageSection == 7) {
+			// document.setMargins(70, 90, 44, 0);
+			// // System.out.println("entered condition page section 7 start");
+			// }
+			// System.out.println("start margin: " + document.bottomMargin());
+			// System.out.println("start margin top: " + document.topMargin());
 		}
 
 		@Override
@@ -328,9 +365,10 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 
 			// super.onEndPage(writer, document);
 
-//			System.out.println("-------------end page: "+ writer.getPageNumber());
-//			System.out.println("end section: " + pageSection);
-//			System.out.println("end section2: " + pageSection2);
+			// System.out.println("-------------end page: "+
+			// writer.getPageNumber());
+			// System.out.println("end section: " + pageSection);
+			// System.out.println("end section2: " + pageSection2);
 
 			if (pageSection == 2) {
 				try {
@@ -390,18 +428,18 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 				} catch (DocumentException | IOException e) {
 					e.printStackTrace();
 				}
-			} else if(pageSection==3){
+			} else if (pageSection == 3) {
 				document.setMargins(70, 70, 44, 70);
-//				System.out.println("entered condition page section 3 end");
-			} 
-//			if (pageSection2 == 7) {
-//
-////					System.out.println("entered condition page section 7 end");
-//					document.setMargins(70, 90, 44, 0);
-//				
-//			}
-//			System.out.println("end margin: " + document.bottomMargin());
-//			System.out.println("end margin top: " + document.topMargin());
+				// System.out.println("entered condition page section 3 end");
+			}
+			// if (pageSection2 == 7) {
+			//
+			// // System.out.println("entered condition page section 7 end");
+			// document.setMargins(70, 90, 44, 0);
+			//
+			// }
+			// System.out.println("end margin: " + document.bottomMargin());
+			// System.out.println("end margin top: " + document.topMargin());
 			PdfContentByte cb = writer.getDirectContent();
 			float bottomPos;
 			if (document.bottom() > 4) {
@@ -508,13 +546,15 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 				+ " <br /><br /> Dear "
 				+ quotationBean.getQuotation().getCustomersalutation()
 				+ ",</div>"
-//				+ "<div style='font-family: Arial, Verdana; font-size: 10pt; font-variant: normal; line-height: normal;'>"
-//				+ "&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"
-//				+ "&nbsp; &nbsp; &nbsp; &nbsp; "
-//				+ "<u><strong>"
-//				+ "Re "
-//				+ quotationBean.getQuotation().getProjectname()
-//				+ " remote wireless monitoring system</strong></u></div> "
+				// +
+				// "<div style='font-family: Arial, Verdana; font-size: 10pt; font-variant: normal; line-height: normal;'>"
+				// +
+				// "&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"
+				// + "&nbsp; &nbsp; &nbsp; &nbsp; "
+				// + "<u><strong>"
+				// + "Re "
+				// + quotationBean.getQuotation().getProjectname()
+				// + " remote wireless monitoring system</strong></u></div> "
 				// +quotationBean.getQuotationcoveringletter().substring(quotationBean.getQuotationcoveringletter().indexOf("<input type='hidden' value='' id='start'/>")+42,quotationBean.getQuotationcoveringletter().indexOf("<input type='hidden' value='' id='end'/>"))
 				+ "<div style='font-family: Arial, Verdana; font-size: 10pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>"
 				+ quotationBean.getQuotationcoveringletter()
@@ -534,12 +574,12 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 	}
 
 	public String getThirdPage() {// <br/><br/><br/><br/>
-		String extraBreaks="";//just to adjust formatting
+		String extraBreaks = "";// just to adjust formatting
 		if (quotationBean.getQuotation().isDisable_coveringletter()) {
-			extraBreaks="<br/><br/><br/>";	
+			extraBreaks = "<br/><br/><br/>";
 		}
 		return "<div ><br/><br/><br/><br/><br/><br/><br/><br/><br/>"
-				+extraBreaks
+				+ extraBreaks
 				+ extraUKBr
 				+ "</div>"
 				+ "<p style='font-family: Arial, Verdana; font-size: 10pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;color:#41918A;'>TUTELA MONITORING SYSTEMS BENEFITS </p>"
@@ -602,7 +642,7 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 	}
 
 	public String getFourthPage() {// <br/>
-	
+
 		String pageContents = "<div ><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>"
 				+ extraUKBr
 				+ "<br/>"
@@ -705,60 +745,89 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 	}
 
 	public String getFifthPage() {
-		String breaks="<br/><br/><br/><br/>";//just for formatting
-		if(!quotationBean.getQuotation().isDisable_coveringletter() && quotationBean.getQuotation().isUpdateInstallation()){
-			breaks="";
+		int totalLines = 32;
+		int firstPart = 0;
+		pageContents2 = "";
+		pageContents3 = "";
+		String breaks = "<br/><br/><br/><br/>";// just for formatting
+		if (!quotationBean.getQuotation().isDisable_coveringletter()
+				&& quotationBean.getQuotation().isUpdateInstallation()) {
+			breaks = "";
 		}
-		String costHeading="SYSTEM COST BREAKDOWN ";
-		if(quotationBean.getQuotation().isUpdateInstallation()){
-			costHeading="SYSTEM UPGRADE COST";
+		String costHeading = "SYSTEM COST BREAKDOWN ";
+		if (quotationBean.getQuotation().isUpdateInstallation()) {
+			costHeading = "SYSTEM UPGRADE COST";
 		}
 		String pageContents = "<div ><br/><br/><br/><br/><br/><br/><br/><br/>"
-				+breaks
+				+ breaks
 				+ extraUKBr
 				+ "<br/>"
-				+ "<p style='font-family: Arial, Verdana; font-size: 10pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;color:#41918A;'>"+costHeading+"</p></div>"
+				+ "<p style='font-family: Arial, Verdana; font-size: 10pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;color:#41918A;'>"
+				+ costHeading
+				+ "</p></div>"
 				+ "<table  border='0' width='80%'>"
 				+ "<tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 36px; text-decoration:underline;color:#41918A;text-align: left;'>HARDWARE</th>"
 				+ "<th >&nbsp;</th></tr>";
 		if (userInfo.getUser().getCompany().getCountry().getCountry()
 				.compareToIgnoreCase("US") == 0) {
-				
-			
-			pageContents+= "</table>";
-			pageContents+="<table cellpadding='3' style='margin-top:10px;border-collapse: collapse;border:0.25px solid black;font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;margin-left:50px;'><tr style='font-size:10pt;'><th style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>ITEM</th><th style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>PART NO.</th><th style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>UNIT COST</th><th style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>QTY</th><th style='padding:5px;text-align:right;border-collapse: collapse;border:0.25px solid black;'>TOTAL COST</th></tr>";
-			int itemCounter=1;
+
+			pageContents += "</table>";
+			pageContents += "<table cellpadding='3' style='margin-top:10px;border-collapse: collapse;border:0.25px solid black;font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;margin-left:50px;'><tr style='font-size:10pt;'><th style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>ITEM</th><th style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>PART NO.</th><th style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>UNIT COST</th><th style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>QTY</th><th style='padding:5px;text-align:right;border-collapse: collapse;border:0.25px solid black;'>TOTAL COST</th></tr>";
+			int itemCounter = 1;
+			firstPart = 3;
 			for (StandardParts st : quotationBean.getTempStParts()) {
-				if(st.getQuoteQuantity()!=0){
-					pageContents+="<tr style='font-size:9pt;'><td style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>"+itemCounter+"</td>"
-						+ "<td style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>"+st.getPartNumber()+"</td>"
-						+ "<td style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>"+userInfo.getUser().getCompany().getCountry().getCurrency()+formater.format(st.getListPrice())+"</td>"
-						+ "<td style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>"+st.getQuoteQuantity()+"</td>"
-						+ "<td style='padding:5px;text-align:right;border-collapse: collapse;border:0.25px solid black;'>"+userInfo.getUser().getCompany().getCountry().getCurrency()+formater.format(st.getListPrice()*st.getQuoteQuantity())+"</td>"
-						+ "</tr>";
-				itemCounter++;
+				if (st.getQuoteQuantity() != 0) {
+					pageContents += "<tr style='font-size:9pt;'><td style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>"
+							+ itemCounter
+							+ "</td>"
+							+ "<td style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>"
+							+ st.getPartNumber()
+							+ "</td>"
+							+ "<td style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>"
+							+ userInfo.getUser().getCompany().getCountry()
+									.getCurrency()
+							+ formater.format(st.getListPrice())
+							+ "</td>"
+							+ "<td style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>"
+							+ st.getQuoteQuantity()
+							+ "</td>"
+							+ "<td style='padding:5px;text-align:right;border-collapse: collapse;border:0.25px solid black;'>"
+							+ userInfo.getUser().getCompany().getCountry()
+									.getCurrency()
+							+ formater.format(st.getListPrice()
+									* st.getQuoteQuantity())
+							+ "</td>"
+							+ "</tr>";
+					firstPart++;
+					itemCounter++;
 				}
 			}
-			
-		
+
 			// pageContents+="<tr><td >&nbsp;</td><td style='text-align: center;'>&nbsp;</td></tr>";
 			if (quotationBean.getmHardwareDiscount() != 0) {
 				// /pageContents+="<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>SUB TOTAL : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"+userInfo.getUser().getCompany().getCountry().getCurrency()+intFormat.format(quotationBean.getTotalsystembreakdown())+"</td></tr>";
 				pageContents += "<tr><td style='border-collapse: collapse;border:0.25px solid black;'></td><td style='border-collapse: collapse;border:0.25px solid black;'></td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;border-collapse: collapse;border:0.25px solid black;'>Less Discount Applied : </td><td style='border-collapse: collapse;border:0.25px solid black;'></td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;padding:5px;border-collapse: collapse;border:0.25px solid black;'>"
 						+ userInfo.getUser().getCompany().getCountry()
 								.getCurrency()
-						+ formater.format(quotationBean.getTotalsystembreakdown()
-								* quotationBean.getmHardwareDiscount() / 100) + "</td></tr>";
+						+ formater.format(quotationBean
+								.getTotalsystembreakdown()
+								* quotationBean.getmHardwareDiscount() / 100)
+						+ "</td></tr>";
+				firstPart++;
 			}
-		
+
 			pageContents += "<tr><td style='border-collapse: collapse;border:0.25px solid black;'></td><td style='border-collapse: collapse;border:0.25px solid black;'></td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;border-collapse: collapse;border:0.25px solid black;'>TOTAL : </td><td style='border-collapse: collapse;border:0.25px solid black;'></td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;padding:5px;border-collapse: collapse;border:0.25px solid black;'>"
-					+ userInfo.getUser().getCompany().getCountry().getCurrency()
-					+ formater.format((quotationBean.getTotalsystembreakdown() - (quotationBean
-							.getTotalsystembreakdown()
-							* quotationBean.getmHardwareDiscount() / 100))) + "</td></tr>";
-			pageContents+="</table>";
-		}else{
-		for (PriceCategory pc : quotationBean.getPriceCategoriesList()) {
+					+ userInfo.getUser().getCompany().getCountry()
+							.getCurrency()
+					+ formater
+							.format((quotationBean.getTotalsystembreakdown() - (quotationBean
+									.getTotalsystembreakdown()
+									* quotationBean.getmHardwareDiscount() / 100)))
+					+ "</td></tr>";
+			firstPart++;
+			pageContents += "</table>";
+		} else {
+			for (PriceCategory pc : quotationBean.getPriceCategoriesList()) {
 				pageContents += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>"
 						+ pc.getDescription()
 						+ "</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
@@ -772,12 +841,14 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 				pageContents += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>Less Discount Applied : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
 						+ userInfo.getUser().getCompany().getCountry()
 								.getCurrency()
-						+ formater.format(quotationBean.getTotalsystembreakdown()
+						+ formater.format(quotationBean
+								.getTotalsystembreakdown()
 								* quotationBean.getmHardwareDiscount() / 100)
 						+ "</td></tr>";
 			}
 			pageContents += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>TOTAL : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
-					+ userInfo.getUser().getCompany().getCountry().getCurrency()
+					+ userInfo.getUser().getCompany().getCountry()
+							.getCurrency()
 					+ formater
 							.format((quotationBean.getTotalsystembreakdown() - (quotationBean
 									.getTotalsystembreakdown()
@@ -785,16 +856,92 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 					+ "</td></tr>";
 			pageContents += "</table>";
 		}
-//		pageContents+="<br/>";
+		// pageContents+="<br/>";
+		secondPart = 0;
+		this.pageContents2 = getSixthPage0();
+		thirdPart = 0;
+		this.pageContents3 += getSixthPage();
 
-		pageContents += "<table  border='0' width='80%' style='margin-top:10px;'><tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 46px; text-decoration:underline;color:#41918A;text-align: left;'>SERVICE</th>"
+		// pageContents += getSixthPage();
+		//
+		//System.out.println("total lines: " + totalLines);
+		//System.out.println("first part: " + firstPart);
+		//System.out.println("second part: " + this.secondPart);
+		//System.out.println("third part: " + this.thirdPart);
+
+		int firstBreaks = 0;
+		// if((firstPart+secondPart)>totalLines){
+		// firstBreaks=totalLines-firstPart;
+		// System.out.println("first breaks: "+firstBreaks);
+		// for(int i=0;i<firstBreaks;i++){
+		// pageContents+="<br/>";
+		// }
+		// isFirstBreak=true;
+		// }
+		isFirstBreak = false;
+		if ((firstPart + secondPart + thirdPart) > totalLines
+				&& firstPart < totalLines) {
+			// firstBreaks = totalLines - firstPart + 2;
+			// System.out.println("first breaks: " + firstBreaks);
+			// for (int i = 0; i < firstBreaks; i++) {
+			// pageContents += "<br/>";
+			// }
+			isFirstBreak = true;
+		} else if ((firstPart + secondPart + thirdPart) > (totalLines * 2)
+				&& firstPart < (totalLines * 2)) {
+			// firstBreaks = (totalLines * 2) - firstPart + 2;
+			// System.out.println("first breaks: " + firstBreaks);
+			// for (int i = 0; i < firstBreaks; i++) {
+			// pageContents += "<br/>";
+			// }
+			isFirstBreak = true;
+		} else if ((firstPart + secondPart + thirdPart) > (totalLines * 3)
+				&& firstPart < (totalLines * 3)) {
+			// firstBreaks = (totalLines * 3) - firstPart + 2;
+			// System.out.println("first breaks: " + firstBreaks);
+			// for (int i = 0; i < firstBreaks; i++) {
+			// pageContents += "<br/>";
+			// }
+			isFirstBreak = true;
+		} else if ((firstPart + secondPart + thirdPart) > (totalLines * 4)
+				&& firstPart < (totalLines * 4)) {
+			// firstBreaks = (totalLines * 3) - firstPart + 2;
+			// System.out.println("first breaks: " + firstBreaks);
+			// for (int i = 0; i < firstBreaks; i++) {
+			// pageContents += "<br/>";
+			// }
+			isFirstBreak = true;
+		}// max 4 pages for parts
+		if (!isFirstBreak) {
+			pageContents += pageContents2;
+			// int secondBreaks=0;
+			// if(!isFirstBreak &&
+			// ((firstPart+secondPart+thirdPart)>totalLines)){
+			// secondBreaks=totalLines-(firstPart+secondPart)+1;
+			// System.out.println("second breaks: "+secondBreaks);
+			// for(int i=0;i<secondBreaks;i++){
+			// pageContents+="<br/>";
+			// }
+			// }
+
+			pageContents += pageContents3;
+		}
+		return pageContents;
+	}
+
+	public String getSixthPage0() {
+		String pageContents2 = "";
+		pageContents2 += "<table  border='0' width='80%' style='margin-top:10px;'><tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 46px; text-decoration:underline;color:#41918A;text-align: left;'>SERVICE</th>"
 				+ "<th >&nbsp;</th></tr>";
+//		secondPart++;
+		secondPart++;
+		//System.out.println("3");
 
 		for (OnceService os : quotationBean.getOnceservicesList()) {
 			if (os.isShowCost()) {
 				if ((os.getUnitCost() * quotationBean.getTotalSensorCount()) > os
 						.getMinimumCharge()) {
-					pageContents += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>"
+					pageContents2 += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>"
 							+ os.getServiceDescription()
 							+ "</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
 							+ userInfo.getUser().getCompany().getCountry()
@@ -804,7 +951,7 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 							+ "</td></tr>";
 				} else {
 					if (quotationBean.getTotalSensorCount() == 0) {
-						pageContents += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>"
+						pageContents2 += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>"
 								+ os.getServiceDescription()
 								+ "</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
 								+ userInfo.getUser().getCompany().getCountry()
@@ -812,7 +959,7 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 								+ formater.format(0)
 								+ "</td></tr>";
 					} else {
-						pageContents += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>"
+						pageContents2 += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>"
 								+ os.getServiceDescription()
 								+ "</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
 								+ userInfo.getUser().getCompany().getCountry()
@@ -824,44 +971,53 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 			} else {
 				// pageContents+="<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>"+os.getServiceDescription()+"</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"+userInfo.getUser().getCompany().getCountry().getCurrency()+intFormat.format(0)+"</td></tr>";
 			}
-
+			// secondPart++;
 		}
 		// pageContents+="<tr><td >&nbsp;</td><td style='text-align: center;'>&nbsp;</td></tr>";
 		if (quotationBean.getmServiceOptionsDiscount() != 0) {
 			// /pageContents+="<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>SUB TOTAL : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"+userInfo.getUser().getCompany().getCountry().getCurrency()+intFormat.format(quotationBean.getOnceServicestotal())+"</td></tr>";
-			pageContents += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>Less Discount Applied : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
+			pageContents2 += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>Less Discount Applied : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
 					+ userInfo.getUser().getCompany().getCountry()
 							.getCurrency()
 					+ formater.format(quotationBean.getOnceServicestotal()
 							* quotationBean.getmServiceOptionsDiscount() / 100)
 					+ "</td></tr>";
+			secondPart++;
+			//System.out.println("4");
 		}
-		pageContents += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>TOTAL : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
+		pageContents2 += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>TOTAL : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
 				+ userInfo.getUser().getCompany().getCountry().getCurrency()
 				+ formater
 						.format((quotationBean.getOnceServicestotal() - (quotationBean
 								.getOnceServicestotal()
 								* quotationBean.getmServiceOptionsDiscount() / 100)))
 				+ "</td></tr>";
-		pageContents += "</table>";
+		secondPart++;
+		//System.out.println("5");
+		pageContents2 += "</table>";
 
-		pageContents += "<div align='left'><table  border='0' width='80%'><tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 46px; text-decoration:underline;color:#41918A;text-align: left;'>INSTALLATION</th>"
+		pageContents2 += "<div align='left'><table  border='0' width='80%'><tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 46px; text-decoration:underline;color:#41918A;text-align: left;'>INSTALLATION</th>"
 				+ "<th >&nbsp;</th></tr>";
-
-		pageContents += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>On Site System Installation</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
+		secondPart++;
+		//System.out.println("6");
+		pageContents2 += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>On Site System Installation</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
 				+ userInfo.getUser().getCompany().getCountry().getCurrency()
 				+ formater.format(quotationBean.getOnSiteInst()) + "</td></tr>";
+		secondPart++;
+		//System.out.println("7");
 		if (quotationBean.getQuotation().getOnsitesensorcalibration()) {
-			pageContents += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>On Site System Calibration</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
+			pageContents2 += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>On Site System Calibration</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
 					+ userInfo.getUser().getCompany().getCountry()
 							.getCurrency()
 					+ formater.format(quotationBean.getOnSiteCalib())
 					+ "</td></tr>";
+			secondPart++;
+			//System.out.println("8");
 		}
 		// pageContents+="<tr><td >&nbsp;</td><td style='text-align: center;'>&nbsp;</td></tr>";
 		if (quotationBean.getmSiteInstallationDiscount() != 0) {
 			// /pageContents+="<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>SUB TOTAL : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"+userInfo.getUser().getCompany().getCountry().getCurrency()+(quotationBean.getOnSiteInst()+quotationBean.getOnSiteCalib())+"</td></tr>";
-			pageContents += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>Less Discount Applied : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
+			pageContents2 += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>Less Discount Applied : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
 					+ userInfo.getUser().getCompany().getCountry()
 							.getCurrency()
 					+ formater
@@ -870,8 +1026,10 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 									* quotationBean
 											.getmSiteInstallationDiscount() / 100))
 					+ "</td></tr>";
+			secondPart++;
+			//System.out.println("9");
 		}
-		pageContents += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>TOTAL : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
+		pageContents2 += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>TOTAL : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
 				+ userInfo.getUser().getCompany().getCountry().getCurrency()
 				+ formater
 						.format(((quotationBean.getOnSiteInst() + quotationBean
@@ -880,13 +1038,19 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 								.getOnSiteCalib())
 								* quotationBean.getmSiteInstallationDiscount() / 100)))
 				+ "</td></tr>";
-		pageContents += "<tr><td >&nbsp;</td><td style='text-align: center;'>&nbsp;</td></tr>";
-		pageContents += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;font-weight: bold;'>TOTAL PROJECT PRICE ";
+		secondPart++;
+		//System.out.println("10");
+		pageContents2 += "<tr><td >&nbsp;</td><td style='text-align: center;'>&nbsp;</td></tr>";
+		secondPart++;
+		//System.out.println("11");
+		pageContents2 += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;font-weight: bold;'>TOTAL PROJECT PRICE ";
+		secondPart++;
+		//System.out.println("12");
 		if (userInfo.getUser().getCompany().getCountry().getCountry()
 				.compareToIgnoreCase("UK") == 0) {
-			pageContents += "(Ex Vat) ";
+			pageContents2 += "(Ex Vat) ";
 		}
-		pageContents += ": </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
+		pageContents2 += ": </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
 				+ userInfo.getUser().getCompany().getCountry().getCurrency()
 				+ formater
 						.format((quotationBean.getTotalsystembreakdown() - (quotationBean
@@ -904,9 +1068,8 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 												.getmSiteInstallationDiscount() / 100)))
 				+ "</td></tr>";
 
-		pageContents += "</table></div>";
-		pageContents += getSixthPage();
-		return pageContents;
+		pageContents2 += "</table></div>";
+		return pageContents2;
 	}
 
 	public String getSixthPage() {
@@ -916,18 +1079,21 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 			VATLabel = " (Ex Vat)";
 		}
 		String pageContents = "";
+		thirdPart++;
 		if ((quotationBean.getQuotation().getCombinedrnamonitoring() && !quotationBean
 				.getQuotation().isUpdateInstallation())
 				|| quotationBean.getQuotation().getRecordingonly()
 				|| quotationBean.getQuotation().getYearlyrecalibrationservice()
 				|| quotationBean.getQuotation().getTemperatureMapping()) {
 			pageContents += "<p style='font-family: Arial, Verdana; font-size: 10pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;color:#41918A;'>RECURRING SERVICE OPTIONS </p>";
+			thirdPart++;
 		}
 
 		if (quotationBean.getQuotation().getCombinedrnamonitoring()
 				&& !quotationBean.getQuotation().isUpdateInstallation()) {
 			pageContents += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 144px; text-decoration:underline;color:#41918A;'>ALARM MONITORING AND RECORDING SERVICE</p>";
-
+			thirdPart++;
+			thirdPart++;
 			pageContents += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 164px; padding-top: 0px;padding-down: 0px;'>";
 			pageContents += "1 Year "
 					+ userInfo.getUser().getCompany().getCountry()
@@ -938,6 +1104,8 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 									* quotationBean
 											.getmRemoteMonitoringDiscount() / 100)))
 					+ " Per year" + VATLabel + "<br/>";
+			thirdPart++;
+			thirdPart++;
 			if (userInfo.getUser().getCompany().isMultiyear_options()) {
 				pageContents += "3 Year "
 						+ userInfo.getUser().getCompany().getCountry()
@@ -948,6 +1116,7 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 										* quotationBean
 												.getmRemoteMonitoringDiscount() / 100)))
 						+ " Per year" + VATLabel + "<br/>";
+				thirdPart++;
 				pageContents += "5 Year "
 						+ userInfo.getUser().getCompany().getCountry()
 								.getCurrency()
@@ -957,12 +1126,15 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 										* quotationBean
 												.getmRemoteMonitoringDiscount() / 100)))
 						+ " Per year" + VATLabel;
+				thirdPart++;
 			}
 			pageContents += "</p>";
 		}
 
 		if (quotationBean.getQuotation().getRecordingonly()) {
 			pageContents += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 144px; text-decoration:underline;color:#41918A;'>RECORDING ONLY SERVICE</p>";
+			thirdPart++;
+			thirdPart++;
 
 			pageContents += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 164px; padding-top: 0px;padding-down: 0px;'>";
 			pageContents += "1 Year "
@@ -973,6 +1145,8 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 									* quotationBean
 											.getmRemoteMonitoringDiscount() / 100)))
 					+ " Per year" + VATLabel + "<br/>";
+			thirdPart++;
+			thirdPart++;
 			if (userInfo.getUser().getCompany().isMultiyear_options()) {
 				pageContents += "3 Year "
 						+ userInfo.getUser().getCompany().getCountry()
@@ -982,6 +1156,7 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 										* quotationBean
 												.getmRemoteMonitoringDiscount() / 100)))
 						+ " Per year" + VATLabel + "<br/>";
+				thirdPart++;
 				pageContents += "5 Year "
 						+ userInfo.getUser().getCompany().getCountry()
 								.getCurrency()
@@ -990,12 +1165,15 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 										* quotationBean
 												.getmRemoteMonitoringDiscount() / 100)))
 						+ " Per year" + VATLabel;
+				thirdPart++;
 			}
 			pageContents += "</p>";
 		}
 		if (quotationBean.getQuotation().getYearlyrecalibrationservice()
 				&& !quotationBean.getQuotation().isUpdateInstallation()) {
 			pageContents += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 144px; text-decoration:underline;color:#41918A;'>NPL RE-CALIBRATION AND MAINTENANCE SERVICE</p>";
+			thirdPart++;
+			thirdPart++;
 
 			pageContents += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 164px; padding-top: 0px;padding-down: 0px;'>";
 			pageContents += "1 Year "
@@ -1003,6 +1181,8 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 							.getCurrency()
 					+ formater.format(quotationBean.annualnistcalibration1y)
 					+ " Per year" + VATLabel + "<br/>";
+			thirdPart++;
+			thirdPart++;
 			if (userInfo.getUser().getCompany().isMultiyear_options()) {
 				pageContents += "3 Year "
 						+ userInfo.getUser().getCompany().getCountry()
@@ -1010,17 +1190,21 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 						+ formater
 								.format(quotationBean.annualnistcalibration3y)
 						+ " Per year" + VATLabel + "<br/>";
+				thirdPart++;
 				pageContents += "5 Year "
 						+ userInfo.getUser().getCompany().getCountry()
 								.getCurrency()
 						+ formater
 								.format(quotationBean.annualnistcalibration5y)
 						+ " Per year" + VATLabel;
+				thirdPart++;
 			}
 			pageContents += "</p>";
 		}
 		if (quotationBean.getQuotation().getTemperatureMapping()) {
 			pageContents += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 144px; text-decoration:underline;color:#41918A;'>REFRIGERATOR TEMPERATURE MAPPING SERVICE</p>";
+			thirdPart++;
+			thirdPart++;
 
 			pageContents += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 164px; padding-top: 0px;padding-down: 0px;'>";
 			pageContents += "1 Year "
@@ -1028,23 +1212,28 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 							.getCurrency()
 					+ formater.format(quotationBean.temperaturemapping1y)
 					+ " Per year" + VATLabel + "<br/>";
+			thirdPart++;
+			thirdPart++;
 			if (userInfo.getUser().getCompany().isMultiyear_options()) {
 				pageContents += "3 Year "
 						+ userInfo.getUser().getCompany().getCountry()
 								.getCurrency()
 						+ formater.format(quotationBean.temperaturemapping3y)
 						+ " Per year" + VATLabel + "<br/>";
+				thirdPart++;
 				pageContents += "5 Year "
 						+ userInfo.getUser().getCompany().getCountry()
 								.getCurrency()
 						+ formater.format(quotationBean.temperaturemapping5y)
 						+ " Per year" + VATLabel;
+				thirdPart++;
 			}
 			pageContents += "</p>";
 		}
 		if (quotationBean.getQuotation().isUpdateInstallation()) {
 			pageContents += "<div align='left'><table  border='0' width='80%' style='padding-left:30px'><tr><th style='padding-top:10px;font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 46px; text-decoration:underline;color:#41918A;text-align: left;'>ADDITIONAL RECURRING SERVICE COSTS</th>"
 					+ "<th >&nbsp;</th></tr>";
+			thirdPart++;
 
 			pageContents += "<tr><td style='padding-top:10px;font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>Addition to existing remote monitoring service: </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
 					+ userInfo.getUser().getCompany().getCountry()
@@ -1052,12 +1241,14 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 					+ formater.format((Double.valueOf(quotationBean
 							.getTempRemoteMonitoring()) * quotationBean
 							.getTotalSensorCount())) + " Per Year</td></tr>";
+			thirdPart++;
 			pageContents += "<tr><td style='padding-top:10px;font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>Addition to existing annual calibration service: </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
 					+ userInfo.getUser().getCompany().getCountry()
 							.getCurrency()
 					+ formater.format((Double.valueOf(quotationBean
 							.getTempAnnualCalibration()) * quotationBean
 							.getTotalSensorCount())) + " Per Year</td></tr>";
+			thirdPart++;
 
 			pageContents += "</table></div>";
 		}
@@ -1065,9 +1256,9 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 	}
 
 	public String getSeventhPage() {
-		String item2="Remote recording and alarm monitoring services are subject to our standard Remote Monitoring and Alarm service agreement which must be signed prior to the alarms monitoring service commencing.";
+		String item2 = "Remote recording and alarm monitoring services are subject to our standard Remote Monitoring and Alarm service agreement which must be signed prior to the alarms monitoring service commencing.";
 		if (quotationBean.getQuotation().isUpdateInstallation()) {
-			item2="Additional recurring probe monitoring and calibration costs will be automatically added to your existing Monitoring and Maintenance Service Agreement cost and invoiced accordingly.";
+			item2 = "Additional recurring probe monitoring and calibration costs will be automatically added to your existing Monitoring and Maintenance Service Agreement cost and invoiced accordingly.";
 		}
 		String excludingLabel = "  All prices exclude any applicable taxes and or duty.";
 		String traingLable = "";
@@ -1084,7 +1275,7 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 			traingLable = "Tutela hardware and software training will be provided for up to 10 users, for a maximum duration of 2 hours at the time of installation. "
 					+ "Additional training is available for an additional fee.";
 		}
-//		<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		// <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 		return "<div >"
 				+ extraUKBr
 				+ ""
@@ -1092,7 +1283,9 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 				+ "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; padding-top:0px;margin-top:0px'>"
 				+ "<ol>"
 				+ "<li>  Tutela systems are supplied and installed against our standard terms and conditions of sale and purchase.</li>"
-				+ "<li> "+item2+" </li>"
+				+ "<li> "
+				+ item2
+				+ " </li>"
 				+ "<li>"
 				+ excludingLabel
 				+ "</li>"
@@ -1127,7 +1320,7 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 	}
 
 	public String getEighthPage() {
-//		<br/><br/><br/><br/><br/><br/>
+		// <br/><br/><br/><br/><br/><br/>
 		String pageContents = "<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>"
 				+ "<p style='font-family: Arial, Verdana; font-size: 10pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;color:#41918A;padding-top:-12px'>CUSTOMER ACCEPTANCE OF QUOTATION</p>"
 				+ "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-top:5px'>This quotation has been agreed and approved for system installation by:</p>"
@@ -1154,10 +1347,40 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 	}
 
 	public void export() throws DocumentException, IOException {
+		this.status = 1;
 		createPDF();
+		//System.out.println("creating pdf");
+		this.status = 2;
 		writeToResponse(((HttpServletResponse) facesContext
 				.getExternalContext().getResponse()));
+		//System.out.println("writing response");
 		facesContext.responseComplete();
+	}
+
+	public void checkStatus() {
+		if (this.status == 1) {
+			this.loading = true;
+			this.loadingClass="show";
+//			this.loadingAnimation = "./images/LoadingGraphicAnimation.gif";
+			//System.out.println("status 1");
+			 RequestContext.getCurrentInstance().update(
+			 "pdfDownloadForm");
+//			RequestContext.getCurrentInstance().update(
+//					"pdfDownloadForm:animateLoading");
+
+		}
+		if (this.status == 2) {
+			this.loading = false;
+			this.loadingClass="hide";
+			//System.out.println("status 2");
+//			this.loadingAnimation = "";
+			 RequestContext.getCurrentInstance().update(
+			 "pdfDownloadForm");
+//			RequestContext.getCurrentInstance().update(
+//					"pdfDownloadForm:animateLoading");
+
+			this.status = 0;
+		}
 	}
 
 	public void writeToResponse(HttpServletResponse response)
@@ -1290,6 +1513,22 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 
 		}
 		return disclaimer;
+	}
+
+	public boolean isLoading() {
+		return loading;
+	}
+
+	public void setLoading(boolean loading) {
+		this.loading = loading;
+	}
+
+	public String getLoadingClass() {
+		return loadingClass;
+	}
+
+	public void setLoadingClass(String loadingClass) {
+		this.loadingClass = loadingClass;
 	}
 
 	@PreDestroy

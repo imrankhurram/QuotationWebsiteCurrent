@@ -159,6 +159,7 @@ public class QuotationCreationPageBean implements Serializable {
 	private String quotationCoverLowerText = "";
 	private String summariesFirstPage = "";
 	private String summariesSecondPage = "";
+	private String summariesThirdPage = "";
 	private String summariesFirstImage = "";
 	private String summariesSecondImage = "";
 	private boolean autoSaving = false;
@@ -1232,7 +1233,7 @@ public class QuotationCreationPageBean implements Serializable {
 			} else if (temp.getDescription().compareToIgnoreCase(
 					"Annual Calibration") == 0) {
 				tempAnnualCalibration = temp;
-				System.out.println("temp anuual");
+				//System.out.println("temp anuual");
 			} else if (temp.getDescription().compareToIgnoreCase(
 					"Default Dead Travel") == 0) {
 				tempDefaultAnnualDeadTravelDay = temp;
@@ -1250,11 +1251,11 @@ public class QuotationCreationPageBean implements Serializable {
 			if (tempAnnualCalibration != null) {
 				tempAnnualSiteCalibrationCost += Double.parseDouble(str)
 						* tempAnnualCalibration.getCostperday();
-				System.out.println("temp anul site calib: "+str+"::"+tempAnnualCalibration.getCostperday());
+				//System.out.println("temp anul site calib: "+str+"::"+tempAnnualCalibration.getCostperday());
 			} else if (tempDefaultAnnualCalibration != null) {
 				tempAnnualSiteCalibrationCost += Double.parseDouble(str)
 						* tempDefaultAnnualCalibration.getCostperday();
-				System.out.println("default temp anul site calib: "+str+"::"+tempDefaultAnnualCalibration.getCostperday());
+				//System.out.println("default temp anul site calib: "+str+"::"+tempDefaultAnnualCalibration.getCostperday());
 			}/*
 			 * else{ tempAnnualSiteCalibrationCost += Integer.parseInt(str)*
 			 * 1500; }
@@ -1264,12 +1265,12 @@ public class QuotationCreationPageBean implements Serializable {
 			if (tempAnnualdeadtravelday != null) {
 				tempAnnualSiteCalibrationCost += Double.parseDouble(str)
 						* tempAnnualdeadtravelday.getCostperday();
-				System.out.println("anual dead travel days: "+str+"::"+tempAnnualdeadtravelday.getCostperday());
+				//System.out.println("anual dead travel days: "+str+"::"+tempAnnualdeadtravelday.getCostperday());
 
 			} else if (tempDefaultAnnualDeadTravelDay != null) {
 				tempAnnualSiteCalibrationCost += Double.parseDouble(str)
 						* tempDefaultAnnualDeadTravelDay.getCostperday();
-				System.out.println("default anual dead travel days: "+str+"::"+tempDefaultAnnualDeadTravelDay.getCostperday());
+				//System.out.println("default anual dead travel days: "+str+"::"+tempDefaultAnnualDeadTravelDay.getCostperday());
 			}/*
 			 * else{ tempAnnualSiteCalibrationCost += Integer.parseInt(str)*
 			 * 600; }
@@ -1282,20 +1283,20 @@ public class QuotationCreationPageBean implements Serializable {
 					.getThreeyearfactor());
 			annualnistcalibration1y = (int) (tempAnnualSiteCalibrationCost * tempAnnualCalibration
 					.getOneyearfactor());
-			System.out.println("anual rate: "+tempAnnualSiteCalibrationCost+"::"+tempAnnualCalibration.getOneyearfactor());
+			//System.out.println("anual rate: "+tempAnnualSiteCalibrationCost+"::"+tempAnnualCalibration.getOneyearfactor());
 		} else if (tempDefaultAnnualCalibration != null) {
 			annualnistcalibration3y = (int) (tempAnnualSiteCalibrationCost * tempDefaultAnnualCalibration
 					.getThreeyearfactor());
 			annualnistcalibration1y = (int) (tempAnnualSiteCalibrationCost * tempDefaultAnnualCalibration
 					.getOneyearfactor());
-			System.out.println("anual rate: "+tempAnnualSiteCalibrationCost+"::"+tempDefaultAnnualCalibration.getOneyearfactor());
+			//System.out.println("anual rate: "+tempAnnualSiteCalibrationCost+"::"+tempDefaultAnnualCalibration.getOneyearfactor());
 
 		}/*
 		 * else{ annualnistcalibration3y =(int) (tempAnnualSiteCalibrationCost *
 		 * 1.1); annualnistcalibration1y =(int) (tempAnnualSiteCalibrationCost *
 		 * 1.5); }
 		 */
-		System.out.println("ans: "+annualnistcalibration1y);
+		//System.out.println("ans: "+annualnistcalibration1y);
 		if (tempAnnualTemperatureMapping != null) {
 			temperaturemapping5y = (int) tempAnnualTemperatureMapping
 					.getCostperday();
@@ -1394,7 +1395,8 @@ public class QuotationCreationPageBean implements Serializable {
 		if(this.quotation.isUpdateInstallation()){
 			costHeading="SYSTEM UPGRADE COST";
 		}
-		summariesSecondPage = "<div ><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>"
+//		<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		summariesSecondPage = "<div >"
 				+ "<p style='font-family: Arial, Verdana; font-size: 10pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;color:#41918A;'>"+costHeading+"</p></div>"
 				+ "<table  border='0' width='80%' style='padding-left:30px'>"
 				+ "<tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 36px; text-decoration:underline;color:#41918A;text-align: left;'>HARDWARE</th>"
@@ -1583,14 +1585,14 @@ public class QuotationCreationPageBean implements Serializable {
 				|| this.getQuotation().getRecordingonly()
 				|| this.getQuotation().getYearlyrecalibrationservice()
 				|| this.getQuotation().getTemperatureMapping()) {
-			summariesSecondPage += "<p style='font-family: Arial, Verdana; font-size: 10pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;color:#41918A;'>RECURRING SERVICE OPTIONS </p>";
+			summariesThirdPage += "<p style='font-family: Arial, Verdana; font-size: 10pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;color:#41918A;'>RECURRING SERVICE OPTIONS </p>";
 		}
 
 		if (this.getQuotation().getCombinedrnamonitoring() && !this.getQuotation().isUpdateInstallation()) {
-			summariesSecondPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 144px; text-decoration:underline;color:#41918A;'>ALARM MONITORING AND RECORDING SERVICE</p>";
+			summariesThirdPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 144px; text-decoration:underline;color:#41918A;'>ALARM MONITORING AND RECORDING SERVICE</p>";
 
-			summariesSecondPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 164px; padding-top: 0px;padding-down: 0px;'>";
-			summariesSecondPage += "1 Year "
+			summariesThirdPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 164px; padding-top: 0px;padding-down: 0px;'>";
+			summariesThirdPage += "1 Year "
 					+ userInfo.getUser().getCompany().getCountry()
 							.getCurrency()
 					+ formater.format((this.alarmingnmonitoring1y - (this
@@ -1598,14 +1600,14 @@ public class QuotationCreationPageBean implements Serializable {
 							* this.getmRemoteMonitoringDiscount() / 100)))
 					+ " Per year" + VATLabel + "<br/>";
 			if (userInfo.getUser().getCompany().isMultiyear_options()) {
-				summariesSecondPage += "3 Year "
+				summariesThirdPage += "3 Year "
 						+ userInfo.getUser().getCompany().getCountry()
 								.getCurrency()
 						+ formater.format((this.alarmingnmonitoring3y - (this
 								.getAlarmingnmonitoring3y()
 								* this.getmRemoteMonitoringDiscount() / 100)))
 						+ " Per year" + VATLabel + "<br/>";
-				summariesSecondPage += "5 Year "
+				summariesThirdPage += "5 Year "
 						+ userInfo.getUser().getCompany().getCountry()
 								.getCurrency()
 						+ formater.format((this.alarmingnmonitoring5y - (this
@@ -1613,97 +1615,99 @@ public class QuotationCreationPageBean implements Serializable {
 								* this.getmRemoteMonitoringDiscount() / 100)))
 						+ " Per year" + VATLabel;
 			}
-			summariesSecondPage += "</p>";
+			summariesThirdPage += "</p>";
 		}
 
 		if (this.getQuotation().getRecordingonly()) {
-			summariesSecondPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 144px; text-decoration:underline;color:#41918A;'>RECORDING ONLY SERVICE</p>";
+			summariesThirdPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 144px; text-decoration:underline;color:#41918A;'>RECORDING ONLY SERVICE</p>";
 
-			summariesSecondPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 164px; padding-top: 0px;padding-down: 0px;'>";
-			summariesSecondPage += "1 Year "
+			summariesThirdPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 164px; padding-top: 0px;padding-down: 0px;'>";
+			summariesThirdPage += "1 Year "
 					+ userInfo.getUser().getCompany().getCountry()
 							.getCurrency()
 					+ formater.format((this.recording1y - (this.recording1y
 							* this.getmRemoteMonitoringDiscount() / 100)))
 					+ " Per year" + VATLabel + "<br/>";
 			if (userInfo.getUser().getCompany().isMultiyear_options()) {
-				summariesSecondPage += "3 Year "
+				summariesThirdPage += "3 Year "
 						+ userInfo.getUser().getCompany().getCountry()
 								.getCurrency()
 						+ formater.format((this.recording3y - (this.recording3y
 								* this.getmRemoteMonitoringDiscount() / 100)))
 						+ " Per year" + VATLabel + "<br/>";
-				summariesSecondPage += "5 Year "
+				summariesThirdPage += "5 Year "
 						+ userInfo.getUser().getCompany().getCountry()
 								.getCurrency()
 						+ formater.format((this.recording5y - (this.recording5y
 								* this.getmRemoteMonitoringDiscount() / 100)))
 						+ " Per year" + VATLabel;
 			}
-			summariesSecondPage += "</p>";
+			summariesThirdPage += "</p>";
 		}
 		if (this.getQuotation().getYearlyrecalibrationservice() && !this.getQuotation().isUpdateInstallation()) {
-			summariesSecondPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 144px; text-decoration:underline;color:#41918A;'>NPL RE-CALIBRATION AND MAINTENANCE SERVICE</p>";
+			summariesThirdPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 144px; text-decoration:underline;color:#41918A;'>NPL RE-CALIBRATION AND MAINTENANCE SERVICE</p>";
 
-			summariesSecondPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 164px; padding-top: 0px;padding-down: 0px;'>";
-			summariesSecondPage += "1 Year "
+			summariesThirdPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 164px; padding-top: 0px;padding-down: 0px;'>";
+			summariesThirdPage += "1 Year "
 					+ userInfo.getUser().getCompany().getCountry()
 							.getCurrency()
 					+ formater.format(this.annualnistcalibration1y)
 					+ " Per year" + VATLabel + "<br/>";
 			if (userInfo.getUser().getCompany().isMultiyear_options()) {
-				summariesSecondPage += "3 Year "
+				summariesThirdPage += "3 Year "
 						+ userInfo.getUser().getCompany().getCountry()
 								.getCurrency()
 						+ formater.format(this.annualnistcalibration3y)
 						+ " Per year" + VATLabel + "<br/>";
-				summariesSecondPage += "5 Year "
+				summariesThirdPage += "5 Year "
 						+ userInfo.getUser().getCompany().getCountry()
 								.getCurrency()
 						+ formater.format(this.annualnistcalibration5y)
 						+ " Per year" + VATLabel;
 			}
-			summariesSecondPage += "</p>";
+			summariesThirdPage += "</p>";
 		}
 		if (this.getQuotation().getTemperatureMapping()) {
-			summariesSecondPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 144px; text-decoration:underline;color:#41918A;'>REFRIGERATOR TEMPERATURE MAPPING SERVICE</p>";
+			summariesThirdPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 144px; text-decoration:underline;color:#41918A;'>REFRIGERATOR TEMPERATURE MAPPING SERVICE</p>";
 
-			summariesSecondPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 164px; padding-top: 0px;padding-down: 0px;'>";
-			summariesSecondPage += "1 Year "
+			summariesThirdPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 164px; padding-top: 0px;padding-down: 0px;'>";
+			summariesThirdPage += "1 Year "
 					+ userInfo.getUser().getCompany().getCountry()
 							.getCurrency()
 					+ formater.format(this.temperaturemapping1y) + " Per year"
 					+ VATLabel + "<br/>";
 			if (userInfo.getUser().getCompany().isMultiyear_options()) {
-				summariesSecondPage += "3 Year "
+				summariesThirdPage += "3 Year "
 						+ userInfo.getUser().getCompany().getCountry()
 								.getCurrency()
 						+ formater.format(this.temperaturemapping3y)
 						+ " Per year" + VATLabel + "<br/>";
-				summariesSecondPage += "5 Year "
+				summariesThirdPage += "5 Year "
 						+ userInfo.getUser().getCompany().getCountry()
 								.getCurrency()
 						+ formater.format(this.temperaturemapping5y)
 						+ " Per year" + VATLabel;
 			}
-			summariesSecondPage += "</p>";
+			summariesThirdPage += "</p>";
 		}
 
 		if (this.getQuotation().isUpdateInstallation()) {
-			summariesSecondPage += "<div align='left'><table  border='0' width='80%' style='padding-top:10px;padding-left:30px'><tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 46px; text-decoration:underline;color:#41918A;text-align: left;'>ADDITIONAL RECURRING SERVICE COSTS</th>"
+			summariesThirdPage += "<div align='left'><table  border='0' width='80%' style='padding-top:10px;padding-left:30px'><tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 46px; text-decoration:underline;color:#41918A;text-align: left;'>ADDITIONAL RECURRING SERVICE COSTS</th>"
 					+ "<th >&nbsp;</th></tr>";
 	
-			summariesSecondPage += "<tr><td style='padding-top:10px;font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>Addition to existing remote monitoring service: </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
+			summariesThirdPage += "<tr><td style='padding-top:10px;font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>Addition to existing remote monitoring service: </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
 					+ userInfo.getUser().getCompany().getCountry().getCurrency()
 					+ formater.format((Double.valueOf(this.getTempRemoteMonitoring())* this.getTotalSensorCount())) + " Per Year</td></tr>";
-			summariesSecondPage += "<tr><td style='padding-top:10px;font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>Addition to existing annual calibration service: </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
+			summariesThirdPage += "<tr><td style='padding-top:10px;font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>Addition to existing annual calibration service: </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
 					+ userInfo.getUser().getCompany().getCountry()
 							.getCurrency()
 					+ formater.format((Double.valueOf(this.getTempAnnualCalibration())* this.getTotalSensorCount())) + " Per Year</td></tr>";
 		
-			summariesSecondPage += "</table></div>";
+			summariesThirdPage += "</table></div>";
 		}
 		
+		summariesSecondPage += summariesThirdPage;
+		summariesThirdPage = "";
 		
 		summariesFirstImage = "./images/"
 				+"Bio Tech And Life Sciences4.png";
@@ -1979,7 +1983,7 @@ public class QuotationCreationPageBean implements Serializable {
 			 * String bcc=""; if(ValidateEmails.validate(emailBcc))
 			 * bcc=emailBcc;
 			 */
-			System.out.println("to email: "+email);
+			//System.out.println("to email: "+email);
 			pdfExporter.writeToFileNEmail(validateEmails(email.split(",")),
 					validateEmails(this.emailCc.split(",")),
 					validateEmails(this.emailBcc.split(",")),
@@ -2243,6 +2247,14 @@ public class QuotationCreationPageBean implements Serializable {
 
 	public void setSummariesSecondPage(String summariesSecondPage) {
 		this.summariesSecondPage = summariesSecondPage;
+	}
+
+	public String getSummariesThirdPage() {
+		return summariesThirdPage;
+	}
+
+	public void setSummariesThirdPage(String summariesThirdPage) {
+		this.summariesThirdPage = summariesThirdPage;
 	}
 
 	public String getSummariesFirstImage() {

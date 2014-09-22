@@ -72,6 +72,7 @@ public class QuotationsPageBean implements Serializable {
 	private double installationDiscount;
 	private double calibrationCost;
 	private double calibrationDiscount;
+	
 
 	// private boolean uploadPO;
 
@@ -654,10 +655,12 @@ public class QuotationsPageBean implements Serializable {
 
 	public void view() {
 		System.out.println("pdf downloading");
+		
 		PDFViewFromHTMLPageBean pdfview = new PDFViewFromHTMLPageBean();
 		try {
 			
 			pdfview.export(selectedQuotation);
+		
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

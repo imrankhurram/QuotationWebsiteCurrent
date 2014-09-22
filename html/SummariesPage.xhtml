@@ -19,17 +19,28 @@
 				<div id="addmodify"
 					style="border-style: solid; border-width: 2px; float: left; width: 665px;">
 					<!--width: 490px;  -->
-					<div
-						style="background: url('#{newquote.summariesFirstImage}'); background-size: 100% 100%; background-repeat: no-repeat; min-height: 880px">
+					<div style="background:url('#{newquote.summariesFirstImage}');background-size:100% 100% ;background-repeat:no-repeat;min-height:880px">
 						<h:outputText escape="false"
 							value="#{newquote.summariesFirstPage}"></h:outputText>
 						<!-- <hr /> -->
 					</div>
-					<div
-						style="background: url('#{newquote.summariesSecondImage}'); border-top: 1px solid; background-size: 100% 100%; background-repeat: no-repeat; min-height: 880px">
+					<div style="background:url('./images/Bio-Tech-And-Life-SciencesTop5.png');border-top:1px solid;background-size:100% 100% ;background-repeat:no-repeat;min-height:264px">
+						
+					</div>
+					<div style="background-size:100% 100% ;background-repeat:no-repeat;min-height:880px">
 						<h:outputText escape="false"
 							value="#{newquote.summariesSecondPage}"></h:outputText>
 					</div>
+					<div style="background:url('./images/Bio-Tech-And-Life-SciencesBottom5.png');background-size:100% 100% ;background-repeat:no-repeat;min-height:64px">
+						
+					</div>
+					<h:outputText rendered="#{newquote.summariesThirdPage != ''}">
+					<div style="background:url('#{newquote.summariesSecondImage}');border-top:1px solid;background-size:100% 100% ;background-repeat:no-repeat;min-height:880px">
+						<h:outputText escape="false"
+							value="#{newquote.summariesThirdPage}"></h:outputText>
+					</div>
+					</h:outputText>
+					
 					<!-- 	<div>
 	        <p:dataTable id="tbquantitycatList" var="row" value="#{newquote.quantityCategoriesList}" style="width:490px;" >
   				<p:column  style="text-align: right;">

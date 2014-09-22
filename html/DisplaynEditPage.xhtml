@@ -30,10 +30,11 @@
 							<h:outputText escape="false"
 								value="#{newquote.quotationCoverUpperText}"></h:outputText>
 						</h:panelGroup>
-						<p:editor id="editor" value="#{newquote.quotationcoveringletter}" disabled="#{newquote.quotation.disable_coveringletter}"
+						<p:editor id="editor" value="#{newquote.quotationcoveringletter}"
+							disabled="#{newquote.quotation.disable_coveringletter}"
 							style="border-left: 2px solid #A8A8A8;border-right: 2px solid #A8A8A8;"
 							styleClass="#{newquote.quotation.disable_coveringletter ? 'greyBackground' : ''}"
-							width="695" height="338" 
+							width="695" height="338"
 							controls="bold italic underline strikethrough subscript superscript font size style color highlight bullets
 									numbering alignleft center alignright justify undo redo rule image link unlink cut copy paste" />
 						<h:panelGroup
@@ -84,13 +85,14 @@
 								</p:selectOneMenu>
 							</h:panelGrid>
 						</h:panelGrid>
-						<br/>
+						<br />
 						<h:panelGrid columns="2"
 							style="width:222px;border-style:solid;	border-width:2px; float: center;">
-							   <h:outputText value="Disable Covering Letter:" style="font-weight:bold;"/>
-								<p:selectBooleanCheckbox id="disableCoveringLetter"
-							value="#{newquote.quotation.disable_coveringletter}">
-							<p:ajax event="change" update="editor"></p:ajax>
+							<h:outputText value="Disable Covering Letter:"
+								style="font-weight:bold;" />
+							<p:selectBooleanCheckbox id="disableCoveringLetter"
+								value="#{newquote.quotation.disable_coveringletter}">
+								<p:ajax event="change" update="editor"></p:ajax>
 							</p:selectBooleanCheckbox>
 						</h:panelGrid>
 					</div>
@@ -147,15 +149,7 @@
 		</p:confirmDialog> -->
 		<p:dialog widgetVar="confirmDlg" header="Save And Send"
 			closable="false" appendToBody="true" style="" styleClass="dialog">
-			<p:ajaxStatus style="width:20px;height:20px;text-align:right;" id="ajaxStatusPanel">
-				<f:facet name="start">
-					<h:graphicImage value="./images/ajaxloading.gif"/>
-				</f:facet>
-				
-				<f:facet name="complete">
-					<h:outputText value=""/>
-				</f:facet>
-			</p:ajaxStatus>
+
 			<!--	message="Enter email addresses."  -->
 			<h:form id="confirmDlgFrm" prependId="false">
 				<!-- <h:panelGrid columns="3">
@@ -260,7 +254,7 @@
 					<!-- </h:panelGrid> -->
 
 				</p:panelGrid>
-				<h:panelGrid id="buttonGrid" columns="2">
+				<h:panelGrid id="buttonGrid" columns="3">
 					<!-- 	<p:commandButton value="Send with saving"
 						actionListener="#{newquote.saveTemplate}"
 						action="#{newquote.saveAndSendtest}"
@@ -276,9 +270,22 @@
 						action="#{newquote.saveAndSendtest}" />
 					<p:commandButton value="Cancel" onclick="confirmDlg.hide()"
 						styleClass="dialogButton" />
+					<p:ajaxStatus style="width:50px;height:50px;text-align:right;"
+						id="ajaxStatusPanel">
+						<f:facet name="start">
+							<h:graphicImage value="./images/LoadingGraphicAnimation.gif" />
+						</f:facet>
+
+						<f:facet name="complete">
+							<h:outputText value="" />
+						</f:facet>
+					</p:ajaxStatus>
+
+
 				</h:panelGrid>
 			</h:form>
-						
+
+
 		</p:dialog>
 		<p:confirmDialog widgetVar="confirmChngDlg"
 			header="Update Letter Template" closable="false" appendToBody="true"

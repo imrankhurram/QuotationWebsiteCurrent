@@ -1,21 +1,76 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-xmlns:ui="http://java.sun.com/jsf/facelets"
-xmlns:f="http://java.sun.com/jsf/core"
-xmlns:h="http://java.sun.com/jsf/html"
-xmlns:p="http://primefaces.org/ui">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
 
-<!-- START OF DIALOG -->
-<p:dialog widgetVar="pdfRevDownloadDialog" header="Download PDF" modal="true"  appendToBody="true"
-	fixedCenter="true"   effect="FADE" close="true" >
-	<h:form >
-	
-	<p:toolbarGroup>
-			<p:commandButton ajax="false"  value="Download"  action="#{pdfhtmlExpRev.export}"  styleClass="dialogButton"    />
-			<h:outputText value=" " />
-			<p:commandButton  value="Close"  onclick="pdfRevDownloadDialog.hide()" styleClass="dialogButton"  />
-			<h:outputText value=" " />
-	</p:toolbarGroup>
-	</h:form>
-</p:dialog>
-<!-- END OF DIALOG -->
+	<!-- START OF DIALOG -->
+	<p:dialog widgetVar="pdfRevDownloadDialog" header="Download PDF"
+		modal="true" appendToBody="true" fixedCenter="true" effect="FADE"
+		height="65" close="true">
+		<script type="text/javascript">
+			/* function toggle(id) {
+				/* console.log("id: " + id); 
+				var element = document.getElementById(id);
+				/* console.log("element: " + element); 
+				if (element.style.display == 'block') {
+					element.style.display = 'none';
+				} else {
+					element.style.display = 'block'
+				}
+			} */
+			function autoStatusCheck(id) {
+				/* toggle(id) */
+				var element = document.getElementById(id);
+				element.className="show";
+				var interval = setInterval(function() {
+					var checkStatus = document
+							.getElementById('pdfDownloadForm:checkStatusid');
+					console.log("its called yahuooo");
+					counter = 1;
+					checkStatus.click();
+					flag = true;
+
+				}, 3000);
+			}
+		</script>
+		<!-- <p:ajaxStatus
+			style="width:50px;height:50px;text-align:right;position:absolute;"
+			id="ajaxStatusLoadingPanel">
+			<f:facet name="start">
+				<h:graphicImage value="./images/LoadingGraphicAnimation.gif" />
+			</f:facet>
+
+			<f:facet name="complete">
+				<h:outputText value="" />
+			</f:facet>
+		</p:ajaxStatus> -->
+		<h:form id="pdfDownloadForm">
+			<p:commandLink id="checkStatusid"
+				action="#{pdfhtmlExpRev.checkStatus}" style="display:none;" />
+			<table style="height: 60px;">
+				<tr>
+					<td><p:graphicImage
+							value="./images/LoadingGraphicAnimation.gif" id="animateLoading"
+							style="width:50px;height:50px;text-align:right;"
+							styleClass="#{pdfhtmlExpRev.loadingClass}"
+							/></td>
+							<!-- rendered="#{pdfhtmlExpRev.loading}"  -->
+					<td>
+						<!-- <p:toolbarGroup> --> <p:commandButton ajax="false"
+							value="Download" action="#{pdfhtmlExpRev.export}"
+							styleClass="dialogButton"
+							onclick="autoStatusCheck('pdfDownloadForm:animateLoading');" />
+					</td>
+					<td>
+						<!-- <h:outputText value=" " /> --> <p:commandButton value="Close"
+							onclick="pdfRevDownloadDialog.hide()" styleClass="dialogButton" />
+					</td>
+				</tr>
+				<!-- <h:outputText value=" " /> -->
+				<!-- </p:toolbarGroup> -->
+			</table>
+		</h:form>
+	</p:dialog>
+	<!-- END OF DIALOG -->
 </ui:composition>

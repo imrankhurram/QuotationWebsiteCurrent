@@ -13,6 +13,7 @@ import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.mail.Message;
 import javax.mail.Session;
@@ -26,6 +27,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.primefaces.context.RequestContext;
 
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Chunk;
@@ -66,6 +69,9 @@ public class PDFViewFromHTMLPageBean implements Serializable{
 	Quotation quotation;
 	boolean insertImage = false;
 	int pageSection=0;
+	boolean loading = false;
+	String loadingClass="hide";
+	int status = 0;
 	public PDFViewFromHTMLPageBean() {
 
 	}
@@ -104,67 +110,117 @@ public class PDFViewFromHTMLPageBean implements Serializable{
 //		System.out.println(pageContents[3]);
 //		System.out.println(pageContents[4]);
 //		System.out.println(pageContents[5]);
-
+		//System.out.println("page 0");
 		document.newPage();
 		this.insertImage = false;
 		pageSection=1;
-		if (userInfo.getUser().getCompany().getCountry().getCountry().compareToIgnoreCase("UK") == 0) {
+		String country=userInfo.getUser().getCompany().getCountry().getCountry();
+		//System.out.println("page 0.1");
+		if (country.compareToIgnoreCase("UK") == 0) {
+			//System.out.println("page 0.2");
 		under.addImage(this.setBackGroundImage(((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("") + 
 				File.separator+ "images" + File.separator +"Bio Tech And Life Sciences1.png", document.getPageSize().getHeight(), document.getPageSize().getWidth()));
+		//System.out.println("page 0.3");
 		}else{
+			//System.out.println("page 0.4");
 			under.addImage(this.setBackGroundImage(((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("") + 
 					File.separator+ "images" + File.separator +"Bio Tech And Life SciencesUS1.png", document.getPageSize().getHeight(), document.getPageSize().getWidth()));
+			//System.out.println("page 0.5");
 		}
 		XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(pageContents[0].getBytes()));
-
-		document.setMargins(70, 90, 35, 48);
-		document.newPage();
-		this.insertImage = true;
-		pageSection=2;
-		if (userInfo.getUser().getCompany().getCountry().getCountry().compareToIgnoreCase("UK") == 0) {
-		under.addImage(this.setBackGroundImage(((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("") + 
-				File.separator+ "images" + File.separator +"Bio Tech And Life Sciences2.png", document.getPageSize().getHeight(), document.getPageSize().getWidth()));
+		//System.out.println("page 1");
+		int i=1;
+		String page1="";
+		if(!quotation.isDisable_coveringletter()){
+				page1=pageContents[i];
+				i++;
+				//System.out.println("page1");
 		}
-		else{
-		under.addImage(this.setBackGroundImage(((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("") + 
-				File.separator+ "images" + File.separator +"Bio Tech And Life SciencesUS2.png", document.getPageSize().getHeight(), document.getPageSize().getWidth()));
+		String page2="";
+		if(pageContents.length>i && !quotation.isUpdateInstallation()){
+			page2=pageContents[i];
+			i++;
+			//System.out.println("page2");
 		}
-		XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(pageContents[1].getBytes()));
+		String page3="";
+		if(pageContents.length>i && !quotation.isUpdateInstallation()){
+			page3=pageContents[i];
+			i++;
+			//System.out.println("page3");
+		}
+		String page4="";
+		if(pageContents.length>i){
+			page4=pageContents[i];
+			i++;
+			//System.out.println("page4");
+		}
+		String page5="";
+		if(pageContents.length>i){
+			page5=pageContents[i];
+			i++;
+			//System.out.println("page5");
+		}
+		String page6="";
+		if(pageContents.length>i){
+			page6=pageContents[i];
+			//System.out.println("page6");
+		}
+		if(!"".equals(page1)){
+			document.setMargins(70, 90, 35, 48);
+			document.newPage();
+			this.insertImage = true;
+			pageSection=2;
+			if (country.compareToIgnoreCase("UK") == 0) {
+			under.addImage(this.setBackGroundImage(((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("") + 
+					File.separator+ "images" + File.separator +"Bio Tech And Life Sciences2.png", document.getPageSize().getHeight(), document.getPageSize().getWidth()));
+			}
+			else{
+			under.addImage(this.setBackGroundImage(((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("") + 
+					File.separator+ "images" + File.separator +"Bio Tech And Life SciencesUS2.png", document.getPageSize().getHeight(), document.getPageSize().getWidth()));
+			}
+			XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(page1.getBytes()));
+			//System.out.println("page 2");
+		}
+		if (!"".equals(page2)) {
+			document.setMargins(70, 70, 44, 0);
+			document.newPage();
+			this.insertImage = false;
+			pageSection=3;
+			under.addImage(this.setBackGroundImage(((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("") + 
+					File.separator+ "images" + File.separator + "Bio Tech And Life Sciences"+"3.png", document.getPageSize().getHeight(), document.getPageSize().getWidth()));
+			XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(page2.getBytes()));
+			//System.out.println("page 3");
+		}
 
-		document.setMargins(70, 70, 44, 0);
-		document.newPage();
-		this.insertImage = false;
-		pageSection=3;
-		under.addImage(this.setBackGroundImage(((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("") + 
-				File.separator+ "images" + File.separator + "Bio Tech And Life Sciences"+"3.png", document.getPageSize().getHeight(), document.getPageSize().getWidth()));
-		XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(pageContents[2].getBytes()));
-
-		if(pageContents.length>3){
+		if(!"".equals(page3)){
 			document.newPage();
 			this.insertImage = false;
 			pageSection=4;
 			under.addImage(this.setBackGroundImage(((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("") + 
 					File.separator+ "images" + File.separator + "Bio Tech And Life Sciences"+"4.png", document.getPageSize().getHeight(), document.getPageSize().getWidth()));
-			XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(pageContents[3].getBytes()));
+			XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(page3.getBytes()));
+			//System.out.println("page 4");
 		}
-		if(pageContents.length>4){
+		if(!"".equals(page4)){
 			document.newPage();
 			this.insertImage = false;
 			pageSection=5;
 			under.addImage(this.setBackGroundImage(((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("") + 
 					File.separator+ "images" + File.separator + "Bio Tech And Life Sciences"+"5.png", document.getPageSize().getHeight(), document.getPageSize().getWidth()));
-			XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(pageContents[4].getBytes()));
+			XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(page4.getBytes()));
+			//System.out.println("page 5");
 		}
-		if(pageContents.length>5){
+		if(!"".equals(page5)){
 			document.setMargins(70, 90, 35, 0);
 			document.newPage();
 			this.insertImage = false;
 			pageSection=6;
 			under.addImage(this.setBackGroundImage(((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("") + 
 					File.separator+ "images" + File.separator + "Bio Tech And Life Sciences"+"6.png", document.getPageSize().getHeight(), document.getPageSize().getWidth()));
-			XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(pageContents[5].getBytes()));
+			XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(page5.getBytes()));
+			//System.out.println("page 6");
 		}
-		if(pageContents.length>6){
+		if(!"".equals(page6)){
 			//System.out.println("size: "+pageContents.length);
 			document.setMargins(70, 90, 35, 0);
 			document.newPage();
@@ -172,7 +228,8 @@ public class PDFViewFromHTMLPageBean implements Serializable{
 			pageSection=8;
 			under.addImage(this.setBackGroundImage(((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("") + 
 					File.separator+ "images" + File.separator + "Bio Tech And Life Sciences"+"6.png", document.getPageSize().getHeight(), document.getPageSize().getWidth()));
-			XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(pageContents[6].getBytes()));	
+			XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(page6.getBytes()));
+			//System.out.println("page 7");
 		}
 		//document.newPage();
 		//under.addImage(this.setBackGroundImage(((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("") + 
@@ -241,9 +298,10 @@ public class PDFViewFromHTMLPageBean implements Serializable{
 
 				if (pageSection == 2) {
 					document.setMargins(70, 70, 90, 70);
-				} else if (pageSection == 5) {
+				} 
+				 if (pageSection == 5) {
 					document.setMargins(70, 90, 44, 0);
-//					System.out.println("entered condition page section 5 start");
+					System.out.println("entered condition page section 5 start");
 				}
 				if(pageSection==3){
 					document.setMargins(70, 70, 44, 70);
@@ -306,6 +364,7 @@ public class PDFViewFromHTMLPageBean implements Serializable{
 						e.printStackTrace();
 					}
 				} else if (pageSection == 5) {
+//					System.out.println("entered condition page section 5 end");
 					try {
 						document.setMargins(70, 90, 230, 70);
 
@@ -329,10 +388,9 @@ public class PDFViewFromHTMLPageBean implements Serializable{
 				} else if(pageSection==3){
 					document.setMargins(70, 70, 44, 70);
 //					System.out.println("entered condition page section 3 end");
-				} 
+				}
 //				if (pageSection2 == 7) {
-	//
-////						System.out.println("entered condition page section 7 end");
+//						System.out.println("entered condition page section 7 end");
 //						document.setMargins(70, 90, 44, 0);
 //					
 //				}
@@ -430,12 +488,48 @@ public class PDFViewFromHTMLPageBean implements Serializable{
 
 
 	public void export(Quotation pQuotation) throws DocumentException, IOException{
+		ExternalContext context = FacesContext.getCurrentInstance()
+				.getExternalContext();
+		HttpSession session = (HttpSession) context.getSession(false);
+		session.setAttribute("loadingStatus", 1);
+		this.status = 1;
 		quotation = pQuotation;
 		createPDF();
+		session.setAttribute("loadingStatus", 2);
+		this.status = 2;
 		writeToResponse(((HttpServletResponse) facesContext.getExternalContext().getResponse()));
 		facesContext.responseComplete();
 	}
+	public void checkStatus() {
+		System.out.println("entered status check ");
+		ExternalContext context = FacesContext.getCurrentInstance()
+				.getExternalContext();
+		HttpSession session = (HttpSession) context.getSession(false);
+		int status=(int)session.getAttribute("loadingStatus");
+		if (status == 1) {
+			this.loading = true;
+			this.loadingClass="show";
+//			this.loadingAnimation = "./images/LoadingGraphicAnimation.gif";
+			System.out.println("status 1");
+			 RequestContext.getCurrentInstance().update(
+			 "pdfDownload");
+//			RequestContext.getCurrentInstance().update(
+//					"pdfDownloadForm:animateLoading");
 
+		}
+		if (status == 2) {
+			this.loading = false;
+			this.loadingClass="hide";
+			System.out.println("status 2");
+//			this.loadingAnimation = "";
+			 RequestContext.getCurrentInstance().update(
+			 "pdfDownload");
+//			RequestContext.getCurrentInstance().update(
+//					"pdfDownloadForm:animateLoading");
+
+			this.status = 0;
+		}
+	}
 
 	public void writeToResponse(HttpServletResponse response) throws IOException, DocumentException {
 		response.setContentType("application/pdf");
@@ -443,7 +537,7 @@ public class PDFViewFromHTMLPageBean implements Serializable{
 		response.setHeader("Cache-Control", "must revalidate, post-check=0, pre-check=0");
 		response.setHeader("pragma", "public");
 		String quoteRef=quotation.getQuotationref();
-		System.out.println("quotate ref before: "+quoteRef);
+//		System.out.println("quotate ref before: "+quoteRef);
 		String postRef="";
 		if (quotation.getQuotationref().indexOf("\\") != -1) {
 			quoteRef=quotation.getQuotationref()
@@ -452,8 +546,8 @@ public class PDFViewFromHTMLPageBean implements Serializable{
 			postRef=quotation.getQuotationref()
 					.substring(
 							quotation.getQuotationref().indexOf("\\")+1,quotation.getQuotationref().length());
-			System.out.println("quotate ref after: "+quoteRef);
-			System.out.println("quotate post ref: "+postRef);
+			//System.out.println("quotate ref after: "+quoteRef);
+			//System.out.println("quotate post ref: "+postRef);
 			response.setHeader("Content-disposition", "attachment;filename="+quoteRef+"_"+postRef+".pdf");
 		}else{
 			response.setHeader("Content-disposition", "attachment;filename="+quotation.getQuotationref()+".pdf");
@@ -531,6 +625,24 @@ public class PDFViewFromHTMLPageBean implements Serializable{
 				catch(Exception ex) { }
 			}
 		}
+	}
+	public boolean isLoading() {
+		return loading;
+	}
+	public void setLoading(boolean loading) {
+		this.loading = loading;
+	}
+	public String getLoadingClass() {
+		return loadingClass;
+	}
+	public void setLoadingClass(String loadingClass) {
+		this.loadingClass = loadingClass;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 }

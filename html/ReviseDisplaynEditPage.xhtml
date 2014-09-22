@@ -31,7 +31,8 @@
 						</h:panelGroup>
 						<p:editor id="editor"
 							value="#{revisedquotation.quotationcoveringletter}"
-							style="border-left: 2px solid #A8A8A8;border-right: 2px solid #A8A8A8;" disabled="#{revisedquotation.quotation.disable_coveringletter}"
+							style="border-left: 2px solid #A8A8A8;border-right: 2px solid #A8A8A8;"
+							disabled="#{revisedquotation.quotation.disable_coveringletter}"
 							styleClass="#{revisedquotation.quotation.disable_coveringletter ? 'greyBackground' : ''}"
 							width="695" height="338"
 							controls="bold italic underline strikethrough subscript superscript font size style color highlight bullets
@@ -63,7 +64,8 @@
 							<li><p:commandLink action="#"
 									value="#{userInfo.user.company.companyName}" /></li>
 							<li><p:commandLink action="#"
-									value="Quote Ref. #{revisedquotation.quotation.quotationref}"  style="height:100%"/></li>
+									value="Quote Ref. #{revisedquotation.quotation.quotationref}"
+									style="height:100%" /></li>
 						</ul>
 						<ul id="secondnav">
 							<!-- <li><p:commandLink
@@ -110,13 +112,14 @@
 								</p:selectOneMenu>
 							</h:panelGrid>
 						</h:panelGrid>
-						<br/>
+						<br />
 						<h:panelGrid columns="2"
 							style="width:222px;border-style:solid;	border-width:2px; float: center;">
-							   <h:outputText value="Disable Covering Letter:" style="font-weight:bold;"/>
-								<p:selectBooleanCheckbox id="disableCoveringLetter"
-							value="#{revisedquotation.quotation.disable_coveringletter}">
-							<p:ajax event="change" update="editor"></p:ajax>
+							<h:outputText value="Disable Covering Letter:"
+								style="font-weight:bold;" />
+							<p:selectBooleanCheckbox id="disableCoveringLetter"
+								value="#{revisedquotation.quotation.disable_coveringletter}">
+								<p:ajax event="change" update="editor"></p:ajax>
 							</p:selectBooleanCheckbox>
 						</h:panelGrid>
 					</div>
@@ -229,15 +232,7 @@
 		</p:confirmDialog> -->
 		<p:dialog widgetVar="confirmDlg" header="Save And Send"
 			closable="false" appendToBody="true" style="" styleClass="dialog">
-			<p:ajaxStatus style="width:20px;height:20px;text-align:right;" id="ajaxStatusPanel">
-				<f:facet name="start">
-					<h:graphicImage value="./images/ajaxloading.gif"/>
-				</f:facet>
-				
-				<f:facet name="complete">
-					<h:outputText value=""/>
-				</f:facet>
-			</p:ajaxStatus>
+
 			<h:form id="confirmDlgFrm" prependId="false">
 				<p:panelGrid
 					style="width:500px; float: center;background:#C0D4CF !important">
@@ -298,12 +293,23 @@
 
 					</p:row>
 				</p:panelGrid>
-				<h:panelGrid id="buttonGrid" columns="2">
+				<h:panelGrid id="buttonGrid" columns="3">
+
 					<p:commandButton value="Send" oncomplete="confirmDlg.hide()"
 						rendered="true" styleClass="dialogButton"
 						action="#{revisedquotation.saveAndSendtest}" />
 					<p:commandButton value="Cancel" onclick="confirmDlg.hide()"
 						styleClass="dialogButton" />
+					<p:ajaxStatus style="width:50px;height:50px;text-align:right;"
+						id="ajaxStatusPanel">
+						<f:facet name="start">
+							<h:graphicImage value="./images/LoadingGraphicAnimation.gif" />
+						</f:facet>
+
+						<f:facet name="complete">
+							<h:outputText value="" />
+						</f:facet>
+					</p:ajaxStatus>
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
