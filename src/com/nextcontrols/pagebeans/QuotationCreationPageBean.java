@@ -36,6 +36,7 @@ import com.nextcontrols.bureaudao.PartsDAO;
 import com.nextcontrols.bureaudao.PriceCategoryDAO;
 import com.nextcontrols.bureaudao.QuantityCategoryDAO;
 import com.nextcontrols.bureaudao.QuotationDAO;
+import com.nextcontrols.bureaudao.SettingsDAO;
 import com.nextcontrols.bureaudao.UserAuditDAO;
 import com.nextcontrols.bureaudomain.AnnualRate;
 import com.nextcontrols.bureaudomain.EmailTemplate;
@@ -381,6 +382,11 @@ public class QuotationCreationPageBean implements Serializable {
 		double totalTimeInHours=0;
 		double totalRoundedValue=0;
 		double totalInstallationTime=0;
+		float hours=SettingsDAO.getInstance().getHoursInDay();
+		if(hours==0){
+			hours=8;
+		}
+		float hoursInHalf=hours/2;
 //		boolean anyPartSelected=false;
 //		System.out.println("calculating");
 		if(getTempStParts()!=null){
@@ -395,9 +401,9 @@ public class QuotationCreationPageBean implements Serializable {
 //			System.out.println("calculated value after divide: "+totalTimeInHours);
 //			if(totalTimeInHours<1 && anyPartSelected)
 //				totalTimeInHours=1;
-			totalRoundedValue=4*Math.ceil(totalTimeInHours/ 4);
+			totalRoundedValue=hoursInHalf*Math.ceil(totalTimeInHours/ hoursInHalf);
 //			System.out.println("calculated value after round: "+totalRoundedValue);
-			totalInstallationTime=((double)totalRoundedValue)/8;
+			totalInstallationTime=((double)totalRoundedValue)/hours;
 //			System.out.println("calculated value after: "+totalInstallationTime);
 		}
 //		else
@@ -435,6 +441,13 @@ public class QuotationCreationPageBean implements Serializable {
 		double totalRoundedValue=0;
 		double totalCalibrationTime=0;
 		boolean anyPartSelected=false;
+		float hours=SettingsDAO.getInstance().getHoursInDay();
+		if(hours==0){
+			hours=8;
+		}
+		float hoursInHalf=hours/2;
+		
+		
 //		System.out.println("calculating");
 		if(getTempStParts()!=null){
 			for(StandardParts part:getTempStParts()){
@@ -448,10 +461,10 @@ public class QuotationCreationPageBean implements Serializable {
 //			System.out.println("calculated value after divide: "+totalTimeInHours);
 //			if(totalTimeInHours<1 && anyPartSelected)
 //				totalTimeInHours=1;
-			totalRoundedValue=4*Math.ceil(totalTimeInHours/ 4);
+			totalRoundedValue=hoursInHalf*Math.ceil(totalTimeInHours/ hoursInHalf);
 //			System.out.println("calculated value after round: "+totalRoundedValue);
-			totalCalibrationTime=((double)totalRoundedValue)/8;
-//			System.out.println("calculated value after: "+totalInstallationTime);
+			totalCalibrationTime=((double)totalRoundedValue)/hours;
+//			System.out.println("calculated value after: "+totalCalibrationTime);
 		}
 		return totalCalibrationTime;
 		

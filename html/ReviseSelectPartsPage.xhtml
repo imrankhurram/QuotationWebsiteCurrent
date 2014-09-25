@@ -123,12 +123,12 @@ function autoSaveTimerHome(){
             </f:facet>  
     		<h:outputText value="Site Installation:"/>
     		<!-- <p:spinner id="installationTime" value="#{revisedquotation.tempSiteInstallation}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value."/> -->
-			<p:inputText id="installationTime" value="#{revisedquotation.tempSiteInstallation}" style="width:83px"/>
+			<p:inputText id="installationTime" value="#{revisedquotation.tempSiteInstallation}" style="width:83px" readonly="true" disabled="true"/>
 			<h:outputText value="Installation Travel:"/>
 			<p:inputText value="#{revisedquotation.tempInstallationTravel}" style="width:83px"/>
 			<c:if test="${revisedquotation.quotation.onsitesensorcalibration}">
 			<h:outputText value="Site Calibration:"/>
-			<p:inputText  id="calibrationTime" value="#{revisedquotation.tempSiteCalibration}" style="width:83px"/>
+			<p:inputText  id="calibrationTime" value="#{revisedquotation.tempSiteCalibration}" style="width:83px" readonly="true" disabled="true"/>
 			<h:outputText value="Calibration Travel:"/>
 			<p:inputText value="#{revisedquotation.tempCalibartionTravel}" style="width:83px"/>
 			</c:if>
@@ -138,7 +138,7 @@ function autoSaveTimerHome(){
                    Annual Rates
             </f:facet>  
     		<h:outputText value="NIST Calibration :" />
-			<p:inputText id="nistCalibration" value="#{revisedquotation.tempAnnualSiteCalibration}" style="width:83px"/>
+			<p:inputText id="nistCalibration" value="#{revisedquotation.tempAnnualSiteCalibration}" style="width:83px" readonly="true" disabled="true"/>
 			<h:outputText value="Travel Days:" />
 			<p:inputText value="#{revisedquotation.tempAnnualDeadTravelDays}" style="width:83px"/>
 			</h:panelGrid>

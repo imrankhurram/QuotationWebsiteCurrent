@@ -120,12 +120,12 @@ function autoSaveTimerHome(){
                     Enter Number of Days  
             </f:facet>  
     		<h:outputText value="Site Installation:" />
-			<p:spinner id="installationTime" value="#{newquote.tempSiteInstallation}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value."/>
+			<p:spinner id="installationTime" value="#{newquote.tempSiteInstallation}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value." readonly="true" disabled="true"/>
 			<h:outputText value="Installation Travel:" />
 			<p:spinner value="#{newquote.tempInstallationTravel}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value."/>
 			<c:if test="${newquote.quotation.onsitesensorcalibration}">
 			<h:outputText value="Site Calibration:" />
-			<p:spinner  id="calibrationTime" value="#{newquote.tempSiteCalibration}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value."/>
+			<p:spinner  id="calibrationTime" value="#{newquote.tempSiteCalibration}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value." readonly="true" disabled="true"/>
 			<h:outputText value="Calibration Travel:" />
 			<p:spinner value="#{newquote.tempCalibartionTravel}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value."/>
 			</c:if>
@@ -135,7 +135,7 @@ function autoSaveTimerHome(){
                    Annual Rates
             </f:facet>  
     		<h:outputText value="NIST Calibration :" />
-			<p:spinner id="nistCalibration" value="#{newquote.tempAnnualSiteCalibration}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value."/>
+			<p:spinner id="nistCalibration" value="#{newquote.tempAnnualSiteCalibration}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value."  readonly="true" disabled="true"/>
 			<h:outputText value="Travel Days:" />
 			<p:spinner value="#{newquote.tempAnnualDeadTravelDays}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value."/>
 			</h:panelGrid>

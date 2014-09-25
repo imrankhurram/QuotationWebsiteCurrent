@@ -1,87 +1,125 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-xmlns:ui="http://java.sun.com/jsf/facelets"
-xmlns:f="http://java.sun.com/jsf/core"
-xmlns:h="http://java.sun.com/jsf/html"
-xmlns:p="http://primefaces.org/ui"
-xmlns:c="http://java.sun.com/jsp/jstl/core"
-template="MainTemplate.xhtml">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="MainTemplate.xhtml">
 
 
-<ui:define name="contentPanel">
+	<ui:define name="contentPanel">
 
-<div id="Wrapper">
+		<div id="Wrapper">
 
-	<ui:include src="./snippets/MenuBars/MenuBarAdminSnippet.xhtml"/>
-	<h:form id="frmusersPage" >
-	<script type="text/javascript">  
-		document.ready = function() {
-        Tb.clearFilters()
- 	 }
-	
-	</script>
-	<div class="clear"></div>
-	<div class="threequarters">
-			<h3><b>Rates</b></h3>
-			
-			<p:dataTable id="services2" var="row" value="#{days.daysList}" rowKey="#{row.id}" widgetVar="Tb"
-			 rowStyleClass="standard" selection="#{days.selectedday}" selectionMode="single" filteredValue="#{days.filteredDaysList}">
-				<p:column width="340" filterBy="#{row.name}" >  
-					<f:facet name="header">
-      					<h:outputText value="Description"/>
-    				</f:facet>
-                    	<h:outputText id="pDescription" value="#{row.name}" />
-                    	<p:tooltip for="pDescription" value = "#{row.name}"/>    
-               </p:column>  
-  				            
-        		<p:column width="65">  
-        			<f:facet name="header">
-      					<h:outputText value="Cost Per Day"/>
-    				</f:facet>
-    					<h:outputText value="#{row.currency}" />
-                    	<h:outputText value="#{row.costperday}" >
-                    		<f:convertNumber currencySymbol="#{row.currency}" groupingUsed="true" maxFractionDigits="0" type="currency" />
-                    	</h:outputText>
-           	</p:column>
-          		
-          		<p:column width="150" filterBy="#{row.country}" >  
-          			<f:facet name="header">
-      					<h:outputText value="Country"/>
-    				</f:facet>
-                    <h:outputText value="#{row.country}" />          
-               </p:column>
-            	
-    		</p:dataTable>
-	</div>
-	
-	             
-	<div id="SideContent">
-		<div class="quarter nobottommargin">
-			<ul id="verticalnavnoaction">	
-				<li><p:commandLink action="#" value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
-				<li><p:commandLink action="#" value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
-				<li><p:commandLink action="#" value="#{userInfo.user.company.companyName}" /></li>
-			</ul>			
-			<ul id="secondnav">
-				<li><p:commandLink action="#{adminmenubar.actionAddInstallDayPage}" value="Add Rate" /></li>
-				<li><p:commandLink action="#{adminmenubar.actionModifyInstallDayPage}" value="Modify Rate" /></li>
-				<li><p:commandLink onclick="confirmation.show()" value="Delete Rate" /></li>
-				<li><p:commandLink action="#{adminmenubar.actionAnnualRatesPage}" value="Annual Rates" /></li>
-			</ul>
+			<ui:include src="./snippets/MenuBars/MenuBarAdminSnippet.xhtml" />
+			<h:form id="frmusersPage">
+				<script type="text/javascript">
+					document.ready = function() {
+						Tb.clearFilters()
+					}
+				</script>
+				<div class="clear"></div>
+				<div class="threequarters">
+					<h3>
+						<b>Rates</b>
+					</h3>
+
+					<p:dataTable id="services2" var="row" value="#{days.daysList}"
+						rowKey="#{row.id}" widgetVar="Tb" rowStyleClass="standard"
+						selection="#{days.selectedday}" selectionMode="single"
+						filteredValue="#{days.filteredDaysList}">
+						<p:column width="340" filterBy="#{row.name}">
+							<f:facet name="header">
+								<h:outputText value="Description" />
+							</f:facet>
+							<h:outputText id="pDescription" value="#{row.name}" />
+							<p:tooltip for="pDescription" value="#{row.name}" />
+						</p:column>
+
+						<p:column width="65">
+							<f:facet name="header">
+								<h:outputText value="Cost Per Day" />
+							</f:facet>
+							<h:outputText value="#{row.currency}" />
+							<h:outputText value="#{row.costperday}">
+								<f:convertNumber currencySymbol="#{row.currency}"
+									groupingUsed="true" maxFractionDigits="0" type="currency" />
+							</h:outputText>
+						</p:column>
+
+						<p:column width="150" filterBy="#{row.country}">
+							<f:facet name="header">
+								<h:outputText value="Country" />
+							</f:facet>
+							<h:outputText value="#{row.country}" />
+						</p:column>
+
+					</p:dataTable>
+				</div>
+
+
+				<div id="SideContent">
+					<div class="quarter nobottommargin">
+						<ul id="verticalnavnoaction">
+							<li><p:commandLink action="#"
+									value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+							<li><p:commandLink action="#"
+									value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+							<li><p:commandLink action="#"
+									value="#{userInfo.user.company.companyName}" /></li>
+						</ul>
+						<ul id="secondnav">
+							<li><p:commandLink
+									action="#{adminmenubar.actionAddInstallDayPage}"
+									value="Add Rate" /></li>
+							<li><p:commandLink
+									action="#{adminmenubar.actionModifyInstallDayPage}"
+									value="Modify Rate" /></li>
+							<li><p:commandLink onclick="confirmation.show()"
+									value="Delete Rate" /></li>
+							<li><p:commandLink
+									action="#{adminmenubar.actionAnnualRatesPage}"
+									value="Annual Rates" /></li>
+						</ul>
+						<div style="padding-bottom: 127px">
+							<h:panelGrid columns="1"
+								style="width:222px;border-style:solid;	border-width:2px; float: center;padding:5px;">
+								<h:panelGroup style="width:100%">
+									<h:outputText value="Hours in a Day:" style="font-weight:bold;" />
+									<p:spinner id="hoursInDay" value="#{days.hoursInDay}" min="1"
+										max="24" stepFactor="1" size="6"
+										converterMessage="Enter a valid number." style="float:right" />
+								</h:panelGroup>
+								<p:commandButton action="#{days.saveHoursInDay}" value="Save" oncomplete="savedInfo.show()"
+									style="margin:0 auto;display:block;" />
+							</h:panelGrid>
+						</div>
+					</div>
+				</div>
+			</h:form>
+			<p:confirmDialog id="confirmSaveDialog"
+				message="Hours in a day saved successfully!" header="Saved"
+				severity="info" widgetVar="savedInfo" appendToBody="true">
+				<h:form>
+					<p:commandButton id="confirmOk" value="OK"
+						oncomplete="savedInfo.hide()" />
+
+				</h:form>
+			</p:confirmDialog>
+			<p:confirmDialog id="confirmDialog"
+				message="Are you sure want to delete the selected row?"
+				header="Initiating delete process" severity="alert"
+				widgetVar="confirmation" appendToBody="true">
+				<h:form>
+					<p:commandButton id="confirm" value="Yes Sure"
+						oncomplete="confirmation.hide()" action="#{days.deleteDay}" />
+					<p:commandButton id="decline" value="Not Yet"
+						onclick="confirmation.hide()" type="button" />
+				</h:form>
+			</p:confirmDialog>
 		</div>
-	</div>
-	 </h:form>  
-	 
-	 <p:confirmDialog id="confirmDialog" message="Are you sure want to delete the selected row?"  
-                header="Initiating delete process" severity="alert" widgetVar="confirmation" appendToBody="true">  
-            <h:form>
-            <p:commandButton   id="confirm" value="Yes Sure" oncomplete="confirmation.hide()"  
-                    action="#{days.deleteDay}" />  
-        	<p:commandButton   id="decline" value="Not Yet" onclick="confirmation.hide()" type="button" />   
-        	</h:form>
-       </p:confirmDialog>
-</div>
 
 
 
-</ui:define>
+	</ui:define>
 </ui:composition>
