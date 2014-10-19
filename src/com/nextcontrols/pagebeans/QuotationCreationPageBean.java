@@ -1533,13 +1533,20 @@ public class QuotationCreationPageBean implements Serializable {
 						* this.getmServiceOptionsDiscount() / 100)))
 				+ "</td></tr>";
 		summariesSecondPage += "</table>";
+		double total=0;
+		if(!this.getQuotation().isHardwareOnly()){
+			summariesSecondPage += "<div align='left'><table  border='0' width='80%' style='padding-left:30px'><tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 46px; text-decoration:underline;color:#41918A;text-align: left;'>INSTALLATION</th>"
+					+ "<th >&nbsp;</th></tr>";
 
-		summariesSecondPage += "<div align='left'><table  border='0' width='80%' style='padding-left:30px'><tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 46px; text-decoration:underline;color:#41918A;text-align: left;'>INSTALLATION</th>"
-				+ "<th >&nbsp;</th></tr>";
-
-		summariesSecondPage += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>On Site System Installation</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
-				+ userInfo.getUser().getCompany().getCountry().getCurrency()
-				+ formater.format(this.getOnSiteInst()) + "</td></tr>";
+			summariesSecondPage += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>On Site System Installation</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
+					+ userInfo.getUser().getCompany().getCountry().getCurrency()
+					+ formater.format(this.getOnSiteInst()) + "</td></tr>";
+			total=this.getOnSiteInst();
+		}
+		else{
+			summariesSecondPage += "<div align='left'><table  border='0' width='80%' style='padding-left:30px'><tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 46px; text-decoration:underline;color:#41918A;text-align: left;'>CALIBRATION</th>"
+					+ "<th >&nbsp;</th></tr>";
+		}
 		if (this.getQuotation().getOnsitesensorcalibration()) {
 			summariesSecondPage += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>On Site System Calibration</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
 					+ userInfo.getUser().getCompany().getCountry()
@@ -1552,15 +1559,15 @@ public class QuotationCreationPageBean implements Serializable {
 			summariesSecondPage += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>Less Discount Applied : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
 					+ userInfo.getUser().getCompany().getCountry()
 							.getCurrency()
-					+ formater.format(((this.getOnSiteInst() + this
+					+ formater.format(((total+ this
 							.getOnSiteCalib())
 							* this.getmSiteInstallationDiscount() / 100))
 					+ "</td></tr>";
 		}
 		summariesSecondPage += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>TOTAL : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
 				+ userInfo.getUser().getCompany().getCountry().getCurrency()
-				+ formater.format(((this.getOnSiteInst() + this
-						.getOnSiteCalib()) - ((this.getOnSiteInst() + this
+				+ formater.format(((total + this
+						.getOnSiteCalib()) - ((total + this
 						.getOnSiteCalib())
 						* this.getmSiteInstallationDiscount() / 100)))
 				+ "</td></tr>";
@@ -1579,9 +1586,8 @@ public class QuotationCreationPageBean implements Serializable {
 								+ (this.getOnceServicestotal() - (this
 										.getOnceServicestotal()
 										* this.getmServiceOptionsDiscount() / 100))
-								+ ((this.getOnSiteInst() + this
-										.getOnSiteCalib()) - ((this
-										.getOnSiteInst() + this
+								+ ((total + this
+										.getOnSiteCalib()) - ((total + this
 										.getOnSiteCalib())
 										* this.getmSiteInstallationDiscount() / 100)))
 				+ "</td></tr>";
@@ -1657,6 +1663,7 @@ public class QuotationCreationPageBean implements Serializable {
 			}
 			summariesThirdPage += "</p>";
 		}
+		
 		if (this.getQuotation().getYearlyrecalibrationservice() && !this.getQuotation().isUpdateInstallation()) {
 			summariesThirdPage += "<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 144px; text-decoration:underline;color:#41918A;'>NPL RE-CALIBRATION AND MAINTENANCE SERVICE</p>";
 

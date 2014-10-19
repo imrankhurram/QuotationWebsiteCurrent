@@ -194,7 +194,7 @@ public class QuotationDAO implements IQuotationDAO, Serializable {
 					+ ",[temperature_mapping]=?,[individual_quotepersite]=?,[hardware_discount]=?,[siteinstallation_discount]=?"
 					+ ",[serviceoption_discount]=?,[remotemonitoring_discount]=?,[user_id]=?,[creationtime]=?,[pdfcontents]=?,[emailto]=?,[revisionnumber]=?"
 					+ ",[completed]=?,[emailcc]=?,[emailbcc]=?,[emailsubject]=?,[customer_salutation]=?,[update_installation]=?,[remote_monitoring]=?"
-					+ ",[annual_calibration]=?,[address3]=?,[department]=?,[disable_coveringletter]=?"
+					+ ",[annual_calibration]=?,[address3]=?,[department]=?,[disable_coveringletter]=?,[hardwareonly]=?"
 					+ "WHERE id=?";
 
 			try {
@@ -246,7 +246,8 @@ public class QuotationDAO implements IQuotationDAO, Serializable {
 				stmnt.setString(44,pQuotation.getAddress3());
 				stmnt.setString(45,pQuotation.getDepartment());
 				stmnt.setBoolean(46, pQuotation.isDisable_coveringletter());
-				stmnt.setInt(47, quotationId);
+				stmnt.setBoolean(47, pQuotation.isHardwareOnly());
+				stmnt.setInt(48, quotationId);
 				stmnt.executeUpdate();
 
 			} catch (SQLException e) {
@@ -266,8 +267,8 @@ public class QuotationDAO implements IQuotationDAO, Serializable {
 					+ ",[temperature_mapping],[individual_quotepersite],[hardware_discount],[siteinstallation_discount]"
 					+ ",[serviceoption_discount],[remotemonitoring_discount],[user_id],[creationtime],[pdfcontents]"
 					+ ",[emailto],[revisionnumber],[completed],[emailcc],[emailbcc],[emailsubject],[customer_salutation]"
-					+ ",[update_installation],[remote_monitoring],[annual_calibration],[address3],[department],[disable_coveringletter])"
-					+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+					+ ",[update_installation],[remote_monitoring],[annual_calibration],[address3],[department],[disable_coveringletter],[hardwareonly])"
+					+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
 			try {
 				stmnt = dbConn.prepareStatement(query,
@@ -319,6 +320,7 @@ public class QuotationDAO implements IQuotationDAO, Serializable {
 				stmnt.setString(44, pQuotation.getAddress3());
 				stmnt.setString(45, pQuotation.getDepartment());
 				stmnt.setBoolean(46, pQuotation.isDisable_coveringletter());
+				stmnt.setBoolean(47, pQuotation.isHardwareOnly());
 				stmnt.executeUpdate();
 				ResultSet rs = stmnt.getGeneratedKeys();
 				while (rs.next()) {
@@ -609,6 +611,7 @@ public class QuotationDAO implements IQuotationDAO, Serializable {
 				quotation.setAddress3(results.getString("address3"));
 				quotation.setDepartment(results.getString("department"));
 				quotation.setDisable_coveringletter(results.getBoolean("disable_coveringletter"));
+				quotation.setHardwareOnly(results.getBoolean("hardwareonly"));
 				quotationsList.add(quotation);
 			}
 		} catch (SQLException e) {
@@ -1326,7 +1329,7 @@ public class QuotationDAO implements IQuotationDAO, Serializable {
 				+ ",[temperature_mapping]=?,[individual_quotepersite]=?,[hardware_discount]=?,[siteinstallation_discount]=?"
 				+ ",[serviceoption_discount]=?,[remotemonitoring_discount]=?,[user_id]=?,[creationtime]=?,[pdfcontents]=?,[emailto]=?,[revisionnumber]=?"
 				+ ",[completed]=?,[accepted]=?,[emailcc]=?,[emailbcc]=?,[emailsubject]=?,[customer_salutation]=?,[update_installation]=?"
-				+ ",[remote_monitoring]=?,[annual_calibration]=?,[address3]=?,[department]=?,[disable_coveringletter]=?"
+				+ ",[remote_monitoring]=?,[annual_calibration]=?,[address3]=?,[department]=?,[disable_coveringletter]=?,[hardwareonly]=?"
 				+ "WHERE id=?";
 
 		try {
@@ -1378,7 +1381,8 @@ public class QuotationDAO implements IQuotationDAO, Serializable {
 			stmnt.setString(45, pQuotation.getAddress3());
 			stmnt.setString(46, pQuotation.getDepartment());
 			stmnt.setBoolean(47, pQuotation.isDisable_coveringletter());
-			stmnt.setInt(48, pQuotation.getId());
+			stmnt.setBoolean(48, pQuotation.isHardwareOnly());
+			stmnt.setInt(49, pQuotation.getId());
 			result = stmnt.executeUpdate();
 
 		} catch (SQLException e) {

@@ -588,7 +588,7 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 				"<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 84px;'>Predictable, low ownership costs:<br/>"
 				+ " &nbsp; &nbsp;&bull;&nbsp; &nbsp; &nbsp; &nbsp;Price fixed for duration of Service Agreement.<br/>"
 				+ " &nbsp; &nbsp;&bull;&nbsp; &nbsp; &nbsp; &nbsp;Zero software upgrade and licensing costs.<br/>"
-				+ " &nbsp; &nbsp;&bull;&nbsp; &nbsp; &nbsp; &nbsp;Zero IT software & hardware support costs.<br/>"
+				+ " &nbsp; &nbsp;&bull;&nbsp; &nbsp; &nbsp; &nbsp;Zero IT software &amp; hardware support costs.<br/>"
 				+ " &nbsp; &nbsp;&bull;&nbsp; &nbsp; &nbsp; &nbsp;Elimination of local staff costs."
 				+ "</p>"
 				+
@@ -611,7 +611,7 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 
 				"<p style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 84px; '>Highly safe and secure electronic records: <br/>"
 				+ "&nbsp; &nbsp;&bull;&nbsp; &nbsp; &nbsp; &nbsp;Secure HTTPS Electronic Banking standards web site.<br/>"
-				+ "&nbsp; &nbsp;&bull;&nbsp; &nbsp; &nbsp; &nbsp;Fully 21 CFR part 11 compliant access passwords & PIN codes 11.<br/>"
+				+ "&nbsp; &nbsp;&bull;&nbsp; &nbsp; &nbsp; &nbsp;Fully 21 CFR part 11 compliant access passwords &amp; PIN codes.<br/>"
 				+ "&nbsp; &nbsp;&bull;&nbsp; &nbsp; &nbsp; &nbsp;Fully traceable user activity audit records.<br/>"
 				+ "&nbsp; &nbsp;&bull;&nbsp; &nbsp; &nbsp; &nbsp;Mirrored record storage for ultimate security.<br/>"
 				+ "</p>"
@@ -655,7 +655,10 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 			pageContents += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>";
 			if (qc.getTempquantity() > 0)
 				pageContents += "<strong>";
-			pageContents += qc.getDescription();
+			String desc=qc.getDescription();
+			desc=desc.replace("&", "&amp;");
+			pageContents += desc;
+//			pageContents += qc.getDescription();
 			if (qc.getTempquantity() > 0)
 				pageContents += "</strong>";
 			pageContents += "</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>";
@@ -775,6 +778,7 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 			pageContents += "<table cellpadding='3' style='margin-top:10px;border-collapse: collapse;border:0.25px solid black;font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;margin-left:50px;'><tr style='font-size:10pt;'><th style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>ITEM</th><th style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>PART NO.</th><th style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>UNIT COST</th><th style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>QTY</th><th style='padding:5px;text-align:right;border-collapse: collapse;border:0.25px solid black;'>TOTAL COST</th></tr>";
 			int itemCounter = 1;
 			firstPart = 3;
+			int lineCounter = 5;
 			for (StandardParts st : quotationBean.getTempStParts()) {
 				if (st.getQuoteQuantity() != 0) {
 					pageContents += "<tr style='font-size:9pt;'><td style='padding:5px;border-collapse: collapse;border:0.25px solid black;'>"
@@ -798,6 +802,10 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 									* st.getQuoteQuantity())
 							+ "</td>"
 							+ "</tr>";
+					if (lineCounter == 5) {
+						firstPart++;
+					}
+					lineCounter = 9 - lineCounter;
 					firstPart++;
 					itemCounter++;
 				}
@@ -995,15 +1003,24 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 		secondPart++;
 		//System.out.println("5");
 		pageContents2 += "</table>";
-
-		pageContents2 += "<div align='left'><table  border='0' width='80%'><tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 46px; text-decoration:underline;color:#41918A;text-align: left;'>INSTALLATION</th>"
-				+ "<th >&nbsp;</th></tr>";
-		secondPart++;
-		//System.out.println("6");
-		pageContents2 += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>On Site System Installation</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
-				+ userInfo.getUser().getCompany().getCountry().getCurrency()
-				+ formater.format(quotationBean.getOnSiteInst()) + "</td></tr>";
-		secondPart++;
+		double total=0;
+		if(!quotationBean.getQuotation().isHardwareOnly()){
+			pageContents2 += "<div align='left'><table  border='0' width='80%'><tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 46px; text-decoration:underline;color:#41918A;text-align: left;'>INSTALLATION</th>"
+					+ "<th >&nbsp;</th></tr>";
+			secondPart++;
+			//System.out.println("6");
+			pageContents2 += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>On Site System Installation</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
+					+ userInfo.getUser().getCompany().getCountry().getCurrency()
+					+ formater.format(quotationBean.getOnSiteInst()) + "</td></tr>";
+			total=quotationBean.getOnSiteInst();
+			secondPart++;
+		}
+		else{
+			pageContents2 += "<div align='left'><table  border='0' width='80%'><tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 46px; text-decoration:underline;color:#41918A;text-align: left;'>CALIBRATION</th>"
+					+ "<th >&nbsp;</th></tr>";
+			secondPart++;
+			
+		}
 		//System.out.println("7");
 		if (quotationBean.getQuotation().getOnsitesensorcalibration()) {
 			pageContents2 += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>On Site System Calibration</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
@@ -1021,7 +1038,7 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 					+ userInfo.getUser().getCompany().getCountry()
 							.getCurrency()
 					+ formater
-							.format(((quotationBean.getOnSiteInst() + quotationBean
+							.format(((total+ quotationBean
 									.getOnSiteCalib())
 									* quotationBean
 											.getmSiteInstallationDiscount() / 100))
@@ -1032,9 +1049,8 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 		pageContents2 += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>TOTAL : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
 				+ userInfo.getUser().getCompany().getCountry().getCurrency()
 				+ formater
-						.format(((quotationBean.getOnSiteInst() + quotationBean
-								.getOnSiteCalib()) - ((quotationBean
-								.getOnSiteInst() + quotationBean
+						.format(((total + quotationBean
+								.getOnSiteCalib()) - ((total + quotationBean
 								.getOnSiteCalib())
 								* quotationBean.getmSiteInstallationDiscount() / 100)))
 				+ "</td></tr>";
@@ -1060,9 +1076,8 @@ public class PDFExporterFromHTMLPageBean implements Serializable {
 										.getOnceServicestotal()
 										* quotationBean
 												.getmServiceOptionsDiscount() / 100))
-								+ ((quotationBean.getOnSiteInst() + quotationBean
-										.getOnSiteCalib()) - ((quotationBean
-										.getOnSiteInst() + quotationBean
+								+ ((total + quotationBean
+										.getOnSiteCalib()) - ((total + quotationBean
 										.getOnSiteCalib())
 										* quotationBean
 												.getmSiteInstallationDiscount() / 100)))

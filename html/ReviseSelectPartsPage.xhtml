@@ -117,15 +117,15 @@ function autoSaveTimerHome(){
 		</div>
 		<div class="quarterminus25">
 		<h:panelGrid columns="1" style="width:222px;border-style:solid;	border-width:2px; float: center;" id="infoTable">  
-			<h:panelGrid columns="2">
+			<h:panelGrid columns="2" rendered="#{(not revisedquotation.quotation.hardwareOnly) || (revisedquotation.quotation.onsitesensorcalibration)}">
 			<f:facet name="header">  
                     Enter Number of Days  
             </f:facet>  
-    		<h:outputText value="Site Installation:"/>
+    		<h:outputText value="Site Installation:" rendered="#{not revisedquotation.quotation.hardwareOnly}"/>
     		<!-- <p:spinner id="installationTime" value="#{revisedquotation.tempSiteInstallation}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value."/> -->
-			<p:inputText id="installationTime" value="#{revisedquotation.tempSiteInstallation}" style="width:83px" readonly="true" disabled="true"/>
-			<h:outputText value="Installation Travel:"/>
-			<p:inputText value="#{revisedquotation.tempInstallationTravel}" style="width:83px"/>
+			<p:inputText id="installationTime" value="#{revisedquotation.tempSiteInstallation}" style="width:83px" readonly="true" disabled="true" rendered="#{not revisedquotation.quotation.hardwareOnly}"/>
+			<h:outputText value="Installation Travel:" rendered="#{not revisedquotation.quotation.hardwareOnly}"/>
+			<p:inputText value="#{revisedquotation.tempInstallationTravel}" style="width:83px" rendered="#{not revisedquotation.quotation.hardwareOnly}"/>
 			<c:if test="${revisedquotation.quotation.onsitesensorcalibration}">
 			<h:outputText value="Site Calibration:"/>
 			<p:inputText  id="calibrationTime" value="#{revisedquotation.tempSiteCalibration}" style="width:83px" readonly="true" disabled="true"/>

@@ -1,17 +1,16 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-xmlns:ui="http://java.sun.com/jsf/facelets"
-xmlns:f="http://java.sun.com/jsf/core"
-xmlns:h="http://java.sun.com/jsf/html"
-xmlns:p="http://primefaces.org/ui"
-xmlns:c="http://java.sun.com/jsp/jstl/core"
-xmlns:o="http://omnifaces.org/ui"
-xmlns:of="http://omnifaces.org/functions"
-template="MainTemplate.xhtml">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions" template="MainTemplate.xhtml">
 
 
-<ui:define name="contentPanel">
-<div id="Wrapper">
-<SCRIPT type="text/javascript">
+	<ui:define name="contentPanel">
+		<div id="Wrapper">
+			<SCRIPT type="text/javascript">
 function autoSaveTimer(){
 	var flag=false;
 	
@@ -55,61 +54,97 @@ function autoSaveTimer(){
 	return true;
 }
 </SCRIPT>
-	
-	<o:highlight styleClass="error"/>
-	<h:form id="frmrevisedquotationPage" prependId="false">
-	<ui:include src="./snippets/MenuBars/MenuBarReviseQuotationFirstSnippet.xhtml"/>
-	<div class="clear"></div>
-	<h:outputText id="txt_saving" value="Auto Saving..." rendered="true" style="display:none;margin-top:-20px;margin-left:20px;position:absolute;"/>
-	<div class="quarternhalf" style="height: 345px;">
-			<h3><b>Site Details</b></h3>	
-			<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
-				<o:outputLabel for="customerName" value="Company Name*: "/>
-				<p:inputText id="customerName" value="#{revisedquotation.quotation.customername}"  required="true" requiredMessage="Company Name is required"/>
-				<o:outputLabel for="contactName"  value="Contact Name*: "/>
-				<p:inputText id="contactName" value="#{revisedquotation.quotation.contactname}"  required="true" requiredMessage="Contact Name is required" />
-				<o:outputLabel for="customerSalutation" value="Contact Salutation*: " />
-				<p:inputText id="customerSalutation" value="#{revisedquotation.quotation.customersalutation}" required="true"	requiredMessage="Contact Salutation is required" />
-				<h:outputText value="Department: " />
-				<p:inputText id="department" value="#{revisedquotation.quotation.department}" />
-				
-				<o:outputLabel for="address1" value="Address L1*: "/>
-				<p:inputText id="address1" value="#{revisedquotation.quotation.address1}" required="true" requiredMessage="Address is required"/>
-				<h:outputText value="Address L2: "/>
-				<p:inputText id="address2" value="#{revisedquotation.quotation.address2}"/>
-				<h:outputText value="Address L3: " />
-				<p:inputText id="address3" value="#{revisedquotation.quotation.address3}" />
-				<o:outputLabel for="towncity" value="Town/City*: "/>
-				<p:inputText id="towncity" value="#{revisedquotation.quotation.towncity}" required="true" requiredMessage="Town/City is required"/>
-				<o:outputLabel for="countyState" value="County/State*: "/>
-				<p:inputText id="countyState" value="#{revisedquotation.quotation.countrystate}" required="true" requiredMessage="Required"/>
-				<o:outputLabel for="zipPostCode" value="ZIP/Post Code*: "/>
-				<p:inputText id="zipPostCode" value="#{revisedquotation.quotation.zippincode}" required="true" requiredMessage="Zip/Post is required"/>
-			</p:panelGrid>
-	</div>
-	<div class="quarternhalf" style="height: 345px;">
-			<h3><b>Site Details</b></h3>
-			<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
-				<c:if test="${revisedquotation.quotation.completed}">
-					<o:outputLabel for="quoteref2" value="Quote Ref: "/>
-					<p:panel columns="2" style="padding-top:0em;padding-bottom:0em;">
-						<p:inputText id="quoteref" value="#{revisedquotation.quotation.quotationref}\" size="7" readonly="true" disabled="${not revisedquotation.quotation.completed}">
-							<p:tooltip for="quoteref" value="#{revisedquotation.quotation.quotationref}\"/> 
-						</p:inputText>
-					 	<p:spacer width="2"/>
-						<p:inputText id="quoteref2" value="#{revisedquotation.postQuotationRef}" size="3" required="true"/>
-					</p:panel>
-				</c:if>
-				<c:if test="${not revisedquotation.quotation.completed}">
-					<o:outputLabel for="quoteref" value="Quote Ref: "/>
-					<p:inputText id="quoteref" value="#{revisedquotation.quotation.quotationref}" readonly="true" disabled="${not revisedquotation.quotation.completed}">
-						<p:tooltip for="quoteref" value="#{revisedquotation.quotation.quotationref}"/> 
-					</p:inputText>
-				</c:if>
-				
-				<o:outputLabel for="projectName" value="Project Name*: "/>
-				<p:inputText id="projectName" value="#{revisedquotation.quotation.projectname}" required="true" requiredMessage="Project Name is required"/>
-				<!-- <o:outputLabel for="facilityType" value="Facility Type: "/>
+
+			<o:highlight styleClass="error" />
+			<h:form id="frmrevisedquotationPage" prependId="false">
+				<ui:include
+					src="./snippets/MenuBars/MenuBarReviseQuotationFirstSnippet.xhtml" />
+				<div class="clear"></div>
+				<h:outputText id="txt_saving" value="Auto Saving..." rendered="true"
+					style="display:none;margin-top:-20px;margin-left:20px;position:absolute;" />
+				<div class="quarternhalf" style="height: 345px;">
+					<h3>
+						<b>Site Details</b>
+					</h3>
+					<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
+						<o:outputLabel for="customerName" value="Company Name*: " />
+						<p:inputText id="customerName"
+							value="#{revisedquotation.quotation.customername}"
+							required="true" requiredMessage="Company Name is required" />
+						<o:outputLabel for="contactName" value="Contact Name*: " />
+						<p:inputText id="contactName"
+							value="#{revisedquotation.quotation.contactname}" required="true"
+							requiredMessage="Contact Name is required" />
+						<o:outputLabel for="customerSalutation"
+							value="Contact Salutation*: " />
+						<p:inputText id="customerSalutation"
+							value="#{revisedquotation.quotation.customersalutation}"
+							required="true" requiredMessage="Contact Salutation is required" />
+						<h:outputText value="Department: " />
+						<p:inputText id="department"
+							value="#{revisedquotation.quotation.department}" />
+
+						<o:outputLabel for="address1" value="Address L1*: " />
+						<p:inputText id="address1"
+							value="#{revisedquotation.quotation.address1}" required="true"
+							requiredMessage="Address is required" />
+						<h:outputText value="Address L2: " />
+						<p:inputText id="address2"
+							value="#{revisedquotation.quotation.address2}" />
+						<h:outputText value="Address L3: " />
+						<p:inputText id="address3"
+							value="#{revisedquotation.quotation.address3}" />
+						<o:outputLabel for="towncity" value="Town/City*: " />
+						<p:inputText id="towncity"
+							value="#{revisedquotation.quotation.towncity}" required="true"
+							requiredMessage="Town/City is required" />
+						<o:outputLabel for="countyState" value="County/State*: " />
+						<p:inputText id="countyState"
+							value="#{revisedquotation.quotation.countrystate}"
+							required="true" requiredMessage="Required" />
+						<o:outputLabel for="zipPostCode" value="ZIP/Post Code*: " />
+						<p:inputText id="zipPostCode"
+							value="#{revisedquotation.quotation.zippincode}" required="true"
+							requiredMessage="Zip/Post is required" />
+					</p:panelGrid>
+				</div>
+				<div class="quarternhalf" style="height: 345px;">
+					<h3>
+						<b>Site Details</b>
+					</h3>
+					<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
+						<c:if test="${revisedquotation.quotation.completed}">
+							<o:outputLabel for="quoteref2" value="Quote Ref: " />
+							<p:panel columns="2" style="padding-top:0em;padding-bottom:0em;">
+								<p:inputText id="quoteref"
+									value="#{revisedquotation.quotation.quotationref}\" size="7"
+									readonly="true"
+									disabled="${not revisedquotation.quotation.completed}">
+									<p:tooltip for="quoteref"
+										value="#{revisedquotation.quotation.quotationref}\" />
+								</p:inputText>
+								<p:spacer width="2" />
+								<p:inputText id="quoteref2"
+									value="#{revisedquotation.postQuotationRef}" size="3"
+									required="true" />
+							</p:panel>
+						</c:if>
+						<c:if test="${not revisedquotation.quotation.completed}">
+							<o:outputLabel for="quoteref" value="Quote Ref: " />
+							<p:inputText id="quoteref"
+								value="#{revisedquotation.quotation.quotationref}"
+								readonly="true"
+								disabled="${not revisedquotation.quotation.completed}">
+								<p:tooltip for="quoteref"
+									value="#{revisedquotation.quotation.quotationref}" />
+							</p:inputText>
+						</c:if>
+
+						<o:outputLabel for="projectName" value="Project Name*: " />
+						<p:inputText id="projectName"
+							value="#{revisedquotation.quotation.projectname}" required="true"
+							requiredMessage="Project Name is required" />
+						<!-- <o:outputLabel for="facilityType" value="Facility Type: "/>
 			    <p:selectOneMenu id="facilityType" value="#{revisedquotation.quotation.facilitytype}" ajax="false" style="width:135px;text-align: left;" required="true" requiredMessage="Required">  
 				    <f:selectItem itemLabel="Select One" itemValue="" />  
             		<f:selectItem itemLabel="Bio Tech And Life Sciences" itemValue="Bio Tech And Life Sciences" />  
@@ -119,88 +154,128 @@ function autoSaveTimer(){
             		<f:selectItem itemLabel="Medical Laboratories" itemValue="Medical Laboratories" /> 
             		<f:selectItem itemLabel="Pharmacy" itemValue="Pharmacy" /> 
         		</p:selectOneMenu>   -->
-        		
-				<o:outputLabel for="contacttelno" value="Contact Tel. no*: "/>
-				<p:inputText id="contacttelno" value="#{revisedquotation.quotation.contacttelno}" required="true" requiredMessage="Contact Number is required"/>
-				<o:outputLabel for="contactEmail" value="Contact Email*: "/>
-				<p:inputText id="contactEmail" value="#{revisedquotation.quotation.contactemail}" required="true" requiredMessage="Email is required"/>
-				
-				
-			</p:panelGrid>
-			<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
-				<h:outputText value="Is this an update to and existing installaton? " style="width:80px;"/>
-				<p:selectOneRadio id="updateInstallation" value="#{revisedquotation.quotation.updateInstallation}">
-					<f:selectItem itemLabel="Yes" itemValue="#{true}"/>
-					<f:selectItem itemLabel="No" itemValue="#{false}"/>
-				</p:selectOneRadio>
-				<p:spacer height="21" width="80" />
-				<p:spacer height="21" width="80" />
-				<p:spacer height="21" width="80" />
-				<p:spacer height="21" width="80" />
-			</p:panelGrid>			
-	</div>
-	
-	<div id="SideContent">
-		<div class="quarter nobottommargin">
-			<ul id="verticalnavnoaction">	
-				<li><p:commandLink action="#" value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
-				<li><p:commandLink action="#" value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
-				<li><p:commandLink action="#" value="#{userInfo.user.company.companyName}" /></li>
-			</ul>			
-			<ul id="secondnav">
-				<li><p:commandLink action="#{revisedquotation.clearNewQuotationPage}" value="Clear This Page" immediate="true" update="frmrevisedquotationPage"/></li>
-				<!-- <li><p:commandLink action="#{revisedquotation.newQuotationPageNext}" value="Proceed To Quote" ajax="false" /></li> -->
-			</ul>
-		</div>
-	</div>
-	
-	<div class="quarternhalf">
-			<h3><b>Service Options</b></h3>
-			<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
-				<h:outputText value="Remote Recording only? "/>
-				<p:selectBooleanCheckbox id="recordingonly" value="#{revisedquotation.quotation.recordingonly}" />
-				<h:outputText value="Alarm Monitoring only? " />
-				<p:selectBooleanCheckbox id="alarmMonitoringOnly" value="" disabled="true"/>
-				<h:outputText value="Alarm Monitoring + Recording? "/>
-				<p:selectBooleanCheckbox id="combinedrecordingalarmmonitor" value="#{revisedquotation.quotation.combinedrnamonitoring}" />
-				<h:outputText value="Temperature Mapping? "/>
-				<p:selectBooleanCheckbox id="temperatureMapping" value="#{revisedquotation.quotation.temperatureMapping}" disabled="true"/>
-				<h:outputText value="On-site Probe Calibration? "/>
-				<p:selectBooleanCheckbox id="onsitesensorcal" value="#{revisedquotation.quotation.onsitesensorcalibration}" />
-				<h:outputText value="Factory Probe Calibration? "/>
-				<p:selectBooleanCheckbox id="factorysensorcal" value="#{revisedquotation.quotation.factorysensorcalibration}" />
-						
-				
-				
-				
-				<!-- <h:outputText value="Individual quote per site? "/>
+
+						<o:outputLabel for="contacttelno" value="Contact Tel. no*: " />
+						<p:inputText id="contacttelno"
+							value="#{revisedquotation.quotation.contacttelno}"
+							required="true" requiredMessage="Contact Number is required" />
+						<o:outputLabel for="contactEmail" value="Contact Email*: " />
+						<p:inputText id="contactEmail"
+							value="#{revisedquotation.quotation.contactemail}"
+							required="true" requiredMessage="Email is required" />
+
+
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
+						<h:outputText
+							value="Is this an update to and existing installaton? "
+							style="width:80px;" />
+						<p:selectOneRadio id="updateInstallation"
+							value="#{revisedquotation.quotation.updateInstallation}">
+							<f:selectItem itemLabel="Yes" itemValue="#{true}" />
+							<f:selectItem itemLabel="No" itemValue="#{false}" />
+						</p:selectOneRadio>
+
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
+						<h:outputText value="Hardware Only? " style="width:80px;" />
+						<p:selectOneRadio id="hardwareOnlye"
+							value="#{revisedquotation.quotation.hardwareOnly}" style="float:right;">
+							<f:selectItem itemLabel="Yes" itemValue="#{true}" />
+							<f:selectItem itemLabel="No" itemValue="#{false}" />
+						</p:selectOneRadio>
+						<p:spacer height="21" width="80" />
+						<p:spacer height="21" width="80" />
+						<p:spacer height="21" width="80" />
+						<!-- <p:spacer height="21" width="80" /> -->
+					</p:panelGrid>
+				</div>
+
+				<div id="SideContent">
+					<div class="quarter nobottommargin">
+						<ul id="verticalnavnoaction">
+							<li><p:commandLink action="#"
+									value="#{userInfo.currTime}   #{userInfo.currDate}" /></li>
+							<li><p:commandLink action="#"
+									value="#{userInfo.user.firstName} #{userInfo.user.lastName}" /></li>
+							<li><p:commandLink action="#"
+									value="#{userInfo.user.company.companyName}" /></li>
+						</ul>
+						<ul id="secondnav">
+							<li><p:commandLink
+									action="#{revisedquotation.clearNewQuotationPage}"
+									value="Clear This Page" immediate="true"
+									update="frmrevisedquotationPage" /></li>
+							<!-- <li><p:commandLink action="#{revisedquotation.newQuotationPageNext}" value="Proceed To Quote" ajax="false" /></li> -->
+						</ul>
+					</div>
+				</div>
+
+				<div class="quarternhalf">
+					<h3>
+						<b>Service Options</b>
+					</h3>
+					<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
+						<h:outputText value="Remote Recording only? " />
+						<p:selectBooleanCheckbox id="recordingonly"
+							value="#{revisedquotation.quotation.recordingonly}" />
+						<h:outputText value="Alarm Monitoring only? " />
+						<p:selectBooleanCheckbox id="alarmMonitoringOnly" value=""
+							disabled="true" />
+						<h:outputText value="Alarm Monitoring + Recording? " />
+						<p:selectBooleanCheckbox id="combinedrecordingalarmmonitor"
+							value="#{revisedquotation.quotation.combinedrnamonitoring}" />
+						<h:outputText value="Temperature Mapping? " />
+						<p:selectBooleanCheckbox id="temperatureMapping"
+							value="#{revisedquotation.quotation.temperatureMapping}"
+							disabled="true" />
+						<h:outputText value="On-site Probe Calibration? " />
+						<p:selectBooleanCheckbox id="onsitesensorcal"
+							value="#{revisedquotation.quotation.onsitesensorcalibration}" />
+						<h:outputText value="Factory Probe Calibration? " />
+						<p:selectBooleanCheckbox id="factorysensorcal"
+							value="#{revisedquotation.quotation.factorysensorcalibration}" />
+
+
+
+
+						<!-- <h:outputText value="Individual quote per site? "/>
 				<p:selectBooleanCheckbox id="individualquotepersite" value="#{revisedquotation.quotation.individualquotepersite}" disabled="true">
 					<p:ajax update="multisitequote"/>
 				</p:selectBooleanCheckbox>
 				<h:outputText value="Number Of Sites? "/>
 				<p:spinner id="multisitequote" value="#{revisedquotation.quotation.numberofsites}" min="0" max="20" stepFactor="1" size="12" converterMessage="Enter a valid number." disabled="#{!revisedquotation.quotation.individualquotepersite}"/> -->
-	  		</p:panelGrid>			
-	</div>		
-	<div class="quarternhalf">
-			<h3><b>Service Options</b></h3>
-			<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
-				
-				<h:outputText value="DQ, IQ, OQ Protocol Documents? "/>
-				<p:selectBooleanCheckbox id="dqiqoqProtocoldoc" value="#{revisedquotation.quotation.dqiqoqprotocoldocs}" />
-				<h:outputText value="Website server setup? "/>
-				<p:selectBooleanCheckbox id="websiteserverdbsetup" value="#{revisedquotation.quotation.websitedbsetup}" />
-				<h:outputText value="Web hosted GUI? "/>
-				<p:selectBooleanCheckbox id="webhostedgui" value="#{revisedquotation.quotation.webhostedgui}" />
-				<h:outputText value="Web hosted Dashboard? " />
-				<p:selectBooleanCheckbox id="webHostedDashboard" value="" disabled="true"/>
-				<h:outputText value="Yearly re-calibration service? "/>
-				<p:selectBooleanCheckbox id="yearlyrecalservice" value="#{revisedquotation.quotation.yearlyrecalibrationservice}" />
-				<h:outputText value="Financed hardware option? "/>
-				<p:selectBooleanCheckbox id="financedhdoption" value="#{revisedquotation.quotation.financedhdoption}" disabled="true"/>
-				
-			</p:panelGrid>			
-	</div>	
-	</h:form>
-</div>
-</ui:define>
+					</p:panelGrid>
+				</div>
+				<div class="quarternhalf">
+					<h3>
+						<b>Service Options</b>
+					</h3>
+					<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
+
+						<h:outputText value="DQ, IQ, OQ Protocol Documents? " />
+						<p:selectBooleanCheckbox id="dqiqoqProtocoldoc"
+							value="#{revisedquotation.quotation.dqiqoqprotocoldocs}" />
+						<h:outputText value="Website server setup? " />
+						<p:selectBooleanCheckbox id="websiteserverdbsetup"
+							value="#{revisedquotation.quotation.websitedbsetup}" />
+						<h:outputText value="Web hosted GUI? " />
+						<p:selectBooleanCheckbox id="webhostedgui"
+							value="#{revisedquotation.quotation.webhostedgui}" />
+						<h:outputText value="Web hosted Dashboard? " />
+						<p:selectBooleanCheckbox id="webHostedDashboard" value=""
+							disabled="true" />
+						<h:outputText value="Yearly re-calibration service? " />
+						<p:selectBooleanCheckbox id="yearlyrecalservice"
+							value="#{revisedquotation.quotation.yearlyrecalibrationservice}" />
+						<h:outputText value="Financed hardware option? " />
+						<p:selectBooleanCheckbox id="financedhdoption"
+							value="#{revisedquotation.quotation.financedhdoption}"
+							disabled="true" />
+
+					</p:panelGrid>
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
 </ui:composition>

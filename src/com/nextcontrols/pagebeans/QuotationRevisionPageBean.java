@@ -1582,13 +1582,20 @@ public class QuotationRevisionPageBean implements Serializable {
 						* this.getmServiceOptionsDiscount() / 100)))
 				+ "</td></tr>";
 		summariesSecondPage += "</table>";
-
-		summariesSecondPage += "<div align='left'><table  border='0' width='80%' style='padding-left:30px'><tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 46px; text-decoration:underline;color:#41918A;text-align: left;'>INSTALLATION</th>"
+		double total=0;
+		if(!this.getQuotation().isHardwareOnly()){
+			summariesSecondPage += "<div align='left'><table  border='0' width='80%' style='padding-left:30px'><tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 46px; text-decoration:underline;color:#41918A;text-align: left;'>INSTALLATION</th>"
 				+ "<th >&nbsp;</th></tr>";
 
-		summariesSecondPage += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>On Site System Installation</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
+			summariesSecondPage += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>On Site System Installation</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
 				+ userInfo.getUser().getCompany().getCountry().getCurrency()
 				+ formater.format(this.getOnSiteInst()) + "</td></tr>";
+			total=this.getOnSiteInst();
+		}
+		else{
+			summariesSecondPage += "<div align='left'><table  border='0' width='80%' style='padding-left:30px'><tr><th style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;padding-left: 46px; text-decoration:underline;color:#41918A;text-align: left;'>CALIBRATION</th>"
+					+ "<th >&nbsp;</th></tr>";
+		}
 		if (this.getQuotation().getOnsitesensorcalibration()) {
 			summariesSecondPage += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;'>On Site System Calibration</td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>"
 					+ userInfo.getUser().getCompany().getCountry()
@@ -1601,15 +1608,15 @@ public class QuotationRevisionPageBean implements Serializable {
 			summariesSecondPage += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>Less Discount Applied : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
 					+ userInfo.getUser().getCompany().getCountry()
 							.getCurrency()
-					+ formater.format(((this.getOnSiteInst() + this
+					+ formater.format(((total+ this
 							.getOnSiteCalib())
 							* this.getmSiteInstallationDiscount() / 100))
 					+ "</td></tr>";
 		}
 		summariesSecondPage += "<tr><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;'>TOTAL : </td><td style='font-family: Arial, Verdana; font-size: 9pt; font-variant: normal; line-height: normal; font-weight: normal; font-style:normal;text-align: right;text-decoration:underline;'>"
 				+ userInfo.getUser().getCompany().getCountry().getCurrency()
-				+ formater.format(((this.getOnSiteInst() + this
-						.getOnSiteCalib()) - ((this.getOnSiteInst() + this
+				+ formater.format(((total+ this
+						.getOnSiteCalib()) - ((total + this
 						.getOnSiteCalib())
 						* this.getmSiteInstallationDiscount() / 100)))
 				+ "</td></tr>";
@@ -1628,9 +1635,8 @@ public class QuotationRevisionPageBean implements Serializable {
 								+ (this.getOnceServicestotal() - (this
 										.getOnceServicestotal()
 										* this.getmServiceOptionsDiscount() / 100))
-								+ ((this.getOnSiteInst() + this
-										.getOnSiteCalib()) - ((this
-										.getOnSiteInst() + this
+								+ ((total + this
+										.getOnSiteCalib()) - ((total + this
 										.getOnSiteCalib())
 										* this.getmSiteInstallationDiscount() / 100)))
 				+ "</td></tr>";
@@ -1912,20 +1918,28 @@ public class QuotationRevisionPageBean implements Serializable {
 			this.quotation
 					.setQuotationcoveringletter(this.quotationcoveringletter);
 
-			// System.out.println(this.quotation.getQuotationcoveringletter());
+//			 System.out.println(this.quotation.getQuotationcoveringletter());
 		} else {
+//			System.out.println(this.quotation.getQuotationcoveringletter());
 			String cover = this.quotation.getQuotationcoveringletter();
+			boolean isDearExsit=false;
 			if (cover.indexOf("Dear") != -1) {
+				isDearExsit=true;
+//				System.out.println("index of dear"+cover.indexOf("Dear"));
 				cover = cover.substring(cover.indexOf("Dear"), cover.length());
 			}
-			if (cover.lastIndexOf("Yours truly,") != -1) {
+			if (isDearExsit && cover.lastIndexOf("Yours truly,") != -1) {
+//				System.out.println("index of yours truly "+cover.lastIndexOf("Yours truly,"));
 				cover = cover.substring(0, cover.lastIndexOf("Yours truly,"));
+				cover+="</div>";
+//				System.out.println(cover);
 			}
 			if (cover.indexOf("Dear") == 0) {
 				String salutationTxt = cover.substring(cover.indexOf("Dear"),
 						cover.indexOf(","));
 				cover = cover.substring(cover.indexOf(salutationTxt)
 						+ (salutationTxt.length() + 1), cover.length());
+//				System.out.println("dear at zero");
 			}
 
 			this.quotationcoveringletter = cover;

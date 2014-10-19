@@ -115,14 +115,14 @@ function autoSaveTimerHome(){
 		</div>
 		<div class="quarterminus25">
 		<h:panelGrid columns="1" style="width:222px;border-style:solid;	border-width:2px; float: center;">  
-			<h:panelGrid columns="2">
+			<h:panelGrid columns="2" rendered="#{((not newquote.quotation.hardwareOnly) || (newquote.quotation.onsitesensorcalibration))}">
 			<f:facet name="header">  
                     Enter Number of Days  
             </f:facet>  
-    		<h:outputText value="Site Installation:" />
-			<p:spinner id="installationTime" value="#{newquote.tempSiteInstallation}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value." readonly="true" disabled="true"/>
-			<h:outputText value="Installation Travel:" />
-			<p:spinner value="#{newquote.tempInstallationTravel}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value."/>
+    		<h:outputText value="Site Installation:" rendered="#{not newquote.quotation.hardwareOnly}"/>
+			<p:spinner id="installationTime" value="#{newquote.tempSiteInstallation}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value." readonly="true" disabled="true" rendered="#{not newquote.quotation.hardwareOnly}"/>
+			<h:outputText value="Installation Travel:"  rendered="#{not newquote.quotation.hardwareOnly}"/>
+			<p:spinner value="#{newquote.tempInstallationTravel}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value." rendered="#{not newquote.quotation.hardwareOnly}"/>
 			<c:if test="${newquote.quotation.onsitesensorcalibration}">
 			<h:outputText value="Site Calibration:" />
 			<p:spinner  id="calibrationTime" value="#{newquote.tempSiteCalibration}" min="0" stepFactor="0.5" size="5" converterMessage="Enter a valid value." readonly="true" disabled="true"/>

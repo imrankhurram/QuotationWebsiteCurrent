@@ -169,6 +169,7 @@ public class Quotation implements Serializable {
 	private double remoteMonitoring;
 	private double annualCalibration;
 	private boolean disable_coveringletter=false;
+	private boolean hardwareOnly=false;
 	public Quotation() {
 		count++;
 	}
@@ -683,6 +684,14 @@ public class Quotation implements Serializable {
 
 	public void setDisable_coveringletter(boolean disable_coveringletter) {
 		this.disable_coveringletter = disable_coveringletter;
+	}
+
+	public boolean isHardwareOnly() {
+		return hardwareOnly;
+	}
+
+	public void setHardwareOnly(boolean hardwareOnly) {
+		this.hardwareOnly = hardwareOnly;
 	}
 
 }

@@ -52,15 +52,15 @@ function autoSaveTimer(e){
 </SCRIPT>
 
 			<o:highlight styleClass="error" />
-			
+
 			<h:form id="frmnewquotationPage" prependId="false">
 				<ui:include
 					src="./snippets/MenuBars/MenuBarNewQuotationFirstSnippet.xhtml" />
 				<div class="clear"></div>
-				<p:messages id="valMsgs"/>	
+				<p:messages id="valMsgs" />
 				<h:outputText id="txt_saving" value="Auto Saving..." rendered="true"
 					style="display:none;margin-top:-20px;margin-left:20px;position:absolute;" />
-				
+
 				<div class="quarternhalf" style="height: 345px;">
 					<h3>
 						<b>Site Details</b>
@@ -74,13 +74,15 @@ function autoSaveTimer(e){
 						<p:inputText id="contactName"
 							value="#{newquote.quotation.contactname}" required="true"
 							requiredMessage="Contact Name is required" />
-						<o:outputLabel for="customerSalutation" value="Contact Salutation*: " />
+						<o:outputLabel for="customerSalutation"
+							value="Contact Salutation*: " />
 						<p:inputText id="customerSalutation"
 							value="#{newquote.quotation.customersalutation}" required="true"
 							requiredMessage="Contact Salutation is required" />
 						<h:outputText value="Department: " />
-						<p:inputText id="department" value="#{newquote.quotation.department}" />
-						
+						<p:inputText id="department"
+							value="#{newquote.quotation.department}" />
+
 						<o:outputLabel for="address1" value="Address L1*: " />
 						<p:inputText id="address1" value="#{newquote.quotation.address1}"
 							required="true" requiredMessage="Address is required" />
@@ -101,7 +103,7 @@ function autoSaveTimer(e){
 							requiredMessage="Zip/Post is required" />
 					</p:panelGrid>
 				</div>
-				<div class="quarternhalf"  style="height: 345px;">
+				<div class="quarternhalf" style="height: 345px;">
 					<h3>
 						<b>Site Details</b>
 					</h3>
@@ -109,12 +111,12 @@ function autoSaveTimer(e){
 						<h:outputText value="Quote Ref: " />
 						<p:inputText id="quoteref"
 							value="#{newquote.quotation.quotationref}" disabled="true" />
-						
+
 						<o:outputLabel for="projectName" value="Project Name*: " />
 						<p:inputText id="projectName"
 							value="#{newquote.quotation.projectname}" required="true"
 							requiredMessage="Project Name is required" />
-						
+
 						<o:outputLabel for="contacttelno" value="Contact Tel. no*: " />
 						<p:inputText id="contacttelno"
 							value="#{newquote.quotation.contacttelno}" required="true"
@@ -123,8 +125,8 @@ function autoSaveTimer(e){
 						<p:inputText id="contactEmail"
 							value="#{newquote.quotation.contactemail}" required="true"
 							requiredMessage="Email is required" />
-						
-						
+
+
 						<!--<o:outputLabel for="facilityType" value="Facility Type: " />
 						<p:selectOneMenu id="facilityType" disabled="true"
 							value="#{newquote.quotation.facilitytype}" ajax="false"
@@ -141,19 +143,31 @@ function autoSaveTimer(e){
 							<f:selectItem itemLabel="Medical Laboratories"
 								itemValue="Medical Laboratories" />
 							<f:selectItem itemLabel="Pharmacy" itemValue="Pharmacy" />
-						</p:selectOneMenu>-->	
-						
+						</p:selectOneMenu>-->
+
 					</p:panelGrid>
 					<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
-						<h:outputText value="Is this an update to and existing installaton? " style="width:80px;"/>
-						<p:selectOneRadio id="updateInstallation" value="#{newquote.quotation.updateInstallation}">
-							<f:selectItem itemLabel="Yes" itemValue="#{true}"/>
-							<f:selectItem itemLabel="No" itemValue="#{false}"/>
+						<h:outputText
+							value="Is this an update to and existing installaton? "
+							style="width:80px;" />
+						<p:selectOneRadio id="updateInstallation"
+							value="#{newquote.quotation.updateInstallation}">
+							<f:selectItem itemLabel="Yes" itemValue="#{true}" />
+							<f:selectItem itemLabel="No" itemValue="#{false}" />
+						</p:selectOneRadio>
+
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="basicStyle, rightStyle">
+						<h:outputText value="Hardware Only? " style="width:80px;" />
+						<p:selectOneRadio id="hardwareOnlye"
+							value="#{newquote.quotation.hardwareOnly}" style="float:right;">
+							<f:selectItem itemLabel="Yes" itemValue="#{true}" />
+							<f:selectItem itemLabel="No" itemValue="#{false}" />
 						</p:selectOneRadio>
 						<p:spacer height="21" width="80" />
 						<p:spacer height="21" width="80" />
 						<p:spacer height="21" width="80" />
-						<p:spacer height="21" width="80" />
+						<!-- <p:spacer height="21" width="80" /> -->
 					</p:panelGrid>
 				</div>
 
@@ -170,7 +184,8 @@ function autoSaveTimer(e){
 						<ul id="secondnav">
 							<li><p:commandLink
 									action="#{newquote.clearNewQuotationPage}"
-									value="Clear This Page" update=":frmnewquotationPage" immediate="true"/></li>
+									value="Clear This Page" update=":frmnewquotationPage"
+									immediate="true" /></li>
 							<!-- <li><p:commandLink action="#{newquote.newQuotationPageNext}" value="Proceed To Quote" ajax="false" /></li> -->
 						</ul>
 					</div>
@@ -185,27 +200,27 @@ function autoSaveTimer(e){
 						<p:selectBooleanCheckbox id="recordingonly"
 							value="#{newquote.quotation.recordingonly}" />
 						<h:outputText value="Alarm Monitoring only? " />
-						<p:selectBooleanCheckbox id="alarmMonitoringOnly"
-							value="" disabled="true"/>
+						<p:selectBooleanCheckbox id="alarmMonitoringOnly" value=""
+							disabled="true" />
 						<h:outputText value="Alarm Monitoring + Recording? " />
 						<p:selectBooleanCheckbox id="combinedrecordingalarmmonitor"
 							value="#{newquote.quotation.combinedrnamonitoring}" />
 						<h:outputText value="Temperature Mapping? " />
 						<p:selectBooleanCheckbox id="temperatureMapping"
-							value="#{newquote.quotation.temperatureMapping}" disabled="true"/>
+							value="#{newquote.quotation.temperatureMapping}" disabled="true" />
 						<h:outputText value="On-site Probe Calibration? " />
 						<p:selectBooleanCheckbox id="onsitesensorcal"
 							value="#{newquote.quotation.onsitesensorcalibration}" />
 						<h:outputText value="Factory Probe calibration? " />
 						<p:selectBooleanCheckbox id="factorysensorcal"
 							value="#{newquote.quotation.factorysensorcalibration}" />
-						
-						
-							
-					
-						
-						
-					<!-- 	<h:outputText value="Individual quote per site? " />
+
+
+
+
+
+
+						<!-- 	<h:outputText value="Individual quote per site? " />
 						<p:selectBooleanCheckbox id="individualquotepersite"
 							value="#{newquote.quotation.individualquotepersite}"
 							disabled="true">
@@ -233,15 +248,15 @@ function autoSaveTimer(e){
 						<p:selectBooleanCheckbox id="webhostedgui"
 							value="#{newquote.quotation.webhostedgui}" />
 						<h:outputText value="Web hosted Dashboard? " />
-						<p:selectBooleanCheckbox id="webHostedDashboard"
-							value="" disabled="true"/>
+						<p:selectBooleanCheckbox id="webHostedDashboard" value=""
+							disabled="true" />
 						<h:outputText value="Yearly re-calibration service? " />
 						<p:selectBooleanCheckbox id="yearlyrecalservice"
 							value="#{newquote.quotation.yearlyrecalibrationservice}" />
 						<h:outputText value="Financed hardware option? " />
 						<p:selectBooleanCheckbox id="financedhdoption"
 							value="#{newquote.quotation.financedhdoption}" disabled="true" />
-						
+
 					</p:panelGrid>
 				</div>
 			</h:form>
